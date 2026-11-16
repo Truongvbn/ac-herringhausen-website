@@ -1,0 +1,12 @@
+---
+interface Props { kick?: string; tag?: string; h: [string, string?]; as?: 'h2' | 'h3'; }
+const { kick, tag, h, as: As = 'h2' } = Astro.props;
+---
+<header class="sh">
+  {(kick || tag) && <p class="kick">{tag && <b>{tag}</b>}{kick && <span>{kick}</span>}</p>}
+  <As><span>{h[0]}</span>{h[1] && <span>{h[1]}</span>}</As>
+</header>
+<style>
+  h3 { margin-top: 14px; font: italic 800 clamp(2.5rem, 6vw, 4.8rem)/.9 var(--f-d); text-transform: uppercase; hyphens: auto; overflow-wrap: anywhere; }
+  h3 span { display: block; } h3 span + span { color: var(--red-t); }
+</style>

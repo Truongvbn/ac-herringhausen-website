@@ -1,0 +1,239 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { kartClasses, kartContacts, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+const G = '/img/galerie/jugend-kart/';
+const tel = (m: string) => 'tel:+49' + m.replace(/\s/g, '').slice(1);
+
+const parents = de ? [
+  { h: 'Immer nur ein Kart auf der Strecke', p: 'Gefahren wird einzeln gegen die Zeit, nicht gegeneinander. Dabei ist immer nur ein Fahrer auf der Strecke.' },
+  { h: 'Geschick zählt, nicht nur Tempo', p: 'Neben der Geschwindigkeit geht es hauptsächlich um Geschick, Koordination und Konzentration. Jeder Fehler kostet Strafsekunden.' },
+  { h: 'Miteinander', p: 'Sehr wichtig ist uns außerdem Hilfsbereitschaft und, aufgrund der unterschiedlichen Altersgruppen, der soziale Umgang miteinander.' },
+  { h: 'Helm kann gestellt werden', p: 'Gebraucht wird erst mal lediglich ein Vollvisier-Helm. Für das Probetraining kann er ggf. auch gestellt werden.' },
+  { h: 'Was anziehen?', p: 'Den Körper ganz bedeckende Kleidung: langer Pullover und lange Hose, dazu festes Schuhwerk.' },
+  { h: 'Wann und wo?', p: 'Training jeden Samstag um 15:00 Uhr auf dem Gelände der Firma Goksch, außer in den Ferien. Probetraining ab 7 Jahren.' },
+] : [
+  { h: 'Only ever one kart on the track', p: 'Drivers run one at a time against the clock, not against each other. There is only ever one driver on the track.' },
+  { h: 'Skill counts, not just speed', p: 'Besides speed, it is mainly about skill, coordination and concentration. Every error costs penalty seconds.' },
+  { h: 'Looking out for each other', p: 'Helpfulness matters a great deal to us and, because the age groups are mixed, so does the way the children treat one another.' },
+  { h: 'A helmet can be lent', p: 'All that is needed at first is a full-face helmet. For the trial session one can be lent if necessary.' },
+  { h: 'What to wear?', p: 'Clothing that covers the whole body: a long-sleeved top and long trousers, plus sturdy shoes.' },
+  { h: 'When and where?', p: 'Training every Saturday at 3 pm on the Goksch company grounds (Gelände der Firma Goksch), except during school holidays. Trial sessions from age 7.' },
+];
+
+const jahrgang = de ? 'Für die genaue Klasseneinteilung ist allerdings nicht das Alter, sondern der Jahrgang ausschlaggebend.' : 'For the exact class, however, it is the year of birth that counts, not the age.';
+const clsText = (c: { code: string; age: Record<Lang, string> }) =>
+  (de ? `Klasse ${c.code}: ${c.age.de}. ` : `Class ${c.code}: ${c.age.en}. `) +
+  (c.code === 'P1' ? (de ? 'Ein Probetraining ist schon ab 7 Jahren möglich. ' : 'A trial session is possible from age 7. ') : '') +
+  (de ? 'Maßgeblich ist der Jahrgang, nicht das genaue Alter.' : 'The year of birth decides, not the exact age.');
+
+const photos = [
+  { f: 'img-1913', a: de ? 'Gelbes Kart in der Kurve zwischen Pylonen' : 'Yellow kart cornering between pylons' },
+  { f: 'img-1915', a: de ? 'Gelbes Kart umrundet orangefarbene Pylonen auf dem Parkplatz' : 'Yellow kart rounding orange pylons on the car park' },
+  { f: 'img-1958', a: de ? 'Kart auf dem Slalomkurs mit Streckenposten' : 'Kart on the slalom course with a marshal' },
+  { f: 'img-1910', a: de ? 'Zwei gelbe Karts warten am Start' : 'Two yellow karts waiting at the start' },
+];
+---
+<Base lang={lang} page="kart"
+  description={de
+    ? 'Jugend-Kart-Slalom beim AC Herringhausen: Klassen P1 bis P5 für 8 bis 18 Jahre, Probetraining ab 7 Jahren, Training jeden Samstag um 15 Uhr. Infos für Eltern und Ansprechpartner.'
+    : 'Youth kart slalom at AC Herringhausen: classes P1 to P5 for ages 8 to 18, trial sessions from age 7, training every Saturday at 3 pm. Information for parents and contacts.'}>
+
+  <PageHero lang={lang} page="kart"
+    h1={[de ? 'Jugend-Kart-Slalom' : 'Youth kart slalom', de ? 'Was ist das eigentlich?' : 'What is it, actually?']}
+    lead={de
+      ? 'Kartslalom ist die Breitensportvariante des Kartsports: Auf einem mit Pylonen abgesteckten Kurs wird gegen die Zeit gefahren. Dabei ist immer nur ein Fahrer auf der Strecke.'
+      : 'Kart slalom is the grassroots form of karting: drivers race the clock on a course marked out with pylons. There is only ever one driver on the track.'}
+    ghost="KART" img={`${G}img-1953.jpg`}
+    alt={de ? 'Gelbes Slalom-Kart mit Fahrer im schwarzen Helm zwischen orangefarbenen Pylonen' : 'Yellow slalom kart with a driver in a black helmet between orange pylons'}
+    caption={de ? 'Ein Kart, ein Kurs, die Uhr läuft' : 'One kart, one course, the clock is running'}>
+    <div class="cta">
+      <a class="btn red" href="#probetraining">{de ? 'Probetraining ab 7 Jahren' : 'Trial session from age 7'}</a>
+      <a class="btn" href="#eltern">{de ? 'Infos für Eltern' : 'Info for parents'}</a>
+    </div>
+  </PageHero>
+
+  <section class="sec tight" aria-labelledby="kurz-h"><div class="w">
+    <h2 class="kick" id="kurz-h" style="margin-bottom:14px"><span>{de ? 'In 30 Sekunden' : 'In 30 seconds'}</span></h2>
+    <ul class="stats">
+      <li><b>1</b><span>{de ? 'Fahrer auf der Strecke, immer nur einer' : 'driver on the track, only ever one'}</span></li>
+      <li><b>3</b><span>{de ? 'Läufe: ein Training, zwei Wertung' : 'runs: one practice, two timed'}</span></li>
+      <li><b class="yel">+2 s</b><span>{de ? 'je Pylonenfehler' : 'per pylon error'}</span></li>
+      <li><b class="yel">+10 s</b><span>{de ? 'je ausgelassener oder falsch befahrener Aufgabe' : 'per missed or wrongly driven task'}</span></li>
+    </ul>
+  </div></section>
+
+  <section class="sec paper" id="eltern"><div class="w">
+    <SectionHead kick={de ? 'Gut zu wissen' : 'Good to know'} h={[de ? 'Für' : 'For', de ? 'Eltern' : 'parents']} />
+    <ul class="kp">
+      {parents.map((x) => <li><h3 class="h4">{x.h}</h3><p>{x.p}</p></li>)}
+      <li class="who">
+        <h3 class="h4">{de ? 'Mit wem spreche ich?' : 'Who do I talk to?'}</h3>
+        <p>{de ? 'Ansprechpartner sind Detlef Kollmeier und Uwe Ritter.' : 'Your contacts are Detlef Kollmeier and Uwe Ritter.'}</p>
+        <a class="tlink" href="#probetraining">{de ? 'Telefon und E-Mail' : 'Phone and e-mail'} →</a>
+      </li>
+    </ul>
+  </div></section>
+
+  <section class="sec paper kp-next" id="probetraining"><div class="w two">
+    <div>
+      <SectionHead kick={de ? 'Probetraining' : 'Trial session'} h={[de ? 'In drei Schritten' : 'Three steps', de ? 'ins Kart' : 'into the kart']} />
+      <p class="lead" style="margin-bottom:24px">{de
+        ? 'Wenn ihr also motorsportbegeistert seid, Interesse an Motoren habt, eure Geschicklichkeit unter Beweis stellen wollt und mindestens 7 Jahre alt seid, meldet euch gerne zu einem Probetraining.'
+        : 'So if you are keen on motorsport, interested in engines, want to prove your skill and are at least 7 years old, you are welcome to get in touch for a trial session.'}</p>
+      <ol class="steps">
+        <li><div><b>{de ? 'Melden' : 'Get in touch'}</b>
+          <p>{de ? 'Ruft einen der beiden Ansprechpartner an oder schreibt eine E-Mail.' : 'Call one of the two contacts or send an e-mail.'}</p></div></li>
+        <li><div><b>{de ? 'Helm und lange Kleidung' : 'Helmet and long clothing'}</b>
+          <p>{de
+            ? 'Ihr benötigt erst mal lediglich einen Vollvisier-Helm (kann für das Probetraining ggf. auch gestellt werden) und den Körper ganz bedeckende Kleidung: langer Pullover und lange Hose, festes Schuhwerk.'
+            : 'All you need at first is a full-face helmet (one can be lent for the trial session if necessary) and clothing that covers the whole body: long-sleeved top and long trousers, sturdy shoes.'}</p></div></li>
+        <li><div><b>{de ? 'Samstag, 15:00 Uhr' : 'Saturday, 3 pm'}</b>
+          <p>{de
+            ? 'Training jeden Samstag (außer in den Ferien) um 15:00 Uhr auf dem Gelände der Firma Goksch. Wir freuen uns auf euch.'
+            : 'Training every Saturday (except during school holidays) at 3 pm on the Goksch company grounds (Gelände der Firma Goksch). We look forward to seeing you.'}</p></div></li>
+      </ol>
+    </div>
+    <div>
+      <h3 class="h3" style="margin-bottom:16px">{de ? 'Ansprechpartner' : 'Contacts'}</h3>
+      <ul class="contact-list">
+        {kartContacts.map((c) => (
+          <li>
+            <b>{c.name}</b>
+            <span>{de ? 'Mobil' : 'Mobile'}: <a href={tel(c.mobile)}>{c.mobile}</a></span>
+            <span>{de ? 'E-Mail' : 'E-mail'}: <a href={`mailto:${c.email}`}>{c.email}</a></span>
+          </li>
+        ))}
+      </ul>
+      <div data-draft={de ? 'Adresse des Trainingsgeländes fehlt auf der alten Seite' : 'training ground address is missing on the old site'} style="margin-top:22px">
+        <p class="note-box">{de
+          ? 'Die Anfahrt zum Gelände der Firma Goksch nennen euch die Ansprechpartner bei der Anmeldung.'
+          : 'The contacts will tell you how to find the Goksch company grounds when you get in touch.'}</p>
+      </div>
+      <div class="cta">
+        <a class="btn red" href={href('kontakt', lang)}>{de ? 'Nachricht schreiben' : 'Write to us'}</a>
+        <a class="btn" href={href('termine', lang)}>{de ? 'Termine ansehen' : 'See the events'}</a>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="sec alt" id="klassen"><div class="w">
+    <SectionHead kick={de ? 'Klassen im ADAC OWL' : 'Classes in the ADAC OWL'} h={[de ? 'P1 bis P5:' : 'P1 to P5:', de ? 'Wo starte ich?' : 'where do I start?']} />
+    <div class="two even">
+      <div data-cls>
+        <p style="margin-bottom:14px">{de ? 'Klasse antippen:' : 'Tap a class:'}</p>
+        <div class="cls">
+          {kartClasses.map((c) => (
+            <button type="button" aria-pressed="false" data-text={clsText(c)}><b>{c.code}</b><span>{c.age[lang]}</span></button>
+          ))}
+        </div>
+        <p class="cls-out" data-cls-out aria-live="polite">{de ? 'Beim Kartslalom wird in der Regel klassenweise gestartet. Die Klassen sind nach Altersstufen eingeteilt.' : 'In kart slalom, drivers normally start class by class. The classes are divided by age group.'}</p>
+        <p style="margin-top:16px"><b>{jahrgang}</b></p>
+      </div>
+      <div>
+        <div class="ktab-w">
+          <table class="ktab">
+            <caption>{de ? 'Die Einteilung beim Jugendkartslalom im ADAC OWL' : 'Classes in youth kart slalom in the ADAC OWL'}</caption>
+            <thead><tr><th scope="col">{de ? 'Klasse' : 'Class'}</th><th scope="col">{de ? 'Alter' : 'Age'}</th></tr></thead>
+            <tbody>{kartClasses.map((c) => <tr><th scope="row">{c.code}</th><td>{c.age[lang]}</td></tr>)}</tbody>
+          </table>
+        </div>
+        <div data-draft={de ? 'Recherche-Hinweis für den Verein, nicht von der alten Seite' : 'research note for the club, not from the old site'} style="margin-top:26px">
+          <p class="note-box">{de
+            ? 'Hinweis an den Verein: ADAC Ostwestfalen-Lippe führt die Klassen in der Ausschreibung 2025 als Klasse 1–5 nach Jahrgang und fährt auf vom ADAC OWL gestellten Elektro-Karts; bitte Bezeichnung P1–P5 und Kart-Typ prüfen.'
+            : 'Note for the club: in its 2025 regulations the ADAC Ostwestfalen-Lippe lists the classes as Klasse 1–5 by year of birth and runs on electric karts provided by the ADAC OWL; please check the designation P1–P5 and the kart type.'}</p>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="sec paper" id="regeln"><div class="w">
+    <div class="prose">
+      <h2 style="margin-top:0">{de ? 'Was ist Kartslalom?' : 'What is kart slalom?'}</h2>
+      <p>{de
+        ? 'Kartslalom ist die Breitensportvariante des Kartsports. Hierbei wird mit Karts mit Viertaktmotoren auf Parkplätzen oder ähnlichen befestigten Plätzen auf einem mit Pylonen abgesteckten Kurs gegen die Zeit gefahren. Dabei ist immer nur ein Fahrer auf der Strecke.'
+        : 'Kart slalom is the grassroots form of karting. Karts with four-stroke engines are driven against the clock on car parks or similar paved areas, on a course marked out with pylons. There is only ever one driver on the track.'}</p>
+      <p>{de
+        ? 'Kartslalom wird hauptsächlich von Kindern und Jugendlichen von 8 bis 18 Jahren ausgeübt. Der ursprüngliche Jugendkartslalom wurde in den 1980er Jahren erfunden. Es gibt jedoch mittlerweile auch Sparten, bei denen die Altersgrenzen nach oben offen sind.'
+        : 'Kart slalom is mainly practised by children and young people aged 8 to 18. The original youth kart slalom was invented in the 1980s. By now, however, there are also branches of the sport with no upper age limit.'}</p>
+
+      <h2>{de ? 'Läufe und Wertung' : 'Runs and scoring'}</h2>
+      <p>{de
+        ? 'Ein Jugendkartslalom wird in drei separaten Läufen auf einem Parcours durchgeführt, von denen der erste ein Trainingslauf ist und die beiden weiteren Läufe in die Wertung einfließen. Dabei werden sowohl die Zeit als auch die erzielten Fehler gewertet. Die in Sekunden umgerechneten Fehler werden auf die erreichte Fahrzeit addiert, und der Fahrer mit der geringsten Gesamtzeit gewinnt.'
+        : 'A youth kart slalom consists of three separate runs on one course: the first is a practice run, the other two count towards the result. Both the time and the errors made are scored. The errors are converted into seconds and added to the driving time, and the driver with the lowest total time wins.'}</p>
+      <ol class="rules">
+        <li><b>+2 s</b><span>{de ? 'Strafsekunden für einen Pylonenfehler' : 'penalty seconds for a pylon error'}</span></li>
+        <li><b>+10 s</b><span>{de ? 'Strafsekunden für das Auslassen oder falsche Befahren einer Aufgabe' : 'penalty seconds for missing a task or driving it the wrong way'}</span></li>
+      </ol>
+      <p>{de
+        ? 'Beim Jugend-Kart-Slalom geht es also neben der Geschwindigkeit hauptsächlich um Geschick, Koordination und Konzentration. Sehr wichtig ist uns außerdem Hilfsbereitschaft und, aufgrund der unterschiedlichen Altersgruppen, der soziale Umgang miteinander.'
+        : 'So besides speed, youth kart slalom is mainly about skill, coordination and concentration. Helpfulness also matters a great deal to us and, because of the different age groups, so does the way everyone treats one another.'}</p>
+
+      <h2>{de ? 'Wettbewerbe und Meisterschaften' : 'Competitions and championships'}</h2>
+      <p>{de
+        ? 'An den Sonntagen nach dem Training messen sich die Kinder und Jugendlichen dann mit denen der anderen Vereine in OWL. Sämtliche Wettbewerbe sind in einer Meisterschaft zusammengefasst.'
+        : 'On the Sundays after training, the children and young people then compete against those of the other clubs in OWL (Ostwestfalen-Lippe). All competitions are combined into one championship.'}</p>
+      <p>{de
+        ? 'Die Meisterschaften finden auf regionaler Ebene statt. Die besten Fahrer aus den Regionen können sich schließlich für überregionale Meisterschaften qualifizieren, wie beispielsweise zum Bundesendlauf des ADAC, aber auch zum ACV Endlauf oder zum Endlauf zur Deutschen Meisterschaft des DMSB. Neben ADAC, ACV und DMSB sind auch der AvD und der DMV in weiten Teilen Deutschlands aktiv.'
+        : 'The championships are held at regional level. The best drivers from the regions can finally qualify for national championships, for example the ADAC Bundesendlauf (national final), but also the ACV Endlauf or the final of the DMSB Deutsche Meisterschaft (German championship). Besides ADAC, ACV and DMSB, the AvD and the DMV are also active in large parts of Germany.'}</p>
+
+      <h2>{de ? 'Klassen' : 'Classes'}</h2>
+      <p>{de
+        ? 'Beim Kartslalom wird in der Regel klassenweise gestartet. Diese Klassen sind nach Altersstufen (bei der Sparte Clubsport-Kartslalom/Kart 2000 dazu noch nach Hubraum der Karts) eingeteilt. Die Einteilung beim Jugendkartslalom im ADAC OWL reicht von P1 (ca. 8–9 Jahre) bis P5 (ca. 16–18 Jahre).'
+        : 'In kart slalom, drivers normally start class by class. The classes are divided by age group (and, in the Clubsport-Kartslalom/Kart 2000 branch, also by the engine displacement of the karts). In youth kart slalom in the ADAC OWL they range from P1 (approx. 8–9 years) to P5 (approx. 16–18 years).'} {jahrgang}</p>
+      <p><a href="#klassen">{de ? 'Zur Klassenübersicht P1 bis P5' : 'To the class overview P1 to P5'}</a></p>
+    </div>
+  </div></section>
+
+  <section class="sec"><div class="w">
+    <SectionHead kick={de ? 'Galerie' : 'Gallery'} h={[de ? 'So sieht' : 'What it', de ? 'das aus' : 'looks like']} />
+    <ul class="kph">
+      {photos.map((p) => (
+        <li><a href={href('galerie', lang, '#jugend-kart')}><img src={`${G}${p.f}-t.jpg`} loading="lazy" width="520" height="346" alt={p.a} /></a></li>
+      ))}
+    </ul>
+    <div class="cta"><a class="btn sm" href={href('galerie', lang, '#jugend-kart')}>{de ? 'Alle Bilder im Album Jugend-Kart' : 'All photos in the youth kart album'}</a></div>
+  </div></section>
+
+  <section class="sec alt"><div class="w">
+    <SectionHead kick={de ? 'Wie geht es weiter?' : 'What next?'} h={[de ? 'Der nächste' : 'The next', de ? 'Schritt' : 'step']} />
+    <p class="lead">{de
+      ? 'Meldet euch zum Probetraining, schaut in die Termine oder lernt den Verein kennen.'
+      : 'Get in touch for a trial session, look at the events or get to know the club.'}</p>
+    <div class="cta">
+      <a class="btn red" href="#probetraining">{de ? 'Zum Probetraining melden' : 'Ask for a trial session'}</a>
+      <a class="btn" href={href('termine', lang)}>{de ? 'Termine' : 'Events'}</a>
+      <a class="btn" href={href('mitglied', lang)}>{de ? 'Mitglied werden' : 'Join the club'}</a>
+      <a class="btn" href={href('verein', lang, '#vorstand')}>{de ? 'Jugendleiter und Vorstand' : 'Youth leaders and board'}</a>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .kp { display: grid; gap: 12px; }
+  .kp li { padding: 18px 18px 20px; background: #fff; border-top: 3px solid var(--cream-ink); }
+  .kp li.who { background: var(--cream2); border-top-color: var(--red-d); }
+  .kp h3 { margin-bottom: 6px; hyphens: auto; }
+  .kp p { color: var(--cream-mute); }
+  .kp .tlink { display: inline-block; margin-top: 10px; }
+  .kp-next { padding-top: 0; }
+  .kp-next > .w { padding-top: clamp(40px, 6vw, 80px); background: linear-gradient(var(--cream-ink), var(--cream-ink)) top center / calc(100% - 2 * var(--gut)) 2px no-repeat; }
+  .contact-list a { text-underline-offset: 3px; }
+  .ktab-w { overflow-x: auto; }
+  .ktab { width: 100%; border-collapse: collapse; border-top: 2px solid var(--ink); }
+  .ktab caption { text-align: left; padding-bottom: 10px; font: 500 .78rem/1.3 var(--f-m); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  .ktab th, .ktab td { padding: 11px 12px 11px 0; text-align: left; border-bottom: 1px solid var(--line); }
+  .ktab thead th { font: 500 .75rem/1.2 var(--f-m); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+  .ktab tbody th { width: 5.5em; font: italic 800 1.6rem/1 var(--f-d); }
+  .kph { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .kph a { display: block; overflow: hidden; background: var(--panel); }
+  .kph img { width: 100%; aspect-ratio: 3/2; object-fit: cover; transition: scale .4s; }
+  .kph a:hover img { scale: 1.05; }
+  @media (min-width: 560px) { .kp { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .kp { grid-template-columns: repeat(3, 1fr); } .kp li.who { grid-column: 1 / -1; } .kph { grid-template-columns: repeat(4, 1fr); } }
+</style>

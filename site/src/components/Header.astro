@@ -1,0 +1,37 @@
+---
+import { club, type Lang } from '../data/club';
+import { href, other, routes, type PageKey } from '../i18n/routes';
+import { ui, mainNav, label, titles } from '../i18n/ui';
+interface Props { lang: Lang; page: PageKey; }
+const { lang, page } = Astro.props;
+const t = ui[lang];
+const sheetExtra: PageKey[] = ['partner', 'gaestebuch', 'impressum', 'datenschutz'];
+---
+<header class="hd">
+  <div class="w hd-in">
+    <a class="brand" href={href('home', lang)} aria-label={`${club.name}: ${t.home}`}>
+      <img src="/img/site/logo.png" alt="" width="314" height="364" />
+      <b>ACH</b>
+      <span>AC Herringhausen e.V. im ADAC</span>
+    </a>
+    <nav class="nav" aria-label={t.mainNav}>
+      {mainNav.map((k) => (
+        <a href={href(k, lang)} aria-current={k === page ? 'page' : undefined}>{label(k, lang)}</a>
+      ))}
+    </nav>
+    <div class:list={['lights', { 'on-home': page === 'home' }]} aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <a class="btn red sm" href={href('kart', lang, '#probetraining')}>{t.trial}</a>
+    <a class="hbtn lang" href={routes[page][other(lang)]} hreflang={other(lang)} lang={other(lang)} aria-label={t.langLabel}>{t.langSwitchShort}</a>
+    <button class="hbtn menu" type="button" aria-expanded="false" aria-controls="sheet" data-open={t.menu} data-close={t.close}>{t.menu}</button>
+  </div>
+</header>
+<nav class="sheet" id="sheet" aria-label={t.mainNav}>
+  <a href={href('home', lang)} aria-current={page === 'home' ? 'page' : undefined}>{t.home}</a>
+  {mainNav.map((k) => (
+    <a href={href(k, lang)} aria-current={k === page ? 'page' : undefined}>{titles[k][lang]}</a>
+  ))}
+  {sheetExtra.map((k) => (
+    <a class="sub" href={href(k, lang)} aria-current={k === page ? 'page' : undefined}>{titles[k][lang]}</a>
+  ))}
+  <a class="sheet-lang" href={routes[page][other(lang)]} hreflang={other(lang)} lang={other(lang)}>{t.langSwitch}</a>
+</nav>

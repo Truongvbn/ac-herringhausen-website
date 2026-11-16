@@ -1,0 +1,21 @@
+---
+// OpenStreetMap, loaded only after a click (no request to OSM before that).
+import { club, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+import { ui } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = ui[lang];
+const lat = 52.1429666, lon = 8.6161717, d = 0.006;
+const src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon - d}%2C${lat - d / 2}%2C${lon + d}%2C${lat + d / 2}&layer=mapnik&marker=${lat}%2C${lon}`;
+---
+<div class="map" data-map={src} data-title={`${t.clublokal}: ${club.clublokal.name}`}>
+  <p class="kick"><span>{t.clublokal}</span></p>
+  <b>{club.clublokal.name}</b>
+  <span>{club.clublokal.street}, {club.clublokal.city}</span>
+  <div class="cta" style="margin-top:8px">
+    <button class="btn sm" type="button" data-map-load>{t.mapLoad}</button>
+    <a class="tlink ext" href={club.clublokal.osm} rel="noopener" style="align-self:center">{t.mapRoute}</a>
+  </div>
+  <p class="consent">{t.mapConsent} <a class="tlink" href={href('datenschutz', lang, '#karte')}>{lang === 'de' ? 'Datenschutz' : 'Privacy'}</a></p>
+</div>

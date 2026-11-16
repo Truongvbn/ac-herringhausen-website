@@ -1,0 +1,177 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { downloads, type Lang } from '../data/club';
+import { href, routes, type PageKey } from '../i18n/routes';
+import { titles } from '../i18n/ui';
+import galerie from '../data/galerie.json';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+const nK = galerie['jugend-kart'].length, nY = galerie.youngster.length;
+
+type Sub = { hash: string; label: string };
+type Entry = { key: PageKey; d: string; subs?: Sub[] };
+const groups: { h: string; items: Entry[] }[] = [
+  { h: 'Motorsport', items: [
+    { key: 'termine', d: de ? 'Die Termine der Saison und die Unterlagen dazu.' : 'The season’s events and their documents.',
+      subs: [{ hash: '#unterlagen', label: de ? 'Unterlagen: Ausschreibungen und Ergebnisse' : 'Documents: regulations and results' }] },
+    { key: 'kart', d: de ? 'Kart-Slalom für Kinder und Jugendliche, Training jeden Samstag um 15 Uhr.' : 'Kart slalom for children and teenagers, training every Saturday at 3 pm.',
+      subs: [
+        { hash: '#probetraining', label: de ? 'Probetraining' : 'Trial session' },
+        { hash: '#klassen', label: de ? 'Klassen P1 bis P5' : 'Classes P1 to P5' },
+      ] },
+    { key: 'clubsport', d: de ? 'Automobil-Slalom mit dem eigenen Auto.' : 'Automobile slalom in your own car.' },
+    { key: 'oldtimer', d: de ? 'Unser Oldie-Team im 1967er Ford Mustang Fastback.' : 'Our classics team in a 1967 Ford Mustang Fastback.' },
+    { key: 'galerie', d: de ? `Beide Fotoalben von 2016, zusammen ${nK + nY} Bilder.` : `Both photo albums from 2016, ${nK + nY} photos in total.`,
+      subs: [
+        { hash: '#jugend-kart', label: `Jugend-Kart-Foto-Galerie (${nK})` },
+        { hash: '#youngster', label: `Youngster-Foto-Galerie (${nY})` },
+      ] },
+  ] },
+  { h: de ? 'Verein' : 'Club', items: [
+    { key: 'home', d: de ? 'Die Startseite: der Club auf einen Blick.' : 'The home page: the club at a glance.' },
+    { key: 'verein', d: de ? 'Über uns, Vorstand und Aktuelles.' : 'About us, the board and news.',
+      subs: [
+        { hash: '#vorstand', label: de ? 'Vorstand' : 'Board' },
+        { hash: '#aktuelles', label: de ? 'Aktuelles' : 'News' },
+      ] },
+    { key: 'mitglied', d: de ? 'Beitrittserklärung, Satzung und Haftungsausschluss als PDF.' : 'Membership application, statutes and liability waiver as PDFs (German).',
+      subs: [{ hash: '#downloads', label: 'Downloads' }] },
+    { key: 'partner', d: de ? 'Partner, Sponsoren und Links.' : 'Partners, sponsors and links.' },
+    { key: 'gaestebuch', d: de ? 'Lob, Kritik, Infos und Anregungen.' : 'Praise, criticism, information and suggestions.' },
+  ] },
+  { h: 'Service', items: [
+    { key: 'kontakt', d: de ? 'Kontaktformular, E-Mail, Ansprechpartner, Anschriften und Clublokal.' : 'Contact form, e-mail, contacts, addresses and clubhouse.' },
+    { key: 'sitemap', d: de ? 'Diese Übersicht, mit den Adressen der alten Seite.' : 'This overview, including the addresses of the old site.' },
+  ] },
+  { h: de ? 'Rechtliches' : 'Legal', items: [
+    { key: 'impressum', d: de ? 'Anbieterkennzeichnung, Vereinsregister und Haftungsausschluss.' : 'Provider identification, register entry and disclaimer.' },
+    { key: 'datenschutz', d: de ? 'Wie diese Website mit Daten umgeht.' : 'How this website handles data.' },
+  ] },
+];
+const pageCount = Object.keys(routes).length;
+
+// Old hPage addresses (see public/_redirects) with the "Letzte Aktualisierung" dates from the old sitemap.
+type Old = { t: string; path: string; key: PageKey; hash?: string; date?: string };
+const old: Old[] = [
+  { t: 'Start', path: '/Start.html', key: 'home', date: '01.09.2023 13:33:56' },
+  { t: 'Aktuelles', path: '/aktuelles.html', key: 'verein', hash: '#aktuelles', date: '22.06.2025 19:34:13' },
+  { t: 'Über Uns', path: '/ueber-uns.html', key: 'verein', date: '01.09.2023 13:28:07' },
+  { t: 'Termine', path: '/termine-2023.html', key: 'termine', date: '18.03.2026 11:00:40' },
+  { t: 'Ausschreibungen', path: '/ausschreibungen.html', key: 'termine', hash: '#unterlagen', date: '12.05.2025 06:40:52' },
+  { t: 'Abteilungen › Vorstand', path: '/abteilungen/vorstand.html', key: 'verein', hash: '#vorstand', date: '19.02.2024 10:57:57' },
+  { t: 'Abteilungen › Jugend - Kart - Slalom', path: '/jugend---kart---slalom.html', key: 'kart', date: '23.02.2023 11:07:45' },
+  { t: 'Abteilungen › Clubsport - Slalom', path: '/abteilungen/clubsport-slalom.html', key: 'clubsport', date: '10.01.2020 09:30:05' },
+  { t: 'Abteilungen › Oldtimer - Rallye', path: '/abteilungen/oldtimer-rallye.html', key: 'oldtimer', date: '03.05.2017 08:56:26' },
+  { t: 'Galerien › Jugend-Kart-Foto-Galerie', path: '/gallery447728.html', key: 'galerie', hash: '#jugend-kart', date: '04.06.2016 12:25:10' },
+  { t: 'Galerien › Youngster-Foto-Galerie', path: '/gallery447725.html', key: 'galerie', hash: '#youngster', date: '04.06.2016 12:24:40' },
+  { t: 'Downloads', path: '/downloads.html', key: 'mitglied', hash: '#downloads', date: '23.02.2023 11:38:28' },
+  { t: 'Partner / Links', path: '/partner-links.html', key: 'partner', date: '04.01.2017 13:59:38' },
+  { t: 'Impressum', path: '/impressum.html', key: 'impressum', date: '04.04.2024 11:40:48' },
+  { t: 'Satzung ACH', path: '/satzung-ach.html', key: 'mitglied', hash: '#downloads' },
+  { t: de ? 'Linkliste' : 'Link list', path: '/linkliste.html', key: 'partner' },
+  { t: 'Kontakt', path: '/kontakt.html', key: 'kontakt' },
+  { t: 'Gästebuch', path: '/guestbook.html', key: 'gaestebuch' },
+  { t: 'Sitemap', path: '/sitemap.html', key: 'sitemap' },
+  { t: de ? 'Mitglieder-Login (Anmelden, Registrieren, Passwort, Daten ändern, Abmelden)' : 'Member login (sign in, register, password, change data, sign out)',
+    path: '/login.html, /register.html, /forgot_pw.html, /change_data.html, /logout.html', key: 'home' },
+];
+---
+<Base lang={lang} page="sitemap"
+  description={de
+    ? 'Sitemap des AC Herringhausen e.V. im ADAC: alle Seiten der Website, die wichtigsten Abschnitte, die PDF-Downloads und die Adressen der alten Seite.'
+    : 'Sitemap of AC Herringhausen e.V. im ADAC: every page of the website, the key sections, the PDF downloads and the addresses of the old site.'}>
+  <PageHero lang={lang} page="sitemap"
+    h1={[de ? 'Alles auf' : 'Everything at', de ? 'einen Blick' : 'a glance']}
+    lead={de
+      ? `Alle ${pageCount} Seiten, die wichtigsten Abschnitte, die drei PDF-Dokumente und der Weg von jeder alten Adresse zur neuen Seite.`
+      : `All ${pageCount} pages, the key sections, the three PDF documents and the route from every old address to its new page.`}
+    ghost="Sitemap" />
+
+  <section class="sec"><div class="w">
+    <div class="sm">
+      {groups.map((g) => (
+        <section class="sm-g">
+          <h2 class="h3">{g.h}</h2>
+          <ul>
+            {g.items.map((it) => (
+              <li>
+                <a class="tlink" href={href(it.key, lang)}>{titles[it.key][lang]}</a>
+                <p>{it.d}</p>
+                {it.subs && <ul class="subs">{it.subs.map((s) => <li><a href={href(it.key, lang, s.hash)}>{s.label}</a></li>)}</ul>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </div></section>
+
+  <section class="sec alt"><div class="w">
+    <h2 class="h3">{de ? 'Dokumente (PDF)' : 'Documents (PDF)'}</h2>
+    <ul class="dl" style="margin-top:18px;max-width:760px">
+      {downloads.map((d) => (
+        <li><a href={d.file}>
+          <i>PDF</i>
+          <span><b>{d.title[lang]}</b><span>{d.info[lang]}</span></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 4v13M6 12l6 6 6-6M5 21h14"/></svg>
+        </a></li>
+      ))}
+    </ul>
+  </div></section>
+
+  <section class="sec paper" aria-labelledby="alt-h"><div class="w">
+    <h2 class="h3" id="alt-h">{de ? 'Alte Adresse → neue Seite' : 'Old address → new page'}</h2>
+    <p class="lead" style="margin-top:12px">{de
+      ? 'Jede Adresse der alten Website führt automatisch zur passenden neuen Seite. Die alte Sitemap zeigte zu jeder Seite die „Letzte Aktualisierung“; diese Angaben stehen in der rechten Spalte.'
+      : 'Every address of the old website leads automatically to the matching new page. The old sitemap showed a “Letzte Aktualisierung” (last updated) date for each page; those dates are in the right-hand column.'}</p>
+    <div class="tbl" tabindex="0" role="region" aria-labelledby="alt-h">
+      <table>
+        <thead><tr>
+          <th scope="col">{de ? 'Alte Seite' : 'Old page'}</th>
+          <th scope="col">{de ? 'Alte Adresse' : 'Old address'}</th>
+          <th scope="col">{de ? 'Neue Seite' : 'New page'}</th>
+          <th scope="col">{de ? 'Zuletzt geändert (alte Seite)' : 'Last updated (old site)'}</th>
+        </tr></thead>
+        <tbody>
+          {old.map((o) => (
+            <tr>
+              <th scope="row" lang="de">{o.t}</th>
+              <td class="num">{o.path}</td>
+              <td><a class="tlink" href={href(o.key, lang, o.hash)}>{titles[o.key][lang]}</a>{o.hash && <span class="num"> {o.hash}</span>}</td>
+              <td class="num">{o.date ?? <span title={de ? 'Stand nicht in der alten Sitemap aufgeführt' : 'Not listed in the old sitemap'}>–</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="mute" style="margin-top:14px;max-width:60ch;font-size:.95rem">{de
+      ? '– : Diese Seiten waren in der alten Sitemap nicht aufgeführt. Den Mitglieder-Login der alten Seite gibt es hier nicht mehr; seine Adressen führen zur Startseite.'
+      : '– : these pages were not listed in the old sitemap. The old site’s member login no longer exists here; its addresses lead to the home page.'}</p>
+    <div class="cta">
+      <a class="btn red" href={href('home', lang)}>{de ? 'Zur Startseite' : 'Home page'}</a>
+      <a class="btn" href={href('kontakt', lang)}>{de ? 'Etwas nicht gefunden? Kontakt' : 'Missing something? Contact'}</a>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .sm { display: grid; gap: 36px 40px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .sm-g > h2 { padding-bottom: 12px; border-bottom: 2px solid var(--red); }
+  .sm-g > ul > li { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .sm-g .tlink { font-size: 1.12rem; }
+  .sm-g p { margin-top: 4px; color: var(--mute); font-size: .95rem; }
+  .subs { display: grid; gap: 4px; margin-top: 8px; }
+  .subs li { padding-left: 16px; position: relative; font-size: .95rem; }
+  .subs li::before { content: "#"; position: absolute; left: 0; font-family: var(--f-m); color: var(--red-t); }
+  .subs a { text-underline-offset: 3px; }
+  .tbl { margin-top: 22px; overflow-x: auto; background: #fff; border: 1px solid var(--cream-mute); }
+  table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: .95rem; }
+  th, td { padding: 10px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--cream2); }
+  thead th { font: 500 .75rem/1.3 var(--f-m); letter-spacing: .06em; text-transform: uppercase; color: var(--cream-mute); background: var(--cream2); white-space: nowrap; }
+  tbody th { font-weight: 600; }
+  tbody tr:last-child > * { border-bottom: 0; }
+  td.num { font-size: .84rem; overflow-wrap: anywhere; }
+  td:last-child { white-space: nowrap; }
+</style>

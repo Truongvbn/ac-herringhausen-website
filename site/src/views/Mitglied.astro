@@ -1,0 +1,173 @@
+---
+// Mitglied werden: the old "Downloads" page plus what the three PDFs themselves say
+// (Beitrittserklaerung.pdf, Satzung.pdf, Haftungsausschluss.pdf).
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Downloads from '../components/Downloads.astro';
+import { club, meetings, downloads, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+const formPdf = downloads[0].file;
+const satzung: { p: string; h: string; t: string }[] = de ? [
+  { p: '§ 2', h: 'Zweck und Ziele', t: 'Der Club verfolgt ausschließlich und unmittelbar gemeinnützige Zwecke. Zweck des Clubs ist „die Ausübung, Förderung und Pflege des Motorsports“, unter anderem durch Motorsportveranstaltungen und die Förderung des Jugendsports durch Nachwuchsschulung und Ausbildung.' },
+  { p: '§ 3', h: 'Mitgliedschaft', t: 'Jede an dem Zweck und den Zielen des Clubs interessierte Person kann Mitglied werden. Ordentliche Mitglieder können nur Volljährige sein; Kinder und Jugendliche können Jugendmitglied sein. Ehrenmitglieder sind beitragsfrei.' },
+  { p: '§ 4', h: 'Aufnahme', t: 'Die Aufnahme muss beim Club beantragt werden. Der Vorstand entscheidet über die Aufnahme. Gegen eine Ablehnung kann innerhalb von zwei Wochen schriftlich Einspruch beim Vorstand eingelegt werden.' },
+  { p: '§ 5', h: 'Beiträge', t: 'Der Club erhebt von seinen Mitgliedern angemessene Beiträge. Höhe und Zahlungsweise legt die Mitgliederversammlung fest. Die Zahlung erfolgt im Voraus.' },
+  { p: '§ 6', h: 'Beendigung der Mitgliedschaft', t: 'Die Mitgliedschaft kann nur zum Schluss des Geschäftsjahres (laut § 1 das Kalenderjahr) schriftlich beendet werden, unter Einhaltung einer vierteljährlichen Kündigungsfrist.' },
+  { p: '§ 7–9', h: 'Organe und Stimmrecht', t: 'Die Organe des Clubs sind die Mitgliederversammlung und der Vorstand. Die Mitgliederversammlung ist das oberste Organ; jedes anwesende ordentliche Mitglied hat eine Stimme. Jugendmitglieder sind teilnahme- und redeberechtigt, haben aber kein Antrags-, Stimm- und Wahlrecht.' },
+] : [
+  { p: '§ 2', h: 'Purpose and aims', t: 'The club pursues exclusively and directly charitable (gemeinnützige) purposes. Its purpose is the practice, promotion and cultivation of motorsport, among other things by running motorsport events and by promoting youth sport through training and education of young talent.' },
+  { p: '§ 3', h: 'Membership', t: 'Any person interested in the purpose and aims of the club can become a member. Only adults can be full (ordentliche) members; children and young people can be youth members. Honorary members pay no fee.' },
+  { p: '§ 4', h: 'Admission', t: 'Admission must be applied for at the club. The board decides on admission. A rejection can be appealed in writing to the board within two weeks.' },
+  { p: '§ 5', h: 'Fees', t: 'The club charges its members appropriate fees. The amount and the method of payment are set by the members’ meeting. Payment is made in advance.' },
+  { p: '§ 6', h: 'Ending membership', t: 'Membership can only be ended in writing at the end of the financial year (the calendar year according to § 1), with three months’ notice.' },
+  { p: '§ 7–9', h: 'Bodies and voting', t: 'The bodies of the club are the members’ meeting and the board. The members’ meeting is the highest body; every full member present has one vote. Youth members may attend and speak but have no right to propose motions, vote or stand for election.' },
+];
+---
+<Base lang={lang} page="mitglied"
+  description={de
+    ? 'Mitglied im AC Herringhausen e.V. im ADAC werden: Beitrittserklärung in drei Schritten, Satzung und Haftungsausschluss als PDF.'
+    : 'Join AC Herringhausen e.V. im ADAC: the membership application in three steps, plus the club statutes and liability waiver as PDFs (in German).'}>
+  <PageHero lang={lang} page="mitglied"
+    h1={[de ? 'Mitglied' : 'Join', de ? 'werden' : 'the club']}
+    lead={de
+      ? 'Ein Formular ausfüllen, unterschreiben, abgeben. Beitrittserklärung, Satzung und Haftungsausschluss stehen hier als PDF bereit.'
+      : 'Fill in one form, sign it, hand it in. The membership application, the statutes and the liability waiver are available here as PDFs (all in German).'}
+    ghost={de ? 'Beitritt' : 'Join'}
+    img="/img/galerie/jugend-kart/img-1910.jpg"
+    alt={de ? 'Zwei gelbe Karts warten am Start' : 'Two yellow karts waiting at the start'}
+    caption={de ? 'Zwei Karts warten am Start' : 'Two karts waiting at the start'} />
+
+  <section class="sec paper" id="beitritt"><div class="w two">
+    <div>
+      <SectionHead kick={de ? 'So geht es' : 'How it works'} h={[de ? 'Beitritt in' : 'Joining in', de ? 'drei Schritten' : 'three steps']} />
+      <ol class="steps">
+        <li><div>
+          <b>{de ? 'Beitrittserklärung herunterladen und ausfüllen' : 'Download the application and fill it in'}</b>
+          <p>{de
+            ? 'Das Formular ist eine PDF-Seite. Oben tragen Sie ein, ab wann Sie Mitglied werden möchten.'
+            : 'The form (Beitrittserklärung) is a single PDF page in German. At the top you enter the date from which you would like to be a member.'}
+            {' '}<a class="tlink" href={formPdf}>{de ? 'Beitrittserklärung (PDF)' : 'Membership application (PDF)'}</a></p>
+        </div></li>
+        <li><div>
+          <b>{de ? 'Unterschreiben' : 'Sign it'}</b>
+          <p>{de
+            ? 'Auf dem Formular steht: „Bei Jugendlichen unter 18 Jahren ist die Unterschrift des Erziehungsberechtigten erforderlich!“ Unterschrieben werden der Beitritt, das SEPA-Lastschriftmandat und die Erklärung zum Datenschutz.'
+            : 'The form states that for young people under 18 the signature of a parent or guardian (Erziehungsberechtigter) is required. You sign the application itself, the SEPA direct debit mandate and the privacy declaration.'}</p>
+        </div></li>
+        <li><div>
+          <b>{de ? 'Abgeben' : 'Hand it in'}</b>
+          <p>{de ? 'Auf dem Formular ist diese Anschrift aufgedruckt:' : 'This address is printed on the form:'}</p>
+          <address class="adr">{club.long}<br />Mittelweg 63<br />32051 Herford</address>
+          <div data-draft="Abgabe am Clubabend steht nicht im Formular">
+            <p>{de
+              ? 'Oder Sie bringen die Beitrittserklärung einfach zu einem Clubabend mit.'
+              : 'Or simply bring the application along to a club evening.'}</p>
+          </div>
+        </div></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 style="margin-top:0">{de ? 'Was im Formular steht' : 'What the form contains'}</h2>
+      <p>{de
+        ? 'Mit der Beitrittserklärung melden Sie sich „zu der bestehenden Satzung“ als Mitglied des Automobilclub Herringhausen e.V. im ADAC an. Die Seite hat vier Teile:'
+        : 'With the application you register as a member of Automobilclub Herringhausen e.V. im ADAC under the existing statutes. The page has four parts:'}</p>
+      <ul>
+        <li><b>{de ? 'Persönliche Daten:' : 'Personal details:'}</b> {de
+          ? 'Name, Vorname, Geburtsdatum, Straße, PLZ/Wohnort, Telefon, Mobil und E-Mail-Adresse.'
+          : 'surname, first name, date of birth, street, postcode/town, telephone, mobile and e-mail address.'}</li>
+        <li><b>{de ? 'ADAC-Mitglied:' : 'ADAC member:'}</b> {de
+          ? 'Nein oder Ja, bei Ja mit Mitgliedsnummer.'
+          : 'no or yes, with your membership number if yes.'}</li>
+        <li><b>SEPA-Lastschriftmandat:</b> {de
+          ? 'Sie ermächtigen den Club, Zahlungen per Lastschrift von Ihrem Konto einzuziehen (Kontoinhaber, Anschrift, Kreditinstitut mit BIC, IBAN). Gläubiger-Identifikationsnummer des Clubs: '
+          : 'you authorise the club to collect payments from your account by direct debit (account holder, address, bank with BIC, IBAN). The club’s creditor identifier: '}<span class="num">DE33ZZZ00000607274</span>.</li>
+        <li><b>{de ? 'Erklärung zum Datenschutz:' : 'Privacy declaration:'}</b> {de
+          ? 'Der Vorstand weist darauf hin, dass bei der Veröffentlichung von personenbezogenen Daten, Teilnehmerdaten oder Ergebnissen einer Motorsport- oder Vereinsveranstaltung im Internet oder in der Presse ein umfassender Datenschutz nicht garantiert werden kann. Die Einwilligung ist freiwillig und kann gegenüber dem Verein jederzeit widerrufen werden (Stand DS-GVO, gültig ab 25. Mai 2018).'
+          : 'the board points out that when personal data, participant data or results of a motorsport or club event are published on the internet or in the press, complete data protection cannot be guaranteed. Consent is voluntary and can be withdrawn towards the club at any time (as of the GDPR, in force since 25 May 2018).'}</li>
+      </ul>
+      <div data-draft="Beitragshöhe fehlt">
+        <p class="note-box">{de
+          ? 'Die Beitragshöhe ist im Formular nicht genannt. Bitte fragen Sie den Vorstand nach dem aktuellen Beitrag.'
+          : 'The form does not state the amount of the membership fee. Please ask the board for the current fee.'}
+          {' '}<a class="tlink" href={href('kontakt', lang)}>{de ? 'Zum Kontakt' : 'Contact'}</a></p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="sec paper mg-line" id="unterlagen"><div class="w two">
+    <div>
+      <SectionHead kick="Downloads" h={[de ? 'Drei' : 'Three', de ? 'Dokumente' : 'documents']} />
+      <p class="lead">{de
+        ? 'Alle drei Dokumente der alten Download-Seite: Beitrittserklärung, Satzung und Haftungsausschluss.'
+        : 'All three documents from the old downloads page: membership application, statutes and liability waiver. They are in German.'}</p>
+    </div>
+    <Downloads lang={lang} />
+  </div></section>
+
+  <section class="sec paper mg-line" id="satzung"><div class="w">
+    <SectionHead kick={de ? 'Stand: Herford, Februar 2019' : 'Version: Herford, February 2019'} h={[de ? 'Die Satzung' : 'The statutes', de ? 'in Kürze' : 'in brief']} />
+    <p class="lead">{de
+      ? 'Sechs Punkte aus der Satzung des Automobil-Club Herringhausen e.V. im ADAC, die für neue Mitglieder wichtig sind. Verbindlich ist allein der vollständige Text im PDF.'
+      : 'Six points from the statutes of Automobil-Club Herringhausen e.V. im ADAC that matter to new members. Only the full German text in the PDF is binding; this is our summary.'}</p>
+    <dl class="mg-par">
+      {satzung.map((s) => (
+        <div><dt><span class="num">{s.p}</span><b>{s.h}</b></dt><dd>{s.t}</dd></div>
+      ))}
+    </dl>
+    <p style="margin-top:20px"><a class="tlink" href={downloads[1].file}>{de ? 'Vollständige Satzung lesen (PDF, 5 Seiten)' : 'Read the full statutes (PDF, 5 pages, German)'}</a></p>
+  </div></section>
+
+  <section class="sec paper mg-line" id="haftungsausschluss"><div class="w">
+    <div class="prose">
+      <p class="kick"><span>{de ? 'Für Veranstaltungen, nicht für den Beitritt' : 'For events, not for joining'}</span></p>
+      <h2 style="margin-top:.5em">{de ? 'Wozu der Haftungsausschluss?' : 'What is the liability waiver for?'}</h2>
+      <p>{de
+        ? 'Der Haftungsausschluss gehört nicht zum Beitritt. Er gilt für Teilnehmer von Veranstaltungen und ist Punkt „12. Haftungsausschluss“ einer Ausschreibung. Darin heißt es: „Die Teilnehmer nehmen auf eigene Gefahr an der Veranstaltung teil.“'
+        : 'The liability waiver (Haftungsausschluss) is not part of joining. It applies to participants of events and is item “12. Haftungsausschluss” of an event’s regulations (Ausschreibung). In essence: participants take part in the event at their own risk.'}</p>
+      <p>{de
+        ? 'Das Dokument enthält außerdem eine Freistellungserklärung bei Film- und Foto-Produktionen sowie Datenschutzhinweise.'
+        : 'The document also contains a release for film and photo productions and data protection notes.'}
+        {' '}<a class="tlink" href={downloads[2].file}>{de ? 'Haftungsausschluss (PDF)' : 'Liability waiver (PDF, German)'}</a></p>
+    </div>
+  </div></section>
+
+  <section class="sec paper mg-line" id="kennenlernen"><div class="w">
+    <SectionHead kick={de ? 'Erst mal kennenlernen' : 'Get to know us first'} h={[de ? 'Donnerstags' : 'Thursdays', de ? 'im Clublokal' : 'at the clubhouse']} />
+    <ul class="mg-meet">
+      {meetings.map((m) => <li><b>{m.title[lang]}</b><span>{m.when[lang]}</span><span class="num">{m.time[lang]}</span></li>)}
+      <li><b>{de ? 'Clublokal' : 'Clubhouse'}</b><span>{club.clublokal.name}</span><span>{club.clublokal.street}, {club.clublokal.city}</span></li>
+    </ul>
+    <div class="cta">
+      <a class="btn red" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
+      <a class="btn" href={href('verein', lang)}>{de ? 'Verein und Vorstand' : 'Club and board'}</a>
+      <a class="btn" href={href('verein', lang, '#aktuelles')}>{de ? 'Anfahrt zum Clublokal' : 'Directions to the clubhouse'}</a>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .mg-line { border-top: 1px solid rgba(29, 19, 19, .18); }
+  .steps p { margin-top: 4px; max-width: 34em; }
+  .adr { margin: 8px 0 10px; padding: 12px 14px; background: #fff; border-left: 4px solid var(--red-d); font-style: normal; font-weight: 600; max-width: 26em; }
+  .mg-par { margin-top: 26px; border-top: 2px solid var(--cream-ink); }
+  .mg-par > div { display: grid; gap: 6px 28px; padding: 16px 0; border-bottom: 1px solid rgba(29, 19, 19, .18); }
+  .mg-par dt { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+  .mg-par dt .num { font-weight: 700; color: var(--red-d); white-space: nowrap; }
+  .mg-par dt b { font: 600 1.12rem/1.3 var(--f-b); hyphens: auto; }
+  .mg-par dd { max-width: 34em; }
+  .mg-meet { display: grid; gap: 12px; }
+  .mg-meet li { padding: 16px 18px; background: #fff; border-top: 2px solid var(--cream-ink); }
+  .mg-meet b { display: block; font: 600 1.15rem/1.25 var(--f-b); }
+  .mg-meet span { display: block; color: var(--cream-mute); }
+  .mg-meet .num { margin-top: 6px; font-weight: 700; color: var(--red-d); }
+  @media (min-width: 760px) {
+    .mg-par > div { grid-template-columns: minmax(220px, 30%) 1fr; }
+    .mg-par dt { flex-direction: column; gap: 2px; }
+    .mg-meet { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

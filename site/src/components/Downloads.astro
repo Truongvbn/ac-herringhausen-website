@@ -1,0 +1,14 @@
+---
+import { downloads, type Lang } from '../data/club';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<ul class="dl" id="downloads">
+  {downloads.map((d) => (
+    <li><a href={d.file}>
+      <i>PDF</i>
+      <span><b>{d.title[lang]}</b><span>{d.info[lang]}</span></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 4v13M6 12l6 6 6-6M5 21h14"/></svg>
+    </a></li>
+  ))}
+</ul>

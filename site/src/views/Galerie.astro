@@ -1,0 +1,126 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import type { Lang } from '../data/club';
+import { href } from '../i18n/routes';
+import galerie from '../data/galerie.json';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+
+type Item = { file: string; thumb: string; w: number; h: number; orig: string; caption: string };
+const meta = {
+  'jugend-kart': {
+    title: 'Jugend-Kart-Foto-Galerie',
+    kick: de ? 'Album von 2016' : 'Album from 2016',
+    alt: de ? 'Jugend-Kart-Slalom 2016' : 'Youth kart slalom 2016',
+    intro: de ? 'Strecke, Fahrerlager und Siegerehrung beim Jugend-Kart-Slalom.' : 'Track, paddock and award ceremony at the youth kart slalom.',
+  },
+  youngster: {
+    title: 'Youngster-Foto-Galerie',
+    kick: de ? 'Album von 2016' : 'Album from 2016',
+    alt: de ? 'Youngster-Siegerehrung 2016' : 'Youngster award ceremony 2016',
+    intro: de ? 'Siegerehrungen der Saison 2016, nach Veranstaltung sortiert.' : 'Award ceremonies of the 2016 season, grouped by event (event names are German).',
+  },
+} as const;
+type Key = keyof typeof meta;
+const keys: Key[] = ['jugend-kart', 'youngster'];
+const data = galerie as Record<Key, Item[]>;
+const total = keys.reduce((n, k) => n + data[k].length, 0);
+const photos = (n: number) => (de ? `${n} Bilder` : `${n} photos`);
+
+// Each album is split into runs that share a caption (the old site printed the caption under every photo).
+const albums = keys.map((k) => {
+  const items = data[k].map((it, i) => ({
+    ...it, n: i + 1,
+    alt: `${it.caption || meta[k].alt}, ${de ? 'Bild' : 'photo'} ${i + 1} ${de ? 'von' : 'of'} ${data[k].length}`,
+    th: Math.floor((520 * it.h) / it.w),
+  }));
+  const groups: { caption: string; items: typeof items }[] = [];
+  for (const it of items) {
+    const g = groups.find((x) => x.caption === it.caption);
+    if (g) g.items.push(it); else groups.push({ caption: it.caption, items: [it] });
+  }
+  return { key: k, ...meta[k], count: items.length, groups };
+});
+---
+<Base lang={lang} page="galerie"
+  description={de
+    ? `Galerie des AC Herringhausen e.V. im ADAC: ${total} Bilder aus der Jugend-Kart-Foto-Galerie und der Youngster-Foto-Galerie von 2016.`
+    : `Gallery of AC Herringhausen e.V. im ADAC: ${total} photos from the youth kart album and the Youngster album of 2016.`}>
+  <PageHero lang={lang} page="galerie"
+    h1={[de ? 'Strecke &' : 'Track &', de ? 'Fahrerlager' : 'paddock']}
+    lead={de
+      ? `Beide Alben der alten Seite, vollständig: ${total} Bilder aus dem Jahr 2016. Ein Klick öffnet das Bild groß.`
+      : `Both albums from the old site, complete: ${total} photos from 2016. Click a photo to see it large.`}
+    ghost={de ? 'Galerie' : 'Gallery'} />
+
+  <section class="sec tight"><div class="w">
+    <p class="note-box consent-note">{de
+      ? 'Du bist auf einem Bild zu sehen und möchtest das nicht? '
+      : 'You appear in a photo and would rather not? '}
+      <a class="tlink" href={href('kontakt', lang)}>{de ? 'Schreib uns' : 'Write to us'}</a>{de ? ', wir nehmen es heraus.' : ' and we will take it down.'}</p>
+
+    <nav class="albums" aria-label={de ? 'Alben' : 'Albums'}>
+      {albums.map((a) => <a class="btn sm" href={`#${a.key}`}>{a.title} <span class="num cnt">{a.count}</span><span class="vh"> {de ? 'Bilder' : 'photos'}</span></a>)}
+    </nav>
+
+    {albums.map((a) => (
+      <section class="album" id={a.key} aria-labelledby={`${a.key}-h`}>
+        <header class="album-h">
+          <p class="kick"><b>{photos(a.count)}</b><span>{a.kick}</span></p>
+          <h2 class="h3" id={`${a.key}-h`}>{a.title}</h2>
+          <p class="mute">{a.intro}</p>
+        </header>
+        {a.groups.map((g) => (
+          <div class="grp">
+            {g.caption && <h3 class="h4 grp-h" lang="de">{g.caption} <span class="num mute">· {photos(g.items.length)}</span></h3>}
+            <div class="gal-grid">
+              {g.items.map((it) => (
+                <a href={`/img/galerie/${a.key}/${it.file}`} data-lb data-album={a.key} data-caption={it.caption} data-w={it.w} data-h={it.h}>
+                  <img src={`/img/galerie/${a.key}/${it.thumb}`} loading="lazy" width="520" height={it.th} alt={it.alt} />
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+        <p class="top"><a class="tlink" href="#inhalt">{de ? 'Nach oben' : 'Back to top'}</a></p>
+      </section>
+    ))}
+  </div></section>
+
+  <section class="sec alt"><div class="w">
+    <h2 class="h3">{de ? 'Selbst auf die Strecke?' : 'Fancy a go yourself?'}</h2>
+    <p class="lead" style="margin-top:12px">{de
+      ? 'Wir trainieren jeden Samstag um 15 Uhr auf dem Gelände der Firma Goksch, außer in den Ferien.'
+      : 'We train every Saturday at 3 pm on the Goksch company grounds, except during school holidays.'}</p>
+    <div class="cta">
+      <a class="btn red" href={href('kart', lang, '#probetraining')}>{de ? 'Zum Probetraining' : 'Trial session'}</a>
+      <a class="btn" href={href('termine', lang)}>{de ? 'Termine' : 'Events'}</a>
+      <a class="btn" href={href('kontakt', lang)}>{de ? 'Kontakt' : 'Contact'}</a>
+    </div>
+  </div></section>
+
+  <div class="lb" role="dialog" aria-modal="true" tabindex="-1"
+    aria-label={de ? 'Bildansicht' : 'Photo viewer'}
+    data-close={de ? 'Schließen' : 'Close'}
+    data-prev={de ? 'Vorheriges Bild' : 'Previous photo'}
+    data-next={de ? 'Nächstes Bild' : 'Next photo'}
+    data-of={de ? 'Bild {n} von {t}' : 'Photo {n} of {t}'}></div>
+
+  <script>
+    import '../scripts/lightbox.ts';
+  </script>
+</Base>
+
+<style>
+  .consent-note { max-width: 62ch; margin-bottom: 24px; }
+  .albums .cnt { padding: 2px 6px; background: rgba(0, 0, 0, .35); font-style: normal; font-size: .8rem; }
+  .album { padding-top: clamp(20px, 3vw, 36px); }
+  .album + .album { margin-top: clamp(28px, 4vw, 56px); border-top: 1px solid var(--line); }
+  .album-h { display: grid; gap: 10px; margin-bottom: 18px; }
+  .grp + .grp { margin-top: 28px; }
+  .grp-h { margin-bottom: 10px; padding-left: 12px; border-left: 4px solid var(--red); hyphens: auto; overflow-wrap: anywhere; }
+  .grp-h .num { font-size: .8rem; font-weight: 500; white-space: nowrap; }
+  .top { margin-top: 18px; font-size: .92rem; }
+</style>

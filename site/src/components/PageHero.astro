@@ -1,0 +1,24 @@
+---
+// Compact header for every inner page: breadcrumb, H1 (two lines, second in red), lead, optional angled photo.
+import type { Lang } from '../data/club';
+import { href, type PageKey } from '../i18n/routes';
+import { ui, titles } from '../i18n/ui';
+interface Props { lang: Lang; page: PageKey; h1: [string, string?]; lead?: string; ghost?: string; img?: string; alt?: string; caption?: string; parent?: PageKey; }
+const { lang, page, h1, lead, ghost, img, alt = '', caption, parent } = Astro.props;
+---
+<div class="ph">
+  {ghost && <div class="ph-ghost" aria-hidden="true">{ghost}</div>}
+  <div class="w ph-in" style={img ? undefined : 'grid-template-columns:1fr'}>
+    <div>
+      <nav aria-label="Breadcrumb"><ol class="crumbs">
+        <li><a href={href('home', lang)}>{ui[lang].home}</a></li>
+        {parent && <li><a href={href(parent, lang)}>{titles[parent][lang]}</a></li>}
+        <li aria-current="page">{titles[page][lang]}</li>
+      </ol></nav>
+      <h1><span>{h1[0]}</span>{h1[1] && <span>{h1[1]}</span>}</h1>
+      {lead && <p class="lead">{lead}</p>}
+      <slot />
+    </div>
+    {img && <figure class="ph-img"><img src={img} alt={alt} width="1280" height="853" /><figcaption>{caption}</figcaption></figure>}
+  </div>
+</div>

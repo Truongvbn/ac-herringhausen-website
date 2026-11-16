@@ -1,0 +1,25 @@
+# Old hPage addresses -> new pages (Cloudflare Pages format)
+/Start.html                          /                       301
+/aktuelles.html                      /verein/#aktuelles      301
+/ueber-uns.html                      /verein/                301
+/termine-2023.html                   /termine/               301
+/ausschreibungen.html                /termine/#unterlagen    301
+/abteilungen/vorstand.html           /verein/#vorstand       301
+/jugend---kart---slalom.html         /jugend-kart-slalom/    301
+/abteilungen/clubsport-slalom.html   /clubsport-slalom/      301
+/abteilungen/oldtimer-rallye.html    /oldtimer-rallye/       301
+/gallery447728.html                  /galerie/#jugend-kart   301
+/gallery447725.html                  /galerie/#youngster     301
+/downloads.html                      /mitglied-werden/#downloads 301
+/satzung-ach.html                    /mitglied-werden/#downloads 301
+/partner-links.html                  /partner/               301
+/linkliste.html                      /partner/               301
+/impressum.html                      /impressum/             301
+/kontakt.html                        /kontakt/               301
+/guestbook.html                      /gaestebuch/            301
+/sitemap.html                        /sitemap/               301
+/login.html                          /                       301
+/register.html                       /                       301
+/forgot_pw.html                      /                       301
+/change_data.html                    /                       301
+/logout.html                         /                       301

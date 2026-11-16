@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import type { Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+const S = '/img/site/';
+const photos = [
+  { f: 'mustang2013.jpg', w: 800, h: 532,
+    a: de ? 'Roter Ford Mustang Fastback mit Startnummer 87 und Rallyeschild auf einer Landstraße' : 'Red Ford Mustang Fastback with start number 87 and a rally plate on a country road',
+    c: de ? 'Der Mustang unterwegs mit der Startnummer 87' : 'The Mustang on the road with start number 87' },
+  { f: 'img_0687.jpg', w: 1175, h: 706,
+    a: de ? 'Der rote Ford Mustang Fastback in der Seitenansicht in einer Halle, im Wagen zwei Personen' : 'The red Ford Mustang Fastback seen side-on in a hall, two people in the car',
+    c: de ? 'Der Fastback von der Seite' : 'The Fastback side-on' },
+  { f: 'dsc_0265.jpg', w: 800, h: 532,
+    a: de ? 'Vier Personen bei einer Siegerehrung, zwei von ihnen halten Pokale' : 'Four people at an award ceremony, two of them holding trophies',
+    c: de ? 'Siegerehrung der Int. 71. ADAC Westfalen Lippe Fahrt „Klassik“ am 16.04.2011' : 'Award ceremony of the Int. 71. ADAC Westfalen Lippe Fahrt “Klassik” on 16 April 2011' },
+];
+---
+<Base lang={lang} page="oldtimer"
+  description={de
+    ? 'Oldtimer-Rallye beim AC Herringhausen: Unser Oldie-Team Jochen Gieselmann und Evelyn Erdmann startet im 1967er Ford Mustang Fastback.'
+    : 'Classic car rallying at AC Herringhausen: our classics team Jochen Gieselmann and Evelyn Erdmann runs a 1967 Ford Mustang Fastback.'}>
+
+  <PageHero lang={lang} page="oldtimer"
+    h1={[de ? 'Oldtimer-Rallye' : 'Classic rally', de ? 'Unser Oldie-Team' : 'Our classics team']}
+    lead={de
+      ? 'Jochen Gieselmann und Evelyn Erdmann im 1967er Ford Mustang Fastback.'
+      : 'Jochen Gieselmann and Evelyn Erdmann in a 1967 Ford Mustang Fastback.'}
+    ghost="1967" img={`${S}mustang2013.jpg`}
+    alt={photos[0].a}
+    caption="1967 Ford Mustang Fastback" />
+
+  <section class="sec"><div class="w two">
+    <div>
+      <SectionHead kick={de ? 'Team und Fahrzeug' : 'Team and car'} h={[de ? 'Ein Mustang' : 'A Mustang', de ? 'von 1967' : 'from 1967']} />
+    </div>
+    <dl class="people">
+      <div><dt>{de ? 'Unser Oldie-Team' : 'Our classics team'}</dt><dd>Jochen Gieselmann {de ? 'und' : 'and'} Evelyn Erdmann</dd></div>
+      <div><dt>{de ? 'Fahrzeug' : 'Car'}</dt><dd>Ford Mustang Fastback</dd></div>
+      <div><dt>{de ? 'Baujahr' : 'Year built'}</dt><dd class="num">1967</dd></div>
+    </dl>
+  </div></section>
+
+  <section class="sec alt"><div class="w">
+    <SectionHead kick={de ? 'Bilder' : 'Photos'} h={[de ? 'Strecke, Halle,' : 'Road, hall,', de ? 'Siegerehrung' : 'award ceremony']} />
+    <ul class="ot">
+      {photos.map((p) => (
+        <li><figure><img src={`${S}${p.f}`} loading="lazy" width={p.w} height={p.h} alt={p.a} /><figcaption>{p.c}</figcaption></figure></li>
+      ))}
+    </ul>
+  </div></section>
+
+  <section class="sec"><div class="w two">
+    <div>
+      <SectionHead kick={de ? 'Mitmachen' : 'Join in'} h={[de ? 'Du fährst' : 'You drive', de ? 'einen Oldtimer?' : 'a classic?']} />
+    </div>
+    <div>
+      <p style="max-width:58ch">{de
+        ? 'Aber auch die breite Vielfalt macht den Verein besonders. Somit beherbergt unser Verein auch Leute aus der Rundstrecken-, Motorrad- und Oldtimerszene.'
+        : 'It is also the sheer variety that makes the club special: it is home to people from the circuit racing, motorcycle and classic car scenes as well.'}</p>
+      <p style="max-width:58ch;margin-top:1em">{de
+        ? 'Wenn du selbst einen Oldtimer fährst, melde dich gern bei uns.'
+        : 'If you drive a classic car yourself, you are welcome to get in touch.'}</p>
+      <div class="cta">
+        <a class="btn red" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
+        <a class="btn" href={href('verein', lang)}>{de ? 'Über den Verein' : 'About the club'}</a>
+        <a class="btn" href={href('mitglied', lang)}>{de ? 'Mitglied werden' : 'Join the club'}</a>
+      </div>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .ot { display: grid; gap: 20px 12px; }
+  .ot li { max-width: 640px; }
+  .ot img { width: 100%; aspect-ratio: 3/2; object-fit: cover; }
+  .ot figcaption { padding-top: 9px; font-size: .92rem; color: var(--mute); border-top: 2px solid var(--red); }
+  @media (min-width: 620px) { .ot { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .ot { grid-template-columns: repeat(3, 1fr); } }
+</style>

@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import MapBlock from '../components/MapBlock.astro';
+import { club, kartContacts, meetings, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+const tel = (m: string) => 'tel:+49' + m.replace(/\s/g, '').replace(/^0/, '');
+---
+<Base lang={lang} page="kontakt"
+  description={de
+    ? 'Kontakt zum AC Herringhausen e.V. im ADAC: Kontaktformular, E-Mail, Ansprechpartner für das Jugend-Kart-Probetraining, Anschriften und Clublokal in Hiddenhausen.'
+    : 'Contact AC Herringhausen e.V. im ADAC: contact form, e-mail, contacts for youth kart trial sessions, postal addresses and the clubhouse in Hiddenhausen.'}>
+  <PageHero lang={lang} page="kontakt"
+    h1={[de ? 'Schreib uns' : 'Write to us', de ? 'oder komm vorbei' : 'or drop by']}
+    lead={de
+      ? 'Per Formular, per E-Mail, am Telefon oder donnerstags im Clublokal: Hier steht, wer wofür zuständig ist.'
+      : 'By form, by e-mail, by phone or on Thursdays at the clubhouse: here is who to contact for what.'}
+    ghost={de ? 'Kontakt' : 'Contact'} />
+
+  <section class="sec"><div class="w two">
+    <div class="who">
+      <h2 class="h3">{de ? 'Wer hilft wobei?' : 'Who to contact for what'}</h2>
+
+      <div class="blk">
+        <h3 class="h4">{de ? 'Probetraining und Jugend-Kart-Slalom' : 'Trial sessions and youth kart slalom'}</h3>
+        <p class="mute">{de ? 'Ansprechpartner der Kart-Jugend:' : 'Contacts for the youth kart group:'}</p>
+        <ul class="contact-list">
+          {kartContacts.map((c) => (
+            <li>
+              <b>{c.name}</b>
+              <span>{de ? 'Mobil' : 'Mobile'}: <a href={tel(c.mobile)}>{c.mobile}</a></span>
+              <span><a href={`mailto:${c.email}`}>{c.email}</a></span>
+            </li>
+          ))}
+        </ul>
+        <p><a class="tlink" href={href('kart', lang, '#probetraining')}>{de ? 'So läuft das Probetraining' : 'How the trial session works'} →</a></p>
+      </div>
+
+      <div class="blk">
+        <h3 class="h4">{de ? 'Verein, Mitgliedschaft, Sponsoring' : 'Club, membership, sponsoring'}</h3>
+        <p class="mute">{de ? 'Alles andere geht an die Club-Adresse:' : 'Everything else goes to the club address:'}</p>
+        <p><a class="mail tlink" href={`mailto:${club.email}`}>{club.email}</a></p>
+        <p>
+          <a class="tlink" href={href('mitglied', lang)}>{de ? 'Mitglied werden' : 'Join the club'} →</a>
+          <a class="tlink" href={href('partner', lang)} style="margin-left:16px">{de ? 'Partner' : 'Partners'} →</a>
+        </p>
+      </div>
+
+      <div class="blk">
+        <h3 class="h4">{de ? 'Anschriften' : 'Postal addresses'}</h3>
+        <div class="addr">
+          {[club.seat, club.admin].map((a) => (
+            <address>
+              <span class="k">{a.label[lang]}</span>
+              {club.name}<br />{a.street}<br />{a.city}
+            </address>
+          ))}
+        </div>
+        <p class="mute">{de ? 'E-Mail' : 'E-mail'}: <a href={`mailto:${club.email}`}>{club.email}</a> · Internet: {club.web}</p>
+        <p><a class="tlink" href={href('impressum', lang)}>{de ? 'Zum Impressum' : 'Legal notice'} →</a></p>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="h3">{de ? 'Kontaktformular' : 'Contact form'}</h2>
+      <p class="mute hint">{de
+        ? 'Felder mit (*) sind Pflichtfelder. E-Mail-Adresse im Format mail@example.com, und bitte geben Sie einen aussagekräftigen Betreff ein.'
+        : 'Fields marked (*) are required. E-mail address in the format mail@example.com, and please enter a meaningful subject.'}</p>
+      <ContactForm lang={lang} />
+    </div>
+  </div></section>
+
+  <section class="sec alt"><div class="w">
+    <h2 class="h3">{de ? 'Persönlich: donnerstags im Clublokal' : 'In person: Thursdays at the clubhouse'}</h2>
+    <div class="life" style="margin-top:18px">
+      {meetings.map((m) => <div class="slot"><b>{m.title[lang]}</b><span>{m.when[lang]}</span><em>{m.time[lang]}</em></div>)}
+      <MapBlock lang={lang} />
+    </div>
+    <div class="cta">
+      <a class="btn red" href={href('kart', lang, '#probetraining')}>{de ? 'Probetraining' : 'Trial session'}</a>
+      <a class="btn" href={href('termine', lang)}>{de ? 'Termine' : 'Events'}</a>
+      <a class="btn" href={href('verein', lang, '#vorstand')}>{de ? 'Vorstand' : 'Board'}</a>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .who { display: grid; gap: 30px; }
+  .blk { display: grid; gap: 10px; padding-top: 18px; border-top: 2px solid var(--ink); }
+  .contact-list a, .addr a, .blk .mute a { text-underline-offset: 3px; }
+  .contact-list span { padding-block: 3px; }
+  .addr { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .addr address { font-style: normal; padding: 14px 16px; background: var(--panel); }
+  .addr .k { display: block; margin-bottom: 6px; font: 500 .75rem/1.2 var(--f-m); letter-spacing: .08em; text-transform: uppercase; color: var(--red-t); }
+  .hint { margin: 12px 0 20px; max-width: 52ch; font-size: .95rem; }
+</style>

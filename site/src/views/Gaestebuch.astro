@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { club, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+// Entries exactly as on the old guestbook page (one entry).
+const entries = [
+  { author: 'AC Herringhausen e. V. im ADAC', iso: '2012-06-05T18:52:44', date: '05.06.2012 18:52:44', subject: 'Willkommen',
+    text: 'Herzlich Willkommen in unserem neuen Gästebuch! Wir freuen uns über Lob, Kritik, Infos und Anregungen!',
+    en: 'A warm welcome to our new guestbook! We look forward to praise, criticism, information and suggestions.' },
+];
+const n = entries.length;
+---
+<Base lang={lang} page="gaestebuch"
+  description={de
+    ? 'Gästebuch des AC Herringhausen e.V. im ADAC: Wir freuen uns über Lob, Kritik, Infos und Anregungen.'
+    : 'Guestbook of AC Herringhausen e.V. im ADAC: we look forward to praise, criticism, information and suggestions.'}>
+  <PageHero lang={lang} page="gaestebuch"
+    h1={[de ? 'Lob, Kritik,' : 'Praise, criticism,', de ? 'Anregungen' : 'suggestions']}
+    lead={de
+      ? 'Herzlich willkommen in unserem Gästebuch. Wir freuen uns über Lob, Kritik, Infos und Anregungen.'
+      : 'Welcome to our guestbook. We look forward to praise, criticism, information and suggestions.'}
+    ghost={de ? 'Gästebuch' : 'Guestbook'}>
+    <div class="cta"><a class="btn red" href="#gaestebuch-form">{de ? 'Eintrag schreiben' : 'Write an entry'}</a></div>
+  </PageHero>
+
+  <section class="sec" aria-labelledby="eintraege-h"><div class="w narrow">
+    <h2 class="h3" id="eintraege-h">{de ? 'Einträge' : 'Entries'}</h2>
+    <p class="mute count">{de
+      ? (n === 1 ? 'Aktuell ist 1 Eintrag verfügbar.' : `Aktuell sind ${n} Einträge verfügbar.`)
+      : (n === 1 ? 'There is currently 1 entry.' : `There are currently ${n} entries.`)}</p>
+    <ol class="entries">
+      {entries.map((e) => (
+        <li><article class="entry">
+          <header>
+            <b>{e.author}</b>
+            <span>{de ? 'hat am' : 'wrote on'} <time class="num" datetime={e.iso}>{e.date}</time>{de ? ' geschrieben' : ''}</span>
+          </header>
+          <h3 class="h4" lang="de">{e.subject}</h3>
+          <p lang="de">{e.text}</p>
+          {!de && <p class="tr">{e.en}</p>}
+        </article></li>
+      ))}
+    </ol>
+  </div></section>
+
+  <section class="sec alt" aria-labelledby="schreiben-h"><div class="w narrow">
+    <h2 class="h3" id="schreiben-h">{de ? 'Eintrag schreiben' : 'Write an entry'}</h2>
+    <div class="note-box gb-note">
+      <p><b>{de ? 'Noch nicht aktiv:' : 'Not active yet:'}</b> {de
+        ? 'Neue Einträge werden derzeit nicht gespeichert, weil das Gästebuch noch nicht mit einem Speicherdienst verbunden ist. Bis dahin erreichen Sie uns per E-Mail an'
+        : 'New entries are not stored at the moment, because the guestbook is not connected to a storage service yet. Until then, please e-mail us at'} <a class="tlink" href={`mailto:${club.email}`}>{club.email}</a>.</p>
+      <p data-draft="Moderation: vom Club zu bestätigen">{de
+        ? 'Sobald das Gästebuch angeschlossen ist, werden Einträge erst nach Prüfung durch den Club veröffentlicht.'
+        : 'Once the guestbook is connected, entries will be published only after review by the club.'}</p>
+    </div>
+    <p class="mute hint">{de
+      ? 'E-Mail im Format mail@example.com, Homepage im Format https://www.example.com/. Die Nachricht darf maximal 3.000 Zeichen lang sein.'
+      : 'E-mail in the format mail@example.com, homepage in the format https://www.example.com/. The message may be up to 3,000 characters long.'}</p>
+    <ContactForm lang={lang} guestbook id="gaestebuch-form" />
+  </div></section>
+
+  <section class="sec tight"><div class="w narrow">
+    <h2 class="h3">{de ? 'Lieber direkt?' : 'Prefer a direct line?'}</h2>
+    <div class="cta">
+      <a class="btn red" href={href('kontakt', lang)}>{de ? 'Kontakt' : 'Contact'}</a>
+      <a class="btn" href={href('galerie', lang)}>{de ? 'Galerie' : 'Gallery'}</a>
+      <a class="btn" href={href('verein', lang)}>{de ? 'Der Verein' : 'The club'}</a>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .count { margin: 10px 0 20px; }
+  .entries { display: grid; gap: 14px; }
+  .entry { display: grid; gap: 10px; padding: clamp(18px, 3vw, 28px); background: var(--panel); border-left: 4px solid var(--red); }
+  .entry header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  .entry header b { font: 600 1rem/1.3 var(--f-b); }
+  .entry time { font-size: .82rem; font-weight: 500; color: var(--yel); }
+  .entry p { max-width: 60ch; }
+  .entry .tr { color: var(--mute); font-size: .95rem; }
+  .gb-note { display: grid; gap: 14px; margin: 18px 0 14px; }
+  .hint { margin-bottom: 22px; max-width: 60ch; font-size: .95rem; }</style>

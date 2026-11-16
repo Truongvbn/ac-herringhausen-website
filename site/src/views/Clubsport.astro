@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import EventRows from '../components/EventRows.astro';
+import { events2026, archiveDocs, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+const slaloms = events2026.filter((e) => e.kind === 'slalom');
+const archive = archiveDocs.filter((d) => d.event.de.includes('Clubsport'));
+const draftWhy = de ? 'neu geschrieben nach DMSB-/ADAC-OWL-Ausschreibung, nicht von der alten Seite' : 'newly written from the DMSB / ADAC OWL regulations, not from the old site';
+---
+<Base lang={lang} page="clubsport"
+  description={de
+    ? 'Clubsport-Slalom beim AC Herringhausen: 2026 liefen der 55. ADAC Automobil-Clubsport-Slalom „AC Herringhausen“ und der ADAC Automobil-Clubsport-Slalom „VG Kreis Herford“.'
+    : 'Clubsport slalom at AC Herringhausen: in 2026 the club ran the 55th ADAC Automobile Clubsport Slalom “AC Herringhausen” and the ADAC Automobile Clubsport Slalom “VG Kreis Herford”.'}>
+
+  <PageHero lang={lang} page="clubsport"
+    h1={['Clubsport-', 'Slalom']}
+    lead={de
+      ? 'Am 14.06.2026 lief der 55. ADAC Automobil-Clubsport-Slalom „AC Herringhausen“, am 06.09.2026 der ADAC Automobil-Clubsport-Slalom „VG Kreis Herford“.'
+      : 'The 55th ADAC Automobile Clubsport Slalom “AC Herringhausen” took place on 14 June 2026, the ADAC Automobile Clubsport Slalom “VG Kreis Herford” on 6 September 2026.'}
+    ghost="SLALOM" img="/img/galerie/jugend-kart/img-1845.jpg"
+    alt={de ? 'Gasse aus orangefarbenen Pylonen auf einem Parkplatz, rechts ein ADAC-Transporter' : 'Lane of orange pylons on a car park, an ADAC van on the right'}
+    caption={de ? 'Pylonengasse, aufgenommen beim Jugend-Kart-Slalom. Ein Foto vom Automobil-Slalom fehlt noch.' : 'Pylon lane, photographed at the youth kart slalom. A photo of the car slalom is still missing.'} />
+
+  <section class="sec" id="saison"><div class="w">
+    <SectionHead kick={de ? 'Termine' : 'Events'} h={[de ? 'Saison' : 'Season', '2026']} />
+    <EventRows lang={lang} events={slaloms} training={false} />
+    <h3 class="h3" style="margin:clamp(32px,5vw,56px) 0 16px">{de ? 'Aus der Saison 2025' : 'From the 2025 season'}</h3>
+    <ul class="cs-arch">
+      {archive.map((d) => (
+        <li><b>{d.event[lang]}</b>
+          <a class="tlink ext" href={d.href} rel="noopener">{d.label[lang]}{!de && ' (German, adac-sport.com)'}</a></li>
+      ))}
+    </ul>
+    <div class="cta"><a class="btn" href={href('termine', lang, '#unterlagen')}>{de ? 'Ausschreibungen und Ergebnisse' : 'Regulations and results'}</a></div>
+  </div></section>
+
+  <section class="sec paper" id="ablauf"><div class="w">
+    <div data-draft={draftWhy}>
+      <div class="prose">
+        <h2 style="margin-top:0">{de ? 'So läuft ein Clubsport-Slalom' : 'How a clubsport slalom works'}</h2>
+        <p>{de
+          ? 'Gefahren wird auf einer befestigten, ebenen Strecke, die mit Pylonen markiert ist. Ein Lauf ist 400 bis 1000 Meter lang und hat mindestens zehn Richtungswechsel. Es ist immer nur ein Fahrzeug auf der Strecke. Gestartet wird stehend, die Zeit nimmt eine Lichtschranke.'
+          : 'The course is paved and level and is marked out with pylons. One run is 400 to 1000 metres long and has at least ten changes of direction. There is only ever one car on the course. The start is a standing start, and a light beam takes the time.'}</p>
+
+        <h3>{de ? 'Das Fahrzeug' : 'The car'}</h3>
+        <p>{de
+          ? 'Zugelassen sind serienmäßige Personenkraftwagen. Sie müssen der StVZO entsprechen, also straßenzugelassen sein; ausgenommen davon ist die verbesserte Gruppe.'
+          : 'Series-production passenger cars are eligible. They must comply with the StVZO (German road traffic licensing regulations), i.e. be road legal; the improved group is the exception.'}</p>
+
+        <h3>{de ? 'Wer fahren darf' : 'Who may drive'}</h3>
+        <ul>
+          <li>{de ? 'Gültige DMSB-Lizenz (mindestens Nationale Lizenz Stufe C) oder eine Race Card' : 'A valid DMSB licence (at least national licence level C) or a Race Card'}</li>
+          <li>{de ? 'Mindestalter 14 Jahre; unter 18 Jahren gelten zusätzliche Voraussetzungen' : 'Minimum age 14; additional requirements apply to under-18s'}</li>
+          <li>{de ? 'Helm nach den DMSB-Bestimmungen' : 'Helmet in accordance with the DMSB rules'}</li>
+          <li>{de ? 'Oberteil, das die Schultern bedeckt, lange Hose und geschlossene Schuhe' : 'A top that covers the shoulders, long trousers and closed shoes'}</li>
+        </ul>
+
+        <h3>{de ? 'Läufe und Wertung' : 'Runs and scoring'}</h3>
+        <p>{de
+          ? 'Ein Trainingslauf mit Zeitnahme ist Pflicht. Danach folgen die Wertungsläufe; ihre Fahrzeiten und Strafsekunden werden addiert.'
+          : 'One timed training run is mandatory. The scored runs follow; their times and penalty seconds are added together.'}</p>
+        <ol class="rules">
+          <li><b>+3 s</b><span>{de ? 'je umgeworfener oder verschobener Pylone' : 'per pylon knocked over or displaced'}</span></li>
+          <li><b>+15 s</b><span>{de ? 'je ausgelassener Aufgabe' : 'per omitted task'}</span></li>
+        </ol>
+
+        <h3>{de ? 'Gruppen im ADAC OWL (Stand 2025)' : 'Groups in the ADAC OWL (as of 2025)'}</h3>
+        <ul>
+          <li>Gruppe 1: Einsteiger{!de && ' (beginners)'}</li>
+          <li>Gruppe 2: Jedermann{!de && ' (everyone)'}</li>
+          <li>Gruppe 3: Open</li>
+          <li>{de ? 'dazu der Slalom Youngster Cup und der Retro Slalom' : 'plus the Slalom Youngster Cup and the Retro Slalom'}</li>
+        </ul>
+        <p>{de ? 'Die Läufe zählen zum ADAC OWL Clubsport-Slalom-Pokal.' : 'The events count towards the ADAC OWL Clubsport-Slalom-Pokal (cup).'}</p>
+
+        <p class="note-box">{de
+          ? 'Quellen: DMSB Grundausschreibung Clubsport Slalom 2026 und ADAC OWL Kurzausschreibung 2025. Maßgeblich ist immer die aktuelle Ausschreibung der jeweiligen Veranstaltung.'
+          : 'Sources: DMSB Grundausschreibung Clubsport Slalom 2026 and ADAC OWL Kurzausschreibung 2025 (both in German). Maßgeblich ist immer die aktuelle Ausschreibung: the current regulations of the event in question are always authoritative.'}</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="sec alt"><div class="w">
+    <SectionHead kick={de ? 'Wie geht es weiter?' : 'What next?'} h={[de ? 'An den' : 'To the', 'Start']} />
+    <p class="lead">{de
+      ? 'Ausschreibungen und Ergebnisse stehen bei den Terminen. Fragen zum Clubsport-Slalom beantwortet der Verein gern.'
+      : 'Regulations and results are listed with the events. The club is happy to answer questions about clubsport slalom.'}</p>
+    <div class="cta">
+      <a class="btn red" href={href('termine', lang, '#unterlagen')}>{de ? 'Termine und Unterlagen' : 'Events and documents'}</a>
+      <a class="btn" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
+      <a class="btn" href={href('kart', lang)}>{de ? 'Zum Jugend-Kart-Slalom' : 'To youth kart slalom'}</a>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .cs-arch { display: grid; gap: 8px; }
+  .cs-arch li { display: grid; gap: 6px 20px; padding: 14px 16px; background: var(--panel); border-left: 4px solid var(--edge); }
+  .cs-arch b { font: 600 1.08rem/1.3 var(--f-b); hyphens: auto; }
+  @media (min-width: 760px) { .cs-arch li { grid-template-columns: 1fr auto; align-items: center; } }
+</style>

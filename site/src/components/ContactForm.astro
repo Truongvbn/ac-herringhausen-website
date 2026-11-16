@@ -1,0 +1,54 @@
+---
+// Contact form UI. It validates and has a spam trap, but it does NOT send yet: no backend is connected.
+import type { Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; subject?: string; id?: string; message?: boolean; guestbook?: boolean; }
+const { lang, subject = '', id = 'kontaktformular', guestbook = false } = Astro.props;
+const de = lang === 'de';
+const L = {
+  name: 'Name', email: de ? 'E-Mail' : 'E-mail', subject: de ? 'Betreff' : 'Subject', msg: de ? 'Nachricht' : 'Message',
+  homepage: 'Homepage (optional)',
+  req: de ? 'Pflichtfeld' : 'required',
+  eName: de ? 'Bitte geben Sie Ihren Namen ein.' : 'Please enter your name.',
+  eMail: de ? 'Bitte geben Sie eine gültige E-Mail-Adresse ein, z. B. mail@example.com.' : 'Please enter a valid e-mail address, e.g. mail@example.com.',
+  eSubj: de ? 'Bitte geben Sie einen aussagekräftigen Betreff ein.' : 'Please enter a meaningful subject.',
+  eMsg: de ? 'Bitte schreiben Sie eine Nachricht.' : 'Please write a message.',
+  eOk: de ? 'Bitte stimmen Sie der Verarbeitung zu.' : 'Please agree to the processing.',
+  consent: de ? 'Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden.' : 'I agree that my details are processed to handle my enquiry.',
+  consentGb: de ? 'Ich bin einverstanden, dass mein Eintrag mit meinem Namen veröffentlicht wird.' : 'I agree that my entry is published with my name.',
+  privacy: de ? 'Datenschutzerklärung' : 'Privacy policy',
+  send: guestbook ? (de ? 'Eintrag senden' : 'Submit entry') : (de ? 'Nachricht senden' : 'Send message'),
+  pending: de
+    ? 'Das Formular ist noch nicht mit einem Versanddienst verbunden. Es wurde nichts gesendet. Bitte schreiben Sie uns vorerst per E-Mail an ac-herringhausen@gmx.de.'
+    : 'This form is not connected to a mail service yet. Nothing was sent. For now, please e-mail us at ac-herringhausen@gmx.de.',
+  max: de ? 'Maximal 3.000 Zeichen' : 'Maximum 3,000 characters',
+};
+---
+<form class="form" id={id} novalidate data-form>
+  <label><span class="lbl">{L.name} <span aria-hidden="true">*</span></span>
+    <input type="text" name="name" id={`${id}-name`} autocomplete="name" required aria-describedby={`${id}-name-e`} />
+    <span class="err" id={`${id}-name-e`} hidden>{L.eName}</span></label>
+  <label><span class="lbl">{L.email} <span aria-hidden="true">*</span></span>
+    <input type="email" name="email" id={`${id}-email`} autocomplete="email" required aria-describedby={`${id}-email-e`} />
+    <span class="err" id={`${id}-email-e`} hidden>{L.eMail}</span></label>
+  {guestbook && <label><span class="lbl">{L.homepage}</span>
+    <input type="url" name="homepage" id={`${id}-homepage`} placeholder="https://www.example.com/" /></label>}
+  <label><span class="lbl">{L.subject} <span aria-hidden="true">*</span></span>
+    <input type="text" name="betreff" id={`${id}-betreff`} value={subject} required aria-describedby={`${id}-betreff-e`} />
+    <span class="err" id={`${id}-betreff-e`} hidden>{L.eSubj}</span></label>
+  <label><span class="lbl">{L.msg} <span aria-hidden="true">*</span></span>
+    <textarea name="nachricht" id={`${id}-nachricht`} required maxlength={guestbook ? 3000 : undefined} aria-describedby={`${id}-nachricht-e`}></textarea>
+    {guestbook && <span class="mute" style="font-size:.88rem">{L.max}</span>}
+    <span class="err" id={`${id}-nachricht-e`} hidden>{L.eMsg}</span></label>
+  <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
+  <div class="fld">
+    <label class="check"><input type="checkbox" name="einwilligung" id={`${id}-ok`} required aria-describedby={`${id}-ok-e`} />
+      <span>{guestbook ? L.consentGb : L.consent} <a class="tlink" href={href('datenschutz', lang)}>{L.privacy}</a></span></label>
+    <span class="err" id={`${id}-ok-e`} hidden>{L.eOk}</span>
+  </div>
+  <div class="f-end">
+    <button class="btn red" type="submit">{L.send}</button>
+    <p class="mute" style="font-size:.88rem">* {L.req}</p>
+  </div>
+  <p class="f-note note-box" role="status" hidden>{L.pending}</p>
+</form>

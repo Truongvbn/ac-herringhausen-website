@@ -1,0 +1,111 @@
+---
+// Termine: merges the old pages "Termine 2026", "Ausschreibungen" and the results link from "Aktuelles".
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import EventRows from '../components/EventRows.astro';
+import { events2026, archiveDocs, meetings, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+import { ui } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+const t = ui[lang];
+const today = new Date().toISOString().slice(0, 10);
+const total = events2026.length;
+const done = events2026.filter((e) => e.date < today).length;
+const over = done === total;
+const status = de
+  ? `Saison 2026: ${done} von ${total} Veranstaltungen gefahren`
+  : `Season 2026: ${done} of ${total} events completed`;
+// Newest first. The 2026 entry is not from the old site (found via the DMSB calendar, link unchecked).
+const draftDoc = {
+  year: 2026,
+  event: de ? '55. ADAC Clubsport Slalom AC Herringhausen' : '55th ADAC Clubsport Slalom AC Herringhausen',
+  label: de ? 'Virtueller Aushang' : 'Online notice board',
+  href: 'https://www.adac-sport.com/55_ADAC_Clubsport_Slalom_AC_Herringhaus_21544/TW_ON_Virtueller_Aushang.php',
+};
+const docs = [...archiveDocs].sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
+const open = de ? 'Auf adac-sport.com öffnen' : 'Open on adac-sport.com';
+---
+<Base lang={lang} page="termine"
+  description={de
+    ? 'Termine 2026 des AC Herringhausen e.V. im ADAC: Jugend-Kart-Slalom, Clubsport-Slalom, Ausschreibungen und Ergebnisse, Versammlung, Clubabend und Kart-Training.'
+    : 'AC Herringhausen e.V. im ADAC events 2026: youth kart slalom, clubsport slalom, regulations and results, members’ meeting, club evening and kart training.'}>
+  <PageHero lang={lang} page="termine"
+    h1={[de ? 'Termine' : 'Events', '2026']}
+    lead={de
+      ? 'Drei Veranstaltungen in der Saison 2026, dazu das Kart-Training an jedem Samstag und zwei feste Donnerstage im Monat.'
+      : 'Three events in the 2026 season, plus kart training every Saturday and two fixed Thursdays a month.'}
+    ghost={de ? 'Termine' : 'Events'}
+    img="/img/galerie/jugend-kart/img-1958.jpg"
+    alt={de ? 'Kart auf dem Slalomkurs mit Streckenposten' : 'Kart on the slalom course with a marshal'}
+    caption={de ? 'Auf dem Slalomkurs, Streckenposten im Blick' : 'On the slalom course, marshal in view'}>
+    <p class="num tm-status">{status}</p>
+  </PageHero>
+
+  <section class="sec" id="saison"><div class="w">
+    <SectionHead kick={de ? 'Veranstaltungen' : 'Events'} h={[de ? 'Saison' : 'Season', '2026']} />
+    {over && <p class="flag">{de ? 'Saison 2026 beendet · Termine 2027 folgen' : 'Season 2026 finished · 2027 dates to follow'}</p>}
+    <EventRows lang={lang} />
+  </div></section>
+
+  <section class="sec alt" id="unterlagen"><div class="w">
+    <SectionHead kick={de ? 'Unterlagen' : 'Documents'} h={[de ? 'Ausschreibungen' : 'Regulations', de ? '& Ergebnisse' : '& results']} />
+    <p class="lead">{de
+      ? 'Ausschreibungen und Ergebnisse unserer Veranstaltungen werden auf adac-sport.com veröffentlicht. Die Links öffnen die jeweilige Seite dort.'
+      : 'Regulations (Ausschreibungen) and results for our events are published on adac-sport.com. The links open the relevant page there; the documents are in German.'}</p>
+    <ol class="board">
+      <li data-draft="Link nicht geprüft, vom Club zu bestätigen">
+        <span class="b-year num">{draftDoc.year}</span>
+        <span class="b-main"><b>{draftDoc.event}</b><span>{draftDoc.label}</span></span>
+        <a class="tlink ext" href={draftDoc.href} rel="noopener" aria-label={`${draftDoc.event}: ${draftDoc.label}, ${open}`}>{open}</a>
+      </li>
+      {docs.map((d) => (
+        <li>
+          <span class="b-year num">{d.year}</span>
+          <span class="b-main"><b>{d.event[lang]}</b><span>{d.label[lang]}</span></span>
+          <a class="tlink ext" href={d.href} rel="noopener" aria-label={`${d.event[lang]}: ${d.label[lang]}, ${open}`}>{open}</a>
+        </li>
+      ))}
+    </ol>
+  </div></section>
+
+  <section class="sec" id="regelmaessig"><div class="w">
+    <SectionHead kick={de ? 'Jeden Monat, jede Woche' : 'Every month, every week'} h={[de ? 'Feste' : 'Regular', de ? 'Termine' : 'dates']} />
+    <div class="life tm-life">
+      {meetings.map((m) => <div class="slot"><b>{m.title[lang]}</b><span>{m.when[lang]}</span><em>{m.time[lang]}</em></div>)}
+      <div class="slot"><b>{de ? 'Kart-Training' : 'Kart training'}</b><span>{de ? 'Jeden Samstag' : 'Every Saturday'}, {t.trainingPlace} ({t.trainingNote})</span><em>{t.clock}</em></div>
+    </div>
+    <p class="mute" style="margin-top:16px;max-width:60ch">{de
+      ? 'Versammlung und Clubabend finden im Clublokal statt: Zum Mittelpunkt bei Babi, Milchstraße 193, 32120 Hiddenhausen.'
+      : 'The members’ meeting and the club evening take place at the clubhouse: Zum Mittelpunkt bei Babi, Milchstraße 193, 32120 Hiddenhausen.'}
+      {' '}<a class="tlink" href={href('verein', lang, '#aktuelles')}>{de ? 'Anfahrt und Karte' : 'Directions and map'}</a></p>
+  </div></section>
+
+  <section class="sec alt"><div class="w">
+    <h2 class="h3">{de ? 'Wie geht es weiter?' : 'Where next?'}</h2>
+    <div class="cta">
+      <a class="btn red" href={href('kart', lang)}>{de ? 'Zum Jugend-Kart-Slalom' : 'Youth kart slalom'}</a>
+      <a class="btn" href={href('clubsport', lang)}>{de ? 'Zum Clubsport-Slalom' : 'Clubsport slalom'}</a>
+      <a class="btn" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .tm-status { display: inline-block; margin-top: 18px; padding: 8px 12px; border: 1px solid var(--edge); font-size: .82rem; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--yel); }
+  /* document board: one line per document, like a notice board at the track */
+  .board { margin-top: 26px; border-top: 2px solid var(--ink); }
+  .board li { display: grid; grid-template-columns: 1fr; gap: 6px 20px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .b-year { font-weight: 700; font-size: 1rem; color: var(--yel); }
+  .b-main { min-width: 0; }
+  .b-main b { display: block; font: 600 1.12rem/1.3 var(--f-b); hyphens: auto; overflow-wrap: anywhere; }
+  .b-main span { display: block; font: 500 .8rem/1.4 var(--f-m); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  .board a { justify-self: start; padding-block: 6px; }
+  @media (min-width: 760px) {
+    .board li { grid-template-columns: 72px 1fr auto; align-items: center; padding-inline: 4px; }
+    .board a { justify-self: end; }
+  }
+  @media (min-width: 900px) { .tm-life { grid-template-columns: repeat(3, 1fr); } }
+</style>

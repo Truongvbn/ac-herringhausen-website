@@ -1,0 +1,40 @@
+---
+// Event list. "gefahren" is derived from the date at build time, so rebuild the site after each event.
+import { events2026, type Lang, type Event } from '../data/club';
+import { href } from '../i18n/routes';
+import { ui } from '../i18n/ui';
+interface Props { lang: Lang; events?: Event[]; training?: boolean; }
+const { lang, events = events2026, training = true } = Astro.props;
+const t = ui[lang];
+const today = new Date().toISOString().slice(0, 10);
+const dm = (d: string) => `${d.slice(8, 10)}.${d.slice(5, 7)}.`;
+---
+<ol class="rows">
+  {events.map((e) => (
+    <li class="row">
+      <time class="r-date" datetime={e.date}><b>{dm(e.date)}</b><span>{e.date.slice(0, 4)}</span></time>
+      <div class="r-main">
+        <h3>{e.title[lang]}</h3>
+        {e.place && <p>{e.place[lang]}</p>}
+        {e.note && <p class="note">{e.note[lang]}</p>}
+      </div>
+      <span class:list={['r-state', { done: e.date < today }]}>{e.date < today ? t.finished : t.upcoming}</span>
+      <div class="r-act">
+        {e.docs.length
+          ? e.docs.map((d) => <a class="btn sm" href={d.href} rel="noopener">{d.label[lang]}</a>)
+          : <a class="tlink" href={href('termine', lang, '#unterlagen')}>{t.ausschreibung} &amp; {t.ergebnisse}</a>}
+      </div>
+    </li>
+  ))}
+  {training && (
+    <li class="row live">
+      <p class="r-date"><b>{lang === 'de' ? 'Sa.' : 'Sat'}</b><span>15:00</span></p>
+      <div class="r-main">
+        <h3>{lang === 'de' ? 'Kart-Training, jeden Samstag' : 'Kart training, every Saturday'}</h3>
+        <p>{t.trainingPlace} · {t.trainingNote}</p>
+      </div>
+      <span class="r-state">{t.weekly}</span>
+      <div class="r-act"><a class="btn red sm" href={href('kart', lang, '#probetraining')}>{t.trial}</a></div>
+    </li>
+  )}
+</ol>

@@ -1,0 +1,29 @@
+---
+// The trial-session invitation: the one warm, light panel that appears on several pages.
+import type { Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; id?: string; img?: string; cta?: boolean; }
+const { lang, id, img = '/img/galerie/jugend-kart/img-1910.jpg', cta = true } = Astro.props;
+const de = lang === 'de';
+---
+<div class="probe" id={id}>
+  <div class="probe-c">
+    <p class="kick"><b>{de ? 'Probetraining' : 'Trial session'}</b><span>{de ? 'für Kinder und Eltern' : 'for children and parents'}</span></p>
+    <h2><span>{de ? 'Einfach mal mitfahren.' : 'Just come along.'}</span><span>{de ? 'Ab 7 Jahren.' : 'From age 7.'}</span></h2>
+    <p>{de
+      ? 'Wir trainieren jeden Samstag um 15 Uhr auf dem Gelände der Firma Goksch (außer in den Ferien). Gefahren wird um Pylonen gegen die Zeit, und es ist immer nur ein Fahrer auf der Strecke.'
+      : 'We train every Saturday at 3 pm on the Goksch company grounds (except during school holidays). Drivers run a pylon course against the clock, and there is only ever one driver on the track.'}</p>
+    <ul class="ticks">
+      <li>{de ? 'Vollvisier-Helm (kann für das Probetraining ggf. gestellt werden)' : 'Full-face helmet (one can be lent for the trial session if needed)'}</li>
+      <li>{de ? 'Den Körper ganz bedeckende Kleidung: langer Pullover, lange Hose' : 'Clothing that covers the whole body: long-sleeved top, long trousers'}</li>
+      <li>{de ? 'Festes Schuhwerk' : 'Sturdy shoes'}</li>
+    </ul>
+    <p class="who">{de ? 'Ansprechpartner: Detlef Kollmeier und Uwe Ritter.' : 'Your contacts: Detlef Kollmeier and Uwe Ritter.'}</p>
+    {cta && <div class="cta">
+      <a class="btn red" href={href('kart', lang, '#probetraining')}>{de ? 'So läuft das Probetraining' : 'How the trial session works'}</a>
+      <a class="btn" href={href('kontakt', lang)}>{de ? 'Nachricht schreiben' : 'Write to us'}</a>
+    </div>}
+    <slot />
+  </div>
+  <figure><img src={img} alt={de ? 'Zwei gelbe Karts warten am Start' : 'Two yellow karts waiting at the start'} loading="lazy" width="1280" height="853" /></figure>
+</div>

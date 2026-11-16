@@ -1,0 +1,143 @@
+---
+// Verein: merges the old pages "Über uns", "Vorstand", "Aktuelles" and the facts of the old start page.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import MapBlock from '../components/MapBlock.astro';
+import { club, board, meetings, archiveDocs, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+const results = archiveDocs[0]; // 54. ADAC Clubsport Slalom, "Ergebnisse" (the link on the old "Aktuelles" page)
+const abt = [
+  { key: 'kart' as const, k: 'P1–P5', b: 'Jugend-Kart-Slalom', p: de ? 'Unsere Jugendgruppe: Training jeden Samstag um 15 Uhr.' : 'Our youth group: training every Saturday at 3 pm.', go: de ? 'Zum Kart-Slalom' : 'To kart slalom' },
+  { key: 'clubsport' as const, k: de ? 'Mit dem eigenen Auto' : 'In your own car', b: 'Clubsport-Slalom', p: de ? '2026 lief der 55. ADAC Automobil-Clubsport-Slalom des ACH.' : 'In 2026 the ACH ran its 55th ADAC Automobile Clubsport Slalom.', go: de ? 'Zum Clubsport' : 'To clubsport' },
+  { key: 'oldtimer' as const, k: de ? 'Oldie-Team' : 'Classics team', b: de ? 'Oldtimer-Rallye' : 'Classic car rally', p: de ? 'Unterwegs im 1967er Ford Mustang Fastback.' : 'On the road in a 1967 Ford Mustang Fastback.', go: de ? 'Zum Oldie-Team' : 'To the classics team' },
+];
+---
+<Base lang={lang} page="verein"
+  description={de
+    ? 'Der AC Herringhausen e.V. im ADAC: gegründet am 1. August 1969, Ortsclub im ADAC Ostwestfalen-Lippe. Über uns, Vorstand, Aktuelles und Clublokal.'
+    : 'AC Herringhausen e.V. im ADAC: founded on 1 August 1969, a local club in the ADAC Ostwestfalen-Lippe. About us, the board, news and the clubhouse.'}>
+  <PageHero lang={lang} page="verein"
+    h1={[de ? 'Der Verein' : 'The club', de ? 'seit 1969' : 'since 1969']}
+    lead={de
+      ? 'Herzlich willkommen auf den Seiten des AC Herringhausen e.V. im ADAC.'
+      : 'Welcome to the website of AC Herringhausen e.V. im ADAC.'}
+    ghost="1969"
+    img="/img/galerie/jugend-kart/img-1842.jpg"
+    alt={de ? 'Gelbes Kart unter dem roten Pavillon im Fahrerlager' : 'Yellow kart under the red gazebo in the paddock'}
+    caption={de ? 'Fahrerlager unter dem roten Pavillon' : 'Paddock under the red gazebo'} />
+
+  <section class="sec tight"><div class="w">
+    <ul class="stats">
+      <li><b>1969</b><span>{de ? 'gegründet am 1. August' : 'founded on 1 August'}</span></li>
+      <li><b>{de ? '55.' : '55th'}</b><span>{de ? 'Clubsport-Slalom (2026)' : 'Clubsport slalom (2026)'}</span></li>
+      <li><b>3</b><span>{de ? 'Abteilungen' : 'departments'}</span></li>
+      <li><b>P1–P5</b><span>{de ? '8 bis 18 Jahre' : 'ages 8 to 18'}</span></li>
+    </ul>
+  </div></section>
+
+  <section class="sec paper" id="ueber-uns"><div class="w two">
+    <div class="prose">
+      <p class="kick"><span>{de ? 'Über uns' : 'About us'}</span></p>
+      <h2 style="margin-top:.5em">{de ? '50 Jahre AC Herringhausen 1969–2019' : '50 years of AC Herringhausen 1969–2019'}</h2>
+      {de ? (
+        <Fragment>
+          <p>Der AC Herringhausen e.V. im ADAC wurde am 1. August 1969 gegründet und prägt seitdem die Motorsportgeschichte der Region.</p>
+          <p>Durch unsere Jugendgruppe und die stark ausgeprägte Rallyeszene im Verein ist der Bestand des ACH für die kommenden Jahrzehnte gesichert.</p>
+          <p>Aber auch die breite Vielfalt macht den Verein besonders. Somit beherbergt unser Verein auch Leute aus der Rundstrecken-, Motorrad- und Oldtimerszene.</p>
+          <p>All diese verschiedenen Sparten präsentiert der ACH Jahr für Jahr hervorragend durch seine gut organisierten Veranstaltungen.</p>
+          <p>Mit den vielen Veranstaltungen des ACH wird somit eine Plattform für Jung und Alt geschaffen, um sich sportlich zu betätigen und um der Welt des Motorsports ein Stückchen näher zu kommen.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>AC Herringhausen e.V. im ADAC was founded on 1 August 1969 and has shaped the region’s motorsport history ever since.</p>
+          <p>Thanks to our youth group and the strong rally scene within the club, the future of the ACH is secured for decades to come.</p>
+          <p>But it is also the wide variety that makes the club special. Our club is also home to people from the circuit racing, motorcycle and classic car scenes.</p>
+          <p>Year after year the ACH presents all these different disciplines superbly through its well-organised events.</p>
+          <p>With its many events the ACH thus creates a platform for young and old to be active in sport and to come a little closer to the world of motorsport.</p>
+        </Fragment>
+      )}
+    </div>
+    <aside class="owl">
+      <p class="kick"><span>{de ? 'Im ADAC' : 'Within the ADAC'}</span></p>
+      <p class="h4" style="margin:10px 0 14px">{de ? 'Ortsclub im ADAC Ostwestfalen-Lippe e.V.' : 'Local club (Ortsclub) in the ADAC Ostwestfalen-Lippe e.V.'}</p>
+      <a class="owl-tile" href={club.adacOwl} rel="noopener" aria-label={de ? 'ADAC Ostwestfalen-Lippe e.V.: Website öffnen (externer Link)' : 'ADAC Ostwestfalen-Lippe e.V.: open website (external link, German)'}>
+        <img src="/img/site/5.jpg" width="348" height="132" loading="lazy" alt={de ? 'Banner: Ortsclub im ADAC Ostwestfalen-Lippe e.V.' : 'Banner: local club in the ADAC Ostwestfalen-Lippe e.V.'} />
+      </a>
+      <p style="margin-top:12px"><a class="tlink ext" href={club.adacOwl} rel="noopener">adac-owl.de</a>{!de && <span class="mute"> (German)</span>}</p>
+    </aside>
+  </div></section>
+
+  <section class="sec" id="abteilungen"><div class="w">
+    <SectionHead kick={de ? 'Motorsport im ACH' : 'Motorsport at the ACH'} h={[de ? 'Drei' : 'Three', de ? 'Abteilungen' : 'departments']} />
+    <ul class="aud abt3">
+      {abt.map((a) => (
+        <li><a href={href(a.key, lang)}><span class="k">{a.k}</span><b>{a.b}</b><p>{a.p}</p><span class="go">{a.go} →</span></a></li>
+      ))}
+    </ul>
+  </div></section>
+
+  <section class="sec alt" id="vorstand"><div class="w two">
+    <div>
+      <SectionHead kick={de ? 'Ehrenamt' : 'Volunteers'} h={[de ? 'Unser' : 'Our', de ? 'Vorstand' : 'board']} />
+      <p class="lead">{de
+        ? 'Diese Mitglieder führen den Verein und seine Abteilungen.'
+        : 'These members run the club and its departments. Role titles are translated; the German titles are the official ones.'}</p>
+      <div class="cta"><a class="btn" href={href('kontakt', lang)}>{de ? 'Vorstand erreichen' : 'Contact the board'}</a></div>
+    </div>
+    <dl class="people">
+      {board.map((r) => (
+        <div><dt>{r.role[lang]}{!de && <span class="de-role" lang="de"> · {r.role.de}</span>}</dt><dd>{r.people.join(', ')}</dd></div>
+      ))}
+    </dl>
+  </div></section>
+
+  <section class="sec" id="aktuelles"><div class="w">
+    <SectionHead kick={de ? 'Aktuelles' : 'News'} h={[de ? 'Hallo Motor­sport­freunde' : 'Hello motorsport friends']} />
+    <ol class="rows">
+      <li class="row">
+        <p class="r-date"><b>{de ? '54.' : '54th'}</b><span>{results.year}</span></p>
+        <div class="r-main">
+          <h3>{results.event[lang]}</h3>
+          <p>{de ? 'Die Ergebnisse stehen auf adac-sport.com.' : 'The results are on adac-sport.com (German).'}</p>
+        </div>
+        <span class="r-state done">{de ? 'gefahren' : 'completed'}</span>
+        <div class="r-act">
+          <a class="btn sm" href={results.href} rel="noopener"><span class="ext">{results.label[lang]}</span></a>
+          <a class="tlink" href={href('termine', lang, '#unterlagen')}>{de ? 'Alle Unterlagen' : 'All documents'}</a>
+        </div>
+      </li>
+    </ol>
+
+    <h3 class="h3" style="margin:clamp(36px,5vw,56px) 0 8px">{de ? 'Unser Clublokal' : 'Our clubhouse'}</h3>
+    <p class="mute" style="max-width:60ch;margin-bottom:18px">{de
+      ? 'Erster Donnerstag im Monat Versammlung, dritter Donnerstag im Monat Clubabend. Jeweils ab 19 Uhr im Clublokal Zum Mittelpunkt bei Babi, Milchstraße 193, 32120 Hiddenhausen.'
+      : 'Members’ meeting on the first Thursday of the month, club evening on the third Thursday of the month. Both from 7 pm at the clubhouse Zum Mittelpunkt bei Babi, Milchstraße 193, 32120 Hiddenhausen.'}</p>
+    <div class="life">
+      {meetings.map((m) => <div class="slot"><b>{m.title[lang]}</b><span>{m.when[lang]}</span><em>{m.time[lang]}</em></div>)}
+      <MapBlock lang={lang} />
+    </div>
+  </div></section>
+
+  <section class="sec alt"><div class="w">
+    <h2 class="h3">{de ? 'Wie geht es weiter?' : 'Where next?'}</h2>
+    <div class="cta">
+      <a class="btn red" href={href('mitglied', lang)}>{de ? 'Mitglied werden' : 'Join the club'}</a>
+      <a class="btn" href={href('termine', lang)}>{de ? 'Termine 2026' : 'Events 2026'}</a>
+      <a class="btn" href={href('galerie', lang)}>{de ? 'Zur Galerie' : 'Gallery'}</a>
+      <a class="btn" href={href('kontakt', lang)}>{de ? 'Kontakt' : 'Contact'}</a>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .owl { max-width: 420px; }
+  .owl-tile { display: inline-block; padding: 14px; background: #fff; border: 1px solid var(--cream-mute); transition: transform .18s; }
+  .owl-tile:hover { transform: translateY(-3px); }
+  .owl-tile img { width: 174px; }
+  .de-role { color: var(--mute); text-transform: none; letter-spacing: 0; }
+  @media (min-width: 900px) { .abt3 { grid-template-columns: repeat(3, 1fr); } }
+</style>

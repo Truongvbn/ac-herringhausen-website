@@ -1,0 +1,39 @@
+---
+import { club, type Lang } from '../data/club';
+import { href, type PageKey } from '../i18n/routes';
+import { ui, titles } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = ui[lang];
+const cols: { h: string; keys: PageKey[] }[] = [
+  { h: t.footSport, keys: ['termine', 'kart', 'clubsport', 'oldtimer', 'galerie'] },
+  { h: t.footClub, keys: ['verein', 'mitglied', 'partner', 'gaestebuch'] },
+  { h: t.footInfo, keys: ['kontakt', 'sitemap', 'impressum', 'datenschutz'] },
+];
+---
+<footer class="ft">
+  <div class="w ft-in">
+    <div>
+      <div class="ft-brand">
+        <img src="/img/site/logo.png" alt="" width="314" height="364" loading="lazy" />
+        <p><b class="t">{club.name}</b>{t.footLine}</p>
+      </div>
+      <p style="margin-top:16px">
+        <b style="color:var(--ink)">{t.clublokal}:</b> {club.clublokal.name}<br />
+        {club.clublokal.street}, {club.clublokal.city}<br />
+        <span class="num">{club.email}</span>
+      </p>
+    </div>
+    {cols.map((c) => (
+      <nav aria-label={c.h}>
+        <h2>{c.h}</h2>
+        <ul>{c.keys.map((k) => <li><a href={href(k, lang)}>{titles[k][lang]}</a></li>)}</ul>
+      </nav>
+    ))}
+  </div>
+  <div class="w ft-end">
+    <span>© {new Date().getFullYear()} {club.name}</span>
+    <a href={club.adacOwl} rel="noopener" class="ext">ADAC Ostwestfalen-Lippe</a>
+    <span class="counter" title={t.visitorsPending}>{t.visitors} <b data-counter>– – – – –</b></span>
+  </div>
+</footer>

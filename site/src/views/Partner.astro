@@ -1,0 +1,64 @@
+---
+// Partner: the old "Partner / Links" page (seven logos with their links, sponsor invitation).
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { partners, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+// Real pixel sizes of the logo files in public/img/partner (club.ts carries 0/0).
+const size: Record<string, [number, number]> = {
+  '/img/partner/adac.jpg': [296, 392],
+  '/img/partner/logo_herforder_pils.jpg': [378, 149],
+  '/img/partner/logo-dks-m-strich.gif': [510, 168],
+  '/img/partner/fahrschule_kronsbein.jpg': [1280, 926],
+  '/img/partner/optik_goessel.jpg': [1220, 960],
+  '/img/partner/weinrich.jpg': [668, 960],
+  '/img/partner/wachtmann.jpg': [1280, 864],
+};
+---
+<Base lang={lang} page="partner"
+  description={de
+    ? 'Partner, Sponsoren und Freunde des AC Herringhausen e.V. im ADAC. Sie möchten auch Sponsor werden? Sprechen Sie uns einfach an.'
+    : 'Partners, sponsors and friends of AC Herringhausen e.V. im ADAC. Would you like to become a sponsor too? Just talk to us.'}>
+  <PageHero lang={lang} page="partner"
+    h1={[de ? 'Partner &' : 'Partners &', de ? 'Sponsoren' : 'sponsors']}
+    lead={de ? 'Hier findet ihr unsere Partner, Sponsoren und Freunde:' : 'Here you will find our partners, sponsors and friends:'}
+    ghost="Partner" />
+
+  <section class="sec"><div class="w">
+    <SectionHead kick={de ? 'Partner, Sponsoren und Freunde' : 'Partners, sponsors and friends'} h={[de ? 'An unserer' : 'On our', de ? 'Seite' : 'side']} />
+    <ul class="pwall">
+      {partners.map((p) => {
+        const [w, h] = size[p.logo] ?? [p.w || 400, p.h || 250];
+        return (
+          <li><a href={p.href} rel="noopener" aria-label={de ? `${p.name}: Website öffnen (externer Link)` : `${p.name}: open website (external link, German)`}>
+            <span class="logo"><img src={p.logo} width={w} height={h} loading="lazy" alt={de ? `Logo ${p.name}` : `${p.name} logo`} /></span>
+            <b class="ext">{p.name}</b>
+          </a></li>
+        );
+      })}
+    </ul>
+    {!de && <p class="mute" style="margin-top:14px">All partner websites are external and in German.</p>}
+  </div></section>
+
+  <section class="sec alt" id="sponsor-werden"><div class="w narrow">
+    <div class="paper-card">
+      <p class="kick"><b>{de ? 'Sponsor werden' : 'Become a sponsor'}</b></p>
+      <h2 class="h3" style="margin:14px 0 10px">{de ? 'Sie möchten auch Sponsor werden?' : 'Would you like to become a sponsor too?'}</h2>
+      <p style="max-width:34em">{de ? 'Sprechen Sie uns einfach an!' : 'Just talk to us!'}</p>
+      <div class="paper cta">
+        <a class="btn red" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
+        <a class="btn" href={href('verein', lang)}>{de ? 'Den Verein kennenlernen' : 'About the club'}</a>
+      </div>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .pwall li { display: flex; }
+  .pwall a { flex: 1; }
+  .pwall .logo img { max-width: 100%; }
+</style>

@@ -1,0 +1,160 @@
+---
+// Impressum / Legal notice. Old source: ../crawl/content/impressum.md (everything from it is kept).
+// Blocks that are NOT from the old page carry data-draft and must be checked by the club.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { club, type Lang } from '../data/club';
+import { href } from '../i18n/routes';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const de = lang === 'de';
+const mail = `mailto:${club.email}`;
+const web = `https://${club.web}`;
+const offices = [club.seat, club.admin];
+---
+<Base lang={lang} page="impressum"
+  description={de
+    ? 'Impressum des AC Herringhausen e.V. im ADAC: Vereinssitz, Verwaltungssitz, Vertretung, Registereintrag und Haftungsausschluss.'
+    : 'Legal notice of AC Herringhausen e.V. im ADAC: registered office, administrative office, representation, register entry and disclaimer.'}>
+  <PageHero lang={lang} page="impressum" h1={[de ? 'Impressum' : 'Legal notice']} ghost={de ? 'RECHT' : 'LEGAL'}
+    lead={de
+      ? 'Wer hinter dieser Website steht und wie Sie den Verein erreichen.'
+      : 'Who is behind this website and how to reach the club.'} />
+
+  <section class="sec paper">
+    <div class="w">
+      <div class="prose wide lg">
+        <p class="note-box" role="note">
+          <b>{de ? 'Entwurf:' : 'Draft:'}</b>{' '}
+          {de
+            ? 'Dieser Text wurde beim Neuaufbau der Website erstellt und muss vor der Veröffentlichung vom Vorstand bzw. rechtlich geprüft werden.'
+            : 'This text was written when the website was rebuilt and must be checked by the board, or legally, before publication.'}
+        </p>
+        {!de && (
+          <p><b>The German version of this page is the binding one.</b> This English text is a translation for your convenience; German legal terms, names and addresses are left in German. <a class="tlink" href={href('impressum', 'de')} hreflang="de" lang="de">Impressum (Deutsch)</a></p>
+        )}
+
+        <h2 id="anbieter">{de ? 'Anbieter' : 'Provider'}</h2>
+        <div class="lg-cols">
+          {offices.map((o) => (
+            <div>
+              <h3>{o.label[lang]}</h3>
+              <address>
+                {club.name}<br />
+                {o.street}<br />
+                {o.city}<br />
+                {de ? 'E-Mail' : 'E-mail'}: <a class="tlink" href={mail}>{club.email}</a><br />
+                Internet: <a class="tlink" href={web}>{club.web}</a>
+              </address>
+            </div>
+          ))}
+        </div>
+
+        <div data-draft="DDG statt TMG (seit Mai 2024)">
+          <h2 id="angaben">{de ? 'Angaben gemäß § 5 DDG' : 'Information pursuant to § 5 DDG'}</h2>
+          {!de && <p class="mute">DDG = Digitale-Dienste-Gesetz, the German Digital Services Act, which replaced the Telemediengesetz (TMG) in May 2024.</p>}
+        </div>
+        <address>
+          Hans-Joachim Kamphowe<br />
+          Arode 11<br />
+          32120 Hiddenhausen
+        </address>
+        <p><b>{de ? 'Vertreten durch:' : 'Represented by:'}</b><br />{club.represented}</p>
+
+        <div data-draft="Vertretung laut Satzung prüfen">
+          <p><b>{de ? 'Vertretungsberechtigter Vorstand:' : 'Board authorised to represent the club (Vertretungsberechtigter Vorstand):'}</b><br />
+            Hans-Joachim Kamphowe ({de ? '1. Vorsitzender' : '1. Vorsitzender, chairman'})</p>
+          <p>{de
+            ? <>Bitte vom Verein prüfen: Nach § 11 I der Satzung bilden der Vorsitzende, der stellvertretende Vorsitzende, der Schatzmeister, der Sportleiter und der Schriftführer den Vorstand im Sinne des § 26 BGB. Nach § 11 II der Satzung vertreten je zwei Vorstandsmitglieder den Club gemeinsam. Eine Alleinvertretung durch den 1. Vorsitzenden sieht die Satzung in der uns vorliegenden Fassung nicht vor. Hier sollten deshalb alle vertretungsberechtigten Vorstandsmitglieder so genannt werden, wie sie im Vereinsregister eingetragen sind: [vom Verein zu ergänzen]. Die aktuelle Besetzung der Ämter steht unter <a class="tlink" href={href('verein', lang, '#vorstand')}>Vorstand</a>.</>
+            : <>To be checked by the club: under § 11 I of the statutes (Satzung), the chairman, the vice chairman, the treasurer, the sports director and the secretary form the board within the meaning of § 26 BGB. Under § 11 II of the statutes, two board members represent the club jointly. The version of the statutes available to us does not provide for sole representation by the chairman. All board members authorised to represent the club should therefore be named here as entered in the register of associations: [vom Verein zu ergänzen – to be added by the club]. The current office holders are listed under <a class="tlink" href={href('verein', lang, '#vorstand')}>Board</a>.</>}</p>
+        </div>
+
+        <h3>{de ? 'Registereintrag' : 'Register entry'}</h3>
+        <p>
+          {de ? 'Eintragung im Vereinsregister.' : 'Entered in the register of associations (Vereinsregister).'}<br />
+          {de ? 'Registergericht' : 'Register court'}: {club.register.court}<br />
+          {de ? 'Registernummer' : 'Register number'}: {club.register.number}
+        </p>
+        <div data-draft="Schreibweise Registergericht">
+          <p>{de ? 'Vollständige Angabe:' : 'In full:'} Amtsgericht Bad Oeynhausen, VR 21235</p>
+        </div>
+
+        <div data-draft="Umsatzsteuer-ID">
+          <p><b>{de ? 'Umsatzsteuer-ID:' : 'VAT identification number (Umsatzsteuer-ID):'}</b>{' '}
+            {de ? 'nur angeben, falls vorhanden. [vom Verein zu ergänzen]' : 'state only if the club has one. [vom Verein zu ergänzen – to be added by the club]'}</p>
+        </div>
+
+        <div data-draft="§ 18 Abs. 2 MStV">
+          <p><b>{de ? 'Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:' : 'Responsible for content under § 18 Abs. 2 MStV (German Interstate Media Treaty):'}</b><br />
+            Hans-Joachim Kamphowe, {de ? 'Anschrift wie oben' : 'address as above'}</p>
+        </div>
+
+        <div data-draft="Zweiter Kontaktweg fehlt">
+          <p>{de
+            ? '§ 5 DDG verlangt Angaben, die eine schnelle elektronische Kontaktaufnahme und unmittelbare Kommunikation ermöglichen. Neben der E-Mail-Adresse wird üblicherweise ein zweiter schneller Kontaktweg empfohlen, in der Regel eine Telefonnummer. Diese fehlt bisher. Telefon: [vom Verein zu ergänzen]'
+            : '§ 5 DDG requires details that allow fast electronic contact and direct communication. In addition to the e-mail address, a second fast contact channel is usually recommended, normally a telephone number. This is currently missing. Telephone: [vom Verein zu ergänzen – to be added by the club]'}</p>
+        </div>
+
+        <h2 id="haftung">{de ? 'Haftungsausschluss' : 'Disclaimer'}</h2>
+
+        <h3>{de ? 'Haftung für Inhalte' : 'Liability for content'}</h3>
+        <p>{de
+          ? 'Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.'
+          : 'The content of our pages has been prepared with the greatest care. However, we cannot guarantee that the content is correct, complete or up to date. As a service provider we are responsible for our own content on these pages under the general laws in accordance with § 7 Abs. 1 DDG. Under §§ 8 to 10 DDG, however, we are not obliged as a service provider to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity. Obligations to remove or block the use of information under the general laws remain unaffected. Liability in this respect is, however, only possible from the time at which we become aware of a specific infringement. As soon as we become aware of such infringements, we will remove the content concerned without delay.'}</p>
+        <div data-draft="TMG durch DDG ersetzt, Paragrafen prüfen">
+          <p>{de
+            ? 'Gegenüber dem alten Text wurde nur „TMG“ durch „DDG“ ersetzt (§ 7 Abs. 1 DDG; §§ 8 bis 10 DDG). Bitte rechtlich prüfen: Die Haftungsregeln für fremde Informationen stehen seit 2024 in erster Linie in Art. 4 bis 8 der Verordnung (EU) 2022/2065 (Digital Services Act), auf die § 7 DDG verweist. Die Paragrafenangabe „§§ 8 bis 10“ sollte deshalb vor der Veröffentlichung bestätigt oder angepasst werden.'
+            : 'Compared with the old text, only “TMG” has been replaced by “DDG” (§ 7 Abs. 1 DDG; §§ 8 to 10 DDG). Please have this checked legally: since 2024 the liability rules for third-party information are found primarily in Art. 4 to 8 of Regulation (EU) 2022/2065 (Digital Services Act), to which § 7 DDG refers. The reference “§§ 8 to 10” should therefore be confirmed or adjusted before publication.'}</p>
+        </div>
+
+        <h3>{de ? 'Haftung für Links' : 'Liability for links'}</h3>
+        <p>{de
+          ? 'Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.'
+          : 'Our website contains links to external third-party websites over whose content we have no influence. We therefore cannot accept any liability for this third-party content. The respective provider or operator of the linked pages is always responsible for their content. The linked pages were checked for possible legal violations at the time of linking. Illegal content was not recognisable at the time of linking. Permanent monitoring of the content of the linked pages is, however, not reasonable without concrete indications of an infringement. As soon as we become aware of infringements, we will remove such links without delay.'}</p>
+
+        <h3>{de ? 'Urheberrecht' : 'Copyright'}</h3>
+        <p>{de
+          ? 'Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.'
+          : 'The content and works created by the site operators on these pages are subject to German copyright law. Reproduction, adaptation, distribution and any kind of exploitation outside the limits of copyright law require the written consent of the respective author or creator. Downloads and copies of this site are permitted for private, non-commercial use only. Where content on this site was not created by the operator, the copyrights of third parties are respected. In particular, third-party content is marked as such. Should you nevertheless become aware of a copyright infringement, please let us know. As soon as we become aware of infringements, we will remove such content without delay.'}</p>
+
+        <div data-draft="Bildnachweis">
+          <h3>{de ? 'Bildnachweis' : 'Image credits'}</h3>
+          <p>{de
+            ? 'Fotos: AC Herringhausen e.V. im ADAC. Die Logos der Partner sind Eigentum der jeweiligen Rechteinhaber und werden nur zur Kennzeichnung der Partner gezeigt.'
+            : 'Photos: AC Herringhausen e.V. im ADAC. The partners’ logos belong to their respective owners and are shown only to identify the partners.'}</p>
+        </div>
+
+        <h2 id="datenschutz">{de ? 'Datenschutz' : 'Data protection'}</h2>
+        <p>{de
+          ? <>Die Nutzung unserer Webseite ist in der Regel ohne Angabe personenbezogener Daten möglich. Alle weiteren Hinweise aus dem bisherigen Impressum (Freiwilligkeit der Angaben, keine Weitergabe an Dritte ohne Ihre ausdrückliche Zustimmung, Sicherheitslücken bei der Datenübertragung im Internet) stehen jetzt in der <a class="tlink" href={href('datenschutz', lang)}>Datenschutzerklärung</a>.</>
+          : <>As a rule, our website can be used without providing personal data. All further information from the previous legal notice (voluntary nature of any details, no disclosure to third parties without your express consent, security gaps in data transmission over the internet) is now in the <a class="tlink" href={href('datenschutz', lang)}>privacy policy</a>.</>}</p>
+        <p>{de
+          ? 'Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-Mails, vor.'
+          : 'We hereby expressly object to the use by third parties of the contact data published under the legal notice obligation for sending advertising and information material that has not been expressly requested. The operators of this site expressly reserve the right to take legal action in the event of unsolicited advertising being sent, for example by spam e-mail.'}</p>
+
+        <div data-draft="Besucherzähler jetzt im Footer">
+          <p class="mute">{de
+            ? 'Der Besucherzähler („Besucherzähler“ / „Besucher heute“), der früher an dieser Stelle stand, befindet sich jetzt im Fuß der Seite und ist noch nicht angeschlossen.'
+            : 'The visitor counter (“Besucherzähler” / “Besucher heute”, visitors today) that used to appear here now sits in the page footer and is not connected yet.'}</p>
+        </div>
+
+        <div class="cta">
+          <a class="btn red" href={href('datenschutz', lang)}>{de ? 'Zur Datenschutzerklärung' : 'To the privacy policy'}</a>
+          <a class="btn" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Contact the club'}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  /* legal pages only (prefix lg) */
+  .lg [data-draft] > * + * { margin-top: 1.05em; }
+  .lg [data-draft] > h2:first-child, .lg [data-draft] > h3:first-child { margin-top: 0; }
+  .lg > [data-draft]:has(> h2:first-child) { margin-top: 3.4em; }
+  .lg > [data-draft]:has(> h3:first-child) { margin-top: 1.9em; }
+  .lg h2, .lg h3 { scroll-margin-top: 96px; }
+  .lg p, .lg li { hyphens: auto; }
+  .lg-cols { display: grid; gap: 4px 40px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+  .lg-cols h3 { margin-top: .6em; margin-bottom: .35em; }
+</style>

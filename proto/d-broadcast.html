@@ -1,0 +1,523 @@
+<!-- fonts: family=Barlow+Condensed:ital,wght@0,600;1,600;1,800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;700 -->
+<style>
+.d-broadcast{--bg:#130e0e;--bg2:#1b1414;--panel:#241a1a;--line:rgba(255,236,228,.14);--ink:#f4eeea;--mute:#bcaea8;--red:#d8121b;--red-t:#ff5148;--yel:#ffd200;--cream:#f4eadc;
+  --f-d:"Barlow Condensed","Arial Narrow",Impact,sans-serif;--f-b:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;--f-m:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --gut:max(16px,env(safe-area-inset-left,0px));--hh:56px;position:relative;overflow-x:clip;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--f-b);-webkit-font-smoothing:antialiased}
+.d-broadcast *,.d-broadcast *::before,.d-broadcast *::after{box-sizing:border-box}
+.d-broadcast h1,.d-broadcast h2,.d-broadcast h3,.d-broadcast p,.d-broadcast ul,.d-broadcast ol,.d-broadcast figure{margin:0;padding:0}
+.d-broadcast ul,.d-broadcast ol{list-style:none}
+.d-broadcast a{color:inherit}
+.d-broadcast img{display:block;max-width:100%}
+.d-broadcast :focus-visible{outline:2px solid #fff;outline-offset:3px}
+.d-broadcast .w{width:100%;max-width:1280px;margin-inline:auto;padding-inline:max(var(--gut),3.5vw)}
+.d-broadcast .sec{padding-block:clamp(60px,8.5vw,116px);scroll-margin-top:calc(var(--host-h,48px) + var(--hh))}
+.d-broadcast .sec.alt{background:var(--bg2)}
+/* type */
+.d-broadcast .kick{display:flex;align-items:center;gap:10px;font:500 .78rem/1 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.d-broadcast .kick b{color:#fff;background:var(--red);padding:4px 6px;font-weight:700;letter-spacing:.04em}
+.d-broadcast .sh{margin-bottom:clamp(28px,4vw,52px)}
+.d-broadcast .sh h2{margin-top:14px;font:italic 800 clamp(2.7rem,6.6vw,5.4rem)/.86 var(--f-d);text-transform:uppercase;letter-spacing:-.005em}
+.d-broadcast .sh h2 span{display:block}
+.d-broadcast .sh h2 span:last-child{padding-left:.55em;color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.d-broadcast .lead{max-width:60ch;color:var(--mute)}
+.d-broadcast .btn{display:inline-flex;align-items:center;gap:.5em;min-height:46px;padding:10px 26px;border:0;cursor:pointer;font:italic 800 1.12rem/1 var(--f-d);letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:#fff;background:rgba(255,236,228,.13);clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);transition:background .18s,color .18s}
+.d-broadcast .btn:hover,.d-broadcast .btn:focus-visible{background:var(--ink);color:#160f0f;outline:0}
+.d-broadcast .btn.red{background:var(--red)}
+.d-broadcast .btn.red:hover,.d-broadcast .btn.red:focus-visible{background:#fff;color:#a50c13}
+.d-broadcast .btn.sm{min-height:38px;padding:8px 18px;font-size:.98rem}
+.d-broadcast .dot{width:9px;height:9px;border-radius:50%;background:var(--red-t);animation:broadcast-blink 1.4s steps(2,jump-none) infinite}
+@keyframes broadcast-blink{from{opacity:1}to{opacity:.25}}
+/* header */
+.d-broadcast .hd{position:sticky;top:var(--host-h,48px);z-index:30;height:var(--hh);background:rgba(19,14,14,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+.d-broadcast .hd-in{height:100%;display:flex;align-items:center;gap:clamp(10px,2vw,26px)}
+.d-broadcast .brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto}
+.d-broadcast .brand img{width:auto;height:40px;padding:3px;background:#fff;border-radius:3px}
+.d-broadcast .brand b{font:italic 800 1.7rem/1 var(--f-d);letter-spacing:.02em}
+.d-broadcast .brand i{display:none;font:500 .7rem/1.2 var(--f-m);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);max-width:15ch}
+.d-broadcast .lights{display:flex;gap:5px;padding:6px 8px;background:#060404;border-radius:3px;border:1px solid var(--line)}
+.d-broadcast .lights i{width:11px;height:11px;border-radius:50%;background:#3a2a2a;transition:background .15s}
+.d-broadcast .lights i.on{background:#ff1e27;box-shadow:0 0 9px #ff1e27}
+.d-broadcast .nav{display:none;position:absolute;top:100%;left:0;right:0;padding:8px var(--gut) 14px;background:var(--bg2);border-bottom:2px solid var(--red)}
+.d-broadcast .hd.open .nav{display:grid}
+.d-broadcast .nav a{padding:11px 4px;font:italic 600 1.2rem/1 var(--f-d);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap;border-bottom:1px solid var(--line)}
+.d-broadcast .nav a:hover{color:var(--red-t)}
+.d-broadcast .hbtn{height:34px;padding:0 10px;border:1px solid var(--line);background:none;color:var(--ink);font:700 .72rem/1 var(--f-m);letter-spacing:.08em;white-space:nowrap;cursor:pointer}
+.d-broadcast .hbtn:hover{border-color:var(--ink)}
+.d-broadcast .hd .btn{display:none}
+/* hero */
+.d-broadcast .hero{position:relative;isolation:isolate;overflow:hidden;display:flex;min-height:clamp(470px,calc(80vh - var(--host-h,48px) - var(--hh)),690px);background:radial-gradient(55% 80% at 74% 42%,#40141a 0,transparent 70%),linear-gradient(180deg,#1d1314,var(--bg))}
+.d-broadcast .ly{transform:translate3d(calc(var(--px,0)*var(--m,0)*1px),calc(var(--sy,0)*var(--k,0)*1px + var(--py,0)*var(--m,0)*1px),0);will-change:transform}
+.d-broadcast .hero-lines{--k:.5;--m:10;position:absolute;inset:0;z-index:-2;overflow:hidden;-webkit-mask-image:repeating-linear-gradient(0deg,#000 0 1px,transparent 1px 34px);mask-image:repeating-linear-gradient(0deg,#000 0 1px,transparent 1px 34px)}
+.d-broadcast .hero-lines::before{content:"";position:absolute;inset:-20% -620px -20% -20%;background:repeating-linear-gradient(90deg,transparent 0 150px,rgba(255,236,228,.13) 150px 330px,transparent 330px 430px,rgba(216,18,27,.45) 430px 500px,transparent 500px 600px);transform:skewX(-58deg);animation:broadcast-rush 2.6s linear infinite}
+@keyframes broadcast-rush{from{transform:translateX(0) skewX(-58deg)}to{transform:translateX(-600px) skewX(-58deg)}}
+.d-broadcast .hero-ghost{--k:.34;--m:24;position:absolute;left:-1.5vw;top:3%;z-index:-1;display:flex;flex-direction:column;font:italic 800 clamp(5rem,15vw,14.5rem)/.82 var(--f-d);text-transform:uppercase;white-space:nowrap;color:transparent;-webkit-text-stroke:1.5px rgba(255,236,228,.17);user-select:none}
+.d-broadcast .hero-ghost span:last-child{padding-left:1.1em;-webkit-text-stroke-color:rgba(255,60,60,.5)}
+.d-broadcast .hero-in{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:18px;padding-block:min(31vw,220px) 26px;perspective:1100px}
+.d-broadcast .hero-ph{--k:.13;--m:-12;position:absolute;inset:0 0 auto 0;height:min(52vw,340px);clip-path:polygon(0 0,100% 0,100% 80%,0 100%);transform:translate3d(calc(var(--px,0)*var(--m)*1px),calc(var(--sy,0)*var(--k)*1px + var(--py,0)*var(--m)*1px),0) rotateY(calc(var(--px,0)*-5deg)) rotateX(calc(var(--py,0)*4deg))}
+.d-broadcast .hero-ph img{width:100%;height:100%;object-fit:cover;object-position:62% 100%;filter:contrast(1.16) saturate(.92) brightness(.82)}
+.d-broadcast .hero-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(19,14,14,.92) 0,rgba(90,10,16,.25) 45%,transparent 70%)}
+.d-broadcast .hero-cheq{position:absolute;left:-10%;right:-10%;top:16px;height:24px;opacity:.9;background:repeating-conic-gradient(var(--ink) 0 25%,transparent 0 50%) 0 0/24px 24px;transform:translate3d(calc(var(--sy,0)*-.45px + var(--px,0)*28px),calc(var(--sy,0)*.05px),0) rotate(-4deg);will-change:transform}
+.d-broadcast .hero-copy{--k:-.03;--m:5;position:relative;z-index:2}
+.d-broadcast .hero-copy h1{margin:12px 0 12px;font:italic 800 clamp(2.5rem,11vw,6.2rem)/.86 var(--f-d);text-transform:uppercase;text-shadow:0 2px 26px rgba(19,14,14,.7)}
+.d-broadcast .hero-copy h1 span{display:block}
+.d-broadcast .hero-copy h1 span:first-child{color:var(--red-t)}
+.d-broadcast .hero-copy .lead{color:var(--ink);font-size:1rem;max-width:46ch}
+.d-broadcast .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.d-broadcast .cta .btn:not(.red){display:none}
+.d-broadcast .hero-copy .kick{font-size:.64rem;letter-spacing:.05em;white-space:nowrap}
+/* timing tower */
+.d-broadcast .tower{--k:-.09;--m:16;position:relative;z-index:3;background:rgba(10,7,7,.9);border-left:4px solid var(--red);font-family:var(--f-m);box-shadow:0 24px 50px -20px #000}
+.d-broadcast .tw-head{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--red);color:#fff;font:italic 800 1.1rem/1 var(--f-d);letter-spacing:.07em;text-transform:uppercase}
+.d-broadcast .tw-head .dot{background:#fff}
+.d-broadcast .tw-head span:last-child{margin-left:auto;font:700 .66rem/1 var(--f-m);font-style:normal;letter-spacing:.1em;padding:4px 6px;background:rgba(0,0,0,.28)}
+.d-broadcast .tw-clock{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.d-broadcast .tw-clock div{padding:10px 4px 8px;text-align:center;border-left:1px solid var(--line)}
+.d-broadcast .tw-clock div:first-child{border-left:0}
+.d-broadcast .tw-clock b{display:block;font:700 clamp(1.7rem,7vw,2.3rem)/1 var(--f-m);color:var(--yel);font-variant-numeric:tabular-nums}
+.d-broadcast .tw-clock span{font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.d-broadcast .tw-rows{display:none}
+.d-broadcast .tw-rows li{display:grid;grid-template-columns:26px 78px 1fr;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-bottom:1px solid var(--line);font-size:.8rem}
+.d-broadcast .tw-rows i{font-style:normal;font-weight:700;text-align:center;background:var(--ink);color:#160f0f;padding:3px 0}
+.d-broadcast .tw-rows span{color:var(--mute);text-transform:uppercase;letter-spacing:.08em;font-size:.68rem}
+.d-broadcast .tw-rows b{font-weight:500;text-align:right}
+.d-broadcast .tw-note{padding:8px 12px;font:500 .86rem/1.35 var(--f-b);color:var(--ink)}
+.d-broadcast .only-d{display:none}
+/* about + stats */
+.d-broadcast .stats{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--red);border-bottom:1px solid var(--line)}
+.d-broadcast .stats li{padding:18px 14px 16px;border-left:1px solid var(--line)}
+.d-broadcast .stats li:nth-child(odd){border-left:0;padding-left:0}
+.d-broadcast .stats b{display:block;font:italic 800 clamp(2.8rem,6.4vw,5rem)/.9 var(--f-d)}
+.d-broadcast .stats span{font:500 .72rem/1.3 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.d-broadcast .about-g{display:grid;gap:40px;margin-top:clamp(40px,6vw,76px)}
+.d-broadcast .about-g .sh{margin-bottom:22px}
+.d-broadcast .about-g p{max-width:58ch}
+.d-broadcast .grid-t{margin-bottom:16px;font:italic 800 1.5rem/1 var(--f-d);letter-spacing:.05em;text-transform:uppercase}
+.d-broadcast .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.d-broadcast .sgrid li{position:relative;padding:12px 10px 10px 12px;border:2px solid var(--line);border-bottom:0;border-top-color:var(--ink);min-height:86px}
+.d-broadcast .sgrid li:nth-child(even){transform:translateY(22px)}
+.d-broadcast .sgrid i{position:absolute;right:8px;top:6px;font:700 .7rem/1 var(--f-m);font-style:normal;color:var(--mute)}
+.d-broadcast .sgrid span{display:block;font:500 .68rem/1.3 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--red-t);padding-right:22px}
+.d-broadcast .sgrid b{display:block;margin-top:4px;font:italic 600 1.22rem/1.1 var(--f-d);letter-spacing:.01em}
+/* termine */
+.d-broadcast .flag{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:10px 14px;background:var(--ink);color:#160f0f;font:italic 800 1.15rem/1.1 var(--f-d);letter-spacing:.05em;text-transform:uppercase}
+.d-broadcast .flag::before,.d-broadcast .r-state::before{content:"";flex:none;width:20px;height:20px;background:repeating-conic-gradient(#160f0f 0 25%,transparent 0 50%) 0 0/10px 10px}
+.d-broadcast .rows{display:grid;gap:8px}
+.d-broadcast .row{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"pos date state" "main main main" "act act act";align-items:center;gap:8px 12px;padding:14px 14px 14px 0;background:var(--panel);border-left:4px solid #5a4747}
+.d-broadcast .sec.alt .row{background:#2a1f1f}
+.d-broadcast .r-pos{grid-area:pos;align-self:stretch;display:grid;place-items:center;min-width:42px;margin-block:-14px;font:700 .86rem/1 var(--f-m);color:var(--mute);background:rgba(0,0,0,.3)}
+.d-broadcast .r-date{grid-area:date;display:flex;align-items:baseline;gap:8px}
+.d-broadcast .r-date b{font:italic 800 clamp(2.2rem,5vw,3.2rem)/.9 var(--f-d)}
+.d-broadcast .r-date span{font:500 .78rem/1 var(--f-m);color:var(--mute)}
+.d-broadcast .r-main{grid-area:main;padding-left:14px}
+.d-broadcast .r-main h3{font:italic 600 1.4rem/1.1 var(--f-d);letter-spacing:.01em;text-transform:uppercase}
+.d-broadcast .r-main p{font-size:.92rem;color:var(--mute)}
+.d-broadcast .r-state{grid-area:state;display:inline-flex;align-items:center;gap:7px;padding:5px 8px;font:700 .68rem/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line)}
+.d-broadcast .r-state::before{width:12px;height:12px;background:repeating-conic-gradient(var(--mute) 0 25%,transparent 0 50%) 0 0/6px 6px}
+.d-broadcast .r-act{grid-area:act;display:flex;flex-wrap:wrap;gap:8px;padding-left:14px}
+.d-broadcast .row.live{border-left-color:var(--red);background:linear-gradient(90deg,rgba(216,18,27,.3),transparent 55%),var(--panel)}
+.d-broadcast .row.live .r-date span{font-size:1.05rem;font-weight:700;color:var(--yel)}
+.d-broadcast .row.live .r-state{color:var(--ink);border-color:var(--red-t)}
+.d-broadcast .row.live .r-state::before{display:none}
+/* abteilungen */
+.d-broadcast .abt{display:grid;gap:16px}
+.d-broadcast .pan-w{perspective:1100px}
+.d-broadcast .pan{position:relative;height:100%;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;overflow:hidden;background:var(--panel);border-left:4px solid var(--red);transform:rotateX(calc(var(--rx,0)*1deg)) rotateY(calc(var(--ry,0)*1deg));transition:transform .35s cubic-bezier(.2,.7,.2,1);will-change:transform}
+.d-broadcast .pan-img{position:absolute;inset:-4%;transform:translate(calc(var(--ry,0)*-1.6px),calc(var(--rx,0)*1.6px));transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.d-broadcast .pan-img img{width:100%;height:100%;object-fit:cover;filter:contrast(1.15) saturate(.8) brightness(.7)}
+.d-broadcast .pan-img::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(19,14,14,.96) 22%,rgba(60,8,12,.35) 70%,rgba(19,14,14,.2))}
+.d-broadcast .pan.big .pan-img{inset:-4% -4% auto -4%;height:300px}
+.d-broadcast .pan.big .pan-img::after{background:linear-gradient(0deg,var(--panel) 2%,rgba(60,8,12,.2) 60%,transparent)}
+.d-broadcast .pan.big{padding-top:220px}
+.d-broadcast .pan-no{position:absolute;right:14px;top:4px;font:italic 800 6.5rem/1 var(--f-d);color:transparent;-webkit-text-stroke:1.5px rgba(255,236,228,.55);transform:translate(calc(var(--ry,0)*2.4px),calc(var(--rx,0)*-2.4px));transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.d-broadcast .pan-c{position:relative}
+.d-broadcast .pan h3{margin:10px 0 8px;font:italic 800 clamp(1.9rem,3.6vw,2.7rem)/.92 var(--f-d);text-transform:uppercase}
+.d-broadcast .pan p{max-width:54ch}
+.d-broadcast .rules{display:grid;gap:6px;margin-top:16px}
+.d-broadcast .rules li{display:grid;grid-template-columns:74px 1fr;align-items:center;gap:10px;padding:7px 10px 7px 0;background:rgba(0,0,0,.28);font-size:.94rem}
+.d-broadcast .rules b{font:700 1rem/1 var(--f-m);text-align:center;color:var(--yel)}
+.d-broadcast .cls{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:6px;margin-top:10px}
+.d-broadcast .cls li{padding:8px 10px;border-top:2px solid var(--ink);background:rgba(255,236,228,.06)}
+.d-broadcast .cls b{display:block;font:italic 800 1.5rem/1 var(--f-d)}
+.d-broadcast .cls span{font:500 .7rem/1.2 var(--f-m);color:var(--mute)}
+.d-broadcast .probe{display:grid;margin-top:22px;scroll-margin-top:calc(var(--host-h,48px) + var(--hh) + 12px);background:var(--cream);color:#1d1313;clip-path:polygon(0 0,calc(100% - 40px) 0,100% 40px,100% 100%,0 100%)}
+.d-broadcast .probe-c{padding:clamp(22px,4vw,44px)}
+.d-broadcast .probe .kick{color:#5b4a44}
+.d-broadcast .probe h3{margin:12px 0 10px;font:italic 800 clamp(2rem,4.6vw,3.4rem)/.92 var(--f-d);text-transform:uppercase}
+.d-broadcast .probe h3 span{display:block}
+.d-broadcast .probe h3 span:last-child{color:#b00e16}
+.d-broadcast .probe p{max-width:56ch}
+.d-broadcast .probe ul{display:grid;gap:6px;margin:16px 0}
+.d-broadcast .probe li{display:flex;gap:10px;align-items:baseline;font-weight:500}
+.d-broadcast .probe li::before{content:"";flex:none;width:14px;height:8px;background:#b00e16;transform:skewX(-20deg)}
+.d-broadcast .probe .who{font-size:.94rem;color:#4b3b36;margin-bottom:18px}
+.d-broadcast .probe .btn:hover,.d-broadcast .probe .btn:focus-visible{background:#1d1313;color:#fff}
+.d-broadcast .probe figure{min-height:200px;position:relative}
+.d-broadcast .probe img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 70%}
+/* galerie: flat swipe strip by default, .is-3d = scroll-driven coverflow */
+.d-broadcast .gal-stage .sh{margin-bottom:22px}
+.d-broadcast .gal-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 var(--gut) 14px;scrollbar-color:var(--red) transparent}
+.d-broadcast .gal-track li{flex:0 0 min(80vw,520px);scroll-snap-align:center}
+.d-broadcast .gal-track img{width:100%;aspect-ratio:3/2;object-fit:cover;filter:contrast(1.12) saturate(.88) brightness(.9)}
+.d-broadcast .gal-track figcaption{display:flex;gap:10px;padding:9px 0;font-size:.9rem;color:var(--mute);border-top:2px solid var(--red)}
+.d-broadcast .gal-hud{display:none}
+.d-broadcast .gal.is-3d{height:calc(100vh + 1700px)}
+.d-broadcast .gal.is-3d .gal-stage{position:sticky;top:calc(var(--host-h,48px) + var(--hh));height:calc(100vh - var(--host-h,48px) - var(--hh));overflow:hidden;padding-top:clamp(18px,3.5vh,40px)}
+.d-broadcast .gal.is-3d .sh h2{font-size:clamp(2.2rem,4.2vw,3.5rem)}
+.d-broadcast .gal.is-3d .gal-track{position:absolute;inset:190px 0 54px;display:block;overflow:visible;padding:0;perspective:1300px}
+.d-broadcast .gal.is-3d .gal-track li{position:absolute;left:50%;top:50%;width:min(54vw,740px,calc((100vh - var(--host-h,48px) - var(--hh) - 340px)*1.5));transform:translate(-50%,-50%);will-change:transform,opacity;box-shadow:0 30px 60px -20px #000;background:var(--bg)}
+.d-broadcast .gal.is-3d .gal-hud{position:absolute;left:max(var(--gut),3.5vw);right:max(var(--gut),3.5vw);bottom:16px;display:flex;align-items:center;gap:14px;font:700 .8rem/1 var(--f-m);color:var(--mute)}
+.d-broadcast .gal-hud b{color:var(--yel);font-size:1.1rem}
+.d-broadcast .gal-bar{flex:1;height:4px;background:repeating-linear-gradient(90deg,var(--line) 0 calc(12.5% - 3px),transparent 0 12.5%)}
+.d-broadcast .gal-bar i{display:block;height:100%;background:var(--red);transform-origin:0 50%;transform:scaleX(0)}
+/* mitglied + leben + kontakt + partner */
+.d-broadcast .two{display:grid;gap:32px}
+.d-broadcast .dl{display:grid;gap:8px}
+.d-broadcast .dl a{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:16px 18px 16px 0;background:var(--panel);text-decoration:none;font:italic 600 1.45rem/1.1 var(--f-d);text-transform:uppercase;letter-spacing:.02em;transition:background .18s}
+.d-broadcast .dl a:hover{background:#3a1519}
+.d-broadcast .dl i{font:700 .72rem/1 var(--f-m);font-style:normal;padding:8px 8px;background:var(--red);color:#fff}
+.d-broadcast .dl svg{width:22px;height:22px}
+.d-broadcast .life{display:grid;gap:14px}
+.d-broadcast .slot{padding:18px;background:var(--panel);border-top:2px solid var(--ink)}
+.d-broadcast .slot b{display:block;font:italic 800 2.5rem/.95 var(--f-d);text-transform:uppercase}
+.d-broadcast .slot span{display:block;color:var(--mute)}
+.d-broadcast .slot em{display:inline-block;margin-top:10px;font:700 1rem/1 var(--f-m);font-style:normal;color:var(--yel)}
+.d-broadcast .map{position:relative;min-height:290px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:22px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(0deg,rgba(19,14,14,.94) 30%,rgba(19,14,14,.3)),linear-gradient(118deg,transparent 46%,rgba(255,236,228,.22) 46% 49%,transparent 49%),linear-gradient(24deg,transparent 58%,rgba(255,236,228,.12) 58% 60%,transparent 60%),repeating-linear-gradient(0deg,var(--line) 0 1px,transparent 1px 44px),repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 44px),#201717}
+.d-broadcast .map svg{position:absolute;left:46%;top:16%;width:44px;height:56px}
+.d-broadcast .map b{font:italic 800 1.9rem/1 var(--f-d);text-transform:uppercase}
+.d-broadcast .map a{color:var(--ink);font-weight:600;text-underline-offset:4px;text-decoration-color:var(--red-t);text-decoration-thickness:2px}
+.d-broadcast .mail{margin-top:18px;font:700 clamp(.95rem,2.4vw,1.25rem)/1.2 var(--f-m);overflow-wrap:anywhere}
+.d-broadcast .form{display:grid;gap:14px}
+.d-broadcast .form label{display:grid;gap:6px;font:500 .7rem/1 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.d-broadcast .form input,.d-broadcast .form textarea{width:100%;padding:13px 12px;border:0;border-bottom:2px solid #6a5757;border-radius:0;background:var(--panel);color:var(--ink);font:400 1rem/1.4 var(--f-b)}
+.d-broadcast .form input:focus,.d-broadcast .form textarea:focus{outline:0;border-bottom-color:var(--red-t);background:#2e2020}
+.d-broadcast .form textarea{min-height:130px;resize:vertical}
+.d-broadcast .f-end{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.d-broadcast .f-note{font:500 .82rem/1.3 var(--f-m);color:var(--yel)}
+.d-broadcast .partner{display:flex;flex-wrap:wrap;gap:8px}
+.d-broadcast .partner li{padding:14px 20px;border:1px solid var(--line);font:italic 600 1.35rem/1 var(--f-d);letter-spacing:.03em;text-transform:uppercase}
+.d-broadcast .partner li:last-child{border-color:var(--red);background:var(--red);color:#fff}
+.d-broadcast .ft{padding-block:34px 44px;border-top:1px solid var(--line);font-size:.9rem;color:var(--mute)}
+.d-broadcast .ft-in{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px}
+.d-broadcast .ft img{height:54px;width:auto;padding:4px;background:#fff;border-radius:3px}
+.d-broadcast .ft p:first-of-type{margin-right:auto}
+.d-broadcast .ft b{display:block;color:var(--ink);font:italic 800 1.3rem/1.1 var(--f-d);text-transform:uppercase}
+@media (min-width:560px){
+  .d-broadcast .hd .btn,.d-broadcast .cta .btn:not(.red){display:inline-flex}
+  .d-broadcast .hero-copy .kick{font-size:.78rem;letter-spacing:.14em}
+  .d-broadcast .stats{grid-template-columns:repeat(4,1fr)}
+  .d-broadcast .stats li:nth-child(odd){border-left:1px solid var(--line);padding-left:14px}
+  .d-broadcast .stats li:first-child{border-left:0;padding-left:0}
+  .d-broadcast .life{grid-template-columns:1fr 1fr}
+  .d-broadcast .map{grid-column:1/-1}
+}
+@media (min-width:900px){
+  .d-broadcast .hero-in{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:28px;padding-block:44px 48px}
+  .d-broadcast .hero-ph{inset:6% max(var(--gut),3.5vw) 27% 34%;height:auto;clip-path:polygon(9% 0,100% 0,91% 100%,0 100%)}
+  .d-broadcast .hero-ph img{object-position:50% 100%}
+  .d-broadcast .hero-ph::after{background:linear-gradient(90deg,rgba(19,14,14,.9) 0,rgba(19,14,14,.2) 46%,transparent),linear-gradient(0deg,rgba(110,10,16,.4),transparent 55%)}
+  .d-broadcast .hero-cheq{left:46%;top:4%}
+  .d-broadcast .hero-copy h1{font-size:clamp(3.4rem,6.3vw,6.2rem);white-space:nowrap}
+  .d-broadcast .hero-copy .lead{font-size:1.08rem}
+  .d-broadcast .tower{flex:0 0 340px}
+  .d-broadcast .tw-rows,.d-broadcast .only-d{display:block}
+  .d-broadcast .only-m{display:none}
+  .d-broadcast .about-g{grid-template-columns:1.05fr 1fr;gap:64px}
+  .d-broadcast .row{grid-template-columns:54px 190px 1fr auto auto;grid-template-areas:"pos date main state act";gap:18px;padding-right:18px}
+  .d-broadcast .r-main,.d-broadcast .r-act{padding-left:0}
+  .d-broadcast .abt{grid-template-columns:1.2fr 1fr}
+  .d-broadcast .pan-w:first-child{grid-row:span 2}
+  .d-broadcast .probe{grid-template-columns:1.35fr 1fr}
+  .d-broadcast .two{grid-template-columns:1fr 1.15fr;gap:64px;align-items:start}
+  .d-broadcast .life{grid-template-columns:1fr 1fr 1.5fr}
+  .d-broadcast .map{grid-column:auto}
+}
+@media (min-width:1100px){
+  .d-broadcast .nav{display:flex;position:static;gap:clamp(12px,1.7vw,24px);padding:0;background:none;border:0}
+  .d-broadcast .nav a{padding:6px 0;font-size:1.08rem;border:0}
+  .d-broadcast .hbtn.menu{display:none}
+}
+@media (min-width:1280px){.d-broadcast .brand i{display:block}}
+@supports (animation-timeline:view()){@media (prefers-reduced-motion:no-preference){
+  .d-broadcast .row{animation:broadcast-slide linear both;animation-timeline:view();animation-range:entry 0% entry 90%}
+  .d-broadcast .sec>.w>.sh h2 span:last-child{animation:broadcast-drift linear both;animation-timeline:view()}
+}}
+@keyframes broadcast-slide{from{transform:translateX(-46px) skewX(-5deg)}to{transform:none}}
+@keyframes broadcast-drift{from{transform:translateX(56px)}to{transform:translateX(-14px)}}
+@media (prefers-reduced-motion:reduce){
+  .d-broadcast .ly,.d-broadcast .hero-ph{transform:none}
+  .d-broadcast .hero-cheq{transform:rotate(-4deg)}
+  .d-broadcast .hero-lines::before,.d-broadcast .dot{animation:none}
+  .d-broadcast .pan,.d-broadcast .pan-img,.d-broadcast .pan-no{transform:none;transition:none}
+}
+</style>
+<section class="dir d-broadcast" id="dir-broadcast">
+  <header class="hd"><div class="w hd-in">
+    <a class="brand" href="#bc-top"><img src="img/logo.png" alt="Wappen des AC Herringhausen e.V. im ADAC" width="314" height="364"><b data-en="ACH">ACH</b><i data-en="AC Herringhausen e.V. in the ADAC">AC Herringhausen e.V. im ADAC</i></a>
+    <nav class="nav" id="bc-nav" aria-label="Hauptnavigation">
+      <a href="#bc-verein" data-en="Club">Verein</a><a href="#bc-termine" data-en="Events">Termine</a><a href="#bc-abt" data-en="Departments">Abteilungen</a><a href="#bc-galerie" data-en="Gallery">Galerie</a><a href="#bc-mitglied" data-en="Join">Mitglied werden</a><a href="#bc-kontakt" data-en="Contact">Kontakt</a>
+    </nav>
+    <div class="lights" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <a class="btn red sm" href="#bc-probe" data-en="Trial session">Probetraining</a>
+    <button class="hbtn" type="button" data-lang-toggle>DE / EN</button>
+    <button class="hbtn menu" type="button" aria-expanded="false" aria-controls="bc-nav" data-en="Menu">Menü</button>
+  </div></header>
+
+  <div class="hero" id="bc-top">
+    <div class="hero-lines ly" aria-hidden="true"></div>
+    <div class="hero-ghost ly" aria-hidden="true"><span>Herringhausen</span><span>1969</span></div>
+    <div class="w hero-in">
+      <figure class="hero-ph"><img src="img/img_1953.jpg" width="1100" height="733" alt="Gelbes Slalom-Kart mit Fahrer im schwarzen Helm zwischen orangefarbenen Pylonen"></figure>
+      <div class="hero-cheq" aria-hidden="true"></div>
+      <div class="hero-copy ly">
+        <p class="kick"><b data-en="since 1969">seit 1969</b><span data-en="Local club in the ADAC Ostwestfalen-Lippe">Ortsclub im ADAC Ostwestfalen-Lippe</span></p>
+        <h1><span data-en="Motorsport">Motorsport</span><span data-en="for young and old.">für Jung und Alt.</span></h1>
+        <p class="lead" data-en="Youth kart slalom, clubsport slalom and classic car rallying in Herford / Hiddenhausen. Kart training every Saturday at 3 pm.">Jugend-Kart-Slalom, Clubsport-Slalom und Oldtimer-Rallye in Herford / Hiddenhausen. Kart-Training jeden Samstag um 15 Uhr.</p>
+        <div class="cta"><a class="btn red" href="#bc-probe" data-en="Trial session from age 7">Probetraining ab 7 Jahren</a><a class="btn" href="#bc-termine" data-en="Events 2026">Termine 2026</a></div>
+      </div>
+      <aside class="tower ly" aria-label="Nächstes Training">
+        <p class="tw-head"><i class="dot"></i><span data-en="Next training">Nächstes Training</span><span data-en="weekly">wöchentlich</span></p>
+        <div class="tw-clock" role="timer">
+          <div><b data-cd="d">00</b><span data-en="days">Tage</span></div><div><b data-cd="h">00</b><span data-en="hrs">Std</span></div><div><b data-cd="m">00</b><span data-en="min">Min</span></div><div><b data-cd="s">00</b><span data-en="sec">Sek</span></div>
+        </div>
+        <ol class="tw-rows">
+          <li><i>1</i><span data-en="Saturday">Samstag</span><b data-next>–</b></li>
+          <li><i>2</i><span data-en="Start">Start</span><b data-en="3:00 pm">15:00 Uhr</b></li>
+          <li><i>3</i><span data-en="Venue">Ort</span><b data-en="Goksch company grounds">Gelände der Firma Goksch</b></li>
+        </ol>
+        <p class="tw-note only-d" data-en="Kart training every Saturday, except during school holidays.">Kart-Training jeden Samstag, außer in den Ferien.</p>
+        <p class="tw-note only-m" data-en="Kart training every Saturday at 3 pm (except school holidays), Goksch company grounds.">Kart-Training jeden Samstag 15:00 Uhr (außer in den Ferien), Gelände der Firma Goksch.</p>
+      </aside>
+    </div>
+  </div>
+
+  <section class="sec" id="bc-verein"><div class="w">
+    <ol class="stats">
+      <li><b>1969</b><span data-en="founded on 1 August">gegründet am 1. August</span></li>
+      <li><b data-en="55th">55.</b><span data-en="Clubsport slalom (2026)">Clubsport-Slalom (2026)</span></li>
+      <li><b>3</b><span data-en="departments">Abteilungen</span></li>
+      <li><b>P1–P5</b><span data-en="ages 8 to 18">8 bis 18 Jahre</span></li>
+    </ol>
+    <div class="about-g">
+      <div>
+        <header class="sh"><p class="kick"><b>01</b><span data-en="About us">Über uns</span></p><h2><span data-en="On the grid">Am Start</span><span data-en="since 1969">seit 1969</span></h2></header>
+        <p data-en="AC Herringhausen e.V. im ADAC was founded on 1 August 1969 and has shaped the region's motorsport history ever since. Thanks to our youth group and the strong rally scene within the club, the future of the ACH is secured for decades to come. Our club is also home to people from circuit racing, motorcycling and classic cars. With our events we create a platform for young and old to get active in the sport.">Der AC Herringhausen e.V. im ADAC wurde am 1. August 1969 gegründet und prägt seitdem die Motorsportgeschichte der Region. Durch unsere Jugendgruppe und die stark ausgeprägte Rallyeszene im Verein ist der Bestand des ACH für die kommenden Jahrzehnte gesichert. Unser Verein beherbergt auch Leute aus der Rundstrecken-, Motorrad- und Oldtimerszene. Mit unseren Veranstaltungen schaffen wir eine Plattform für Jung und Alt, um sich sportlich zu betätigen.</p>
+      </div>
+      <div>
+        <h3 class="grid-t" data-en="Starting grid: the board">Startaufstellung: der Vorstand</h3>
+        <ol class="sgrid">
+          <li><i>01</i><span data-en="Chairman">1. Vorsitzender</span><b>Hans-Joachim Kamphowe</b></li>
+          <li><i>02</i><span data-en="Vice chairman">2. Vorsitzender</span><b>Dietmar Babenhauserheide</b></li>
+          <li><i>03</i><span data-en="Sports director">Sportleiter</span><b>Marcel Hellberg</b></li>
+          <li><i>04</i><span data-en="Deputy sports director">Stellv. Sportleiter</span><b>Nick Mai</b></li>
+          <li><i>05</i><span data-en="Youth leaders">Jugendleiter</span><b>Detlef Kollmeier, Uwe Ritter, Sascha Wolff</b></li>
+          <li><i>06</i><span data-en="Treasurer">Schatzmeisterin</span><b>Melissa Hellberg</b></li>
+          <li><i>07</i><span data-en="Secretary">Schriftführerin</span><b>Gabriele Dürkopp</b></li>
+          <li><i>08</i><span data-en="Webmaster">Webmaster</span><b>Dennis Schütze</b></li>
+        </ol>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="sec alt" id="bc-termine"><div class="w">
+    <header class="sh"><p class="kick"><b>02</b><span data-en="Events">Termine</span></p><h2><span data-en="Season">Saison</span><span>2026</span></h2></header>
+    <p class="flag" data-en="Season 2026 finished · 2027 dates to follow">Saison 2026 beendet · Termine 2027 folgen</p>
+    <ol class="rows">
+      <li class="row"><span class="r-pos">01</span><time class="r-date" datetime="2026-04-19"><b>19.04.</b><span>2026</span></time>
+        <div class="r-main"><h3 data-en="ADAC Youth Kart Slalom “AC Herringhausen”">ADAC Jugend-Kart-Slalom „AC Herringhausen“</h3><p data-en="toom DIY store, Herringhausen">toom-Baumarkt Herringhausen</p></div>
+        <span class="r-state" data-en="finished">beendet</span><div class="r-act"><a class="btn sm" href="#" data-en="Regulations">Ausschreibung</a><a class="btn sm" href="#" data-en="Results">Ergebnisse</a></div></li>
+      <li class="row"><span class="r-pos">02</span><time class="r-date" datetime="2026-06-14"><b>14.06.</b><span>2026</span></time>
+        <div class="r-main"><h3 data-en="55th ADAC Automobile Clubsport Slalom “AC Herringhausen”">55. ADAC Automobil-Clubsport-Slalom „AC Herringhausen“</h3><p data-en="Slalom in your own car">Slalom mit dem eigenen Auto</p></div>
+        <span class="r-state" data-en="finished">beendet</span><div class="r-act"><a class="btn sm" href="#" data-en="Regulations">Ausschreibung</a><a class="btn sm" href="#" data-en="Results">Ergebnisse</a></div></li>
+      <li class="row"><span class="r-pos">03</span><time class="r-date" datetime="2026-09-06"><b>06.09.</b><span>2026</span></time>
+        <div class="r-main"><h3 data-en="ADAC Automobile Clubsport Slalom “VG Kreis Herford”">ADAC Automobil-Clubsport-Slalom „VG Kreis Herford“</h3><p data-en="Slalom in your own car">Slalom mit dem eigenen Auto</p></div>
+        <span class="r-state" data-en="finished">beendet</span><div class="r-act"><a class="btn sm" href="#" data-en="Regulations">Ausschreibung</a><a class="btn sm" href="#" data-en="Results">Ergebnisse</a></div></li>
+      <li class="row live"><span class="r-pos"><i class="dot"></i></span><p class="r-date"><b data-en="Sat">Sa.</b><span>15:00</span></p>
+        <div class="r-main"><h3 data-en="Kart training, every Saturday">Kart-Training, jeden Samstag</h3><p data-en="Goksch company grounds · except during school holidays">Gelände der Firma Goksch · außer in den Ferien</p></div>
+        <span class="r-state" data-en="weekly">wöchentlich</span><div class="r-act"><a class="btn red sm" href="#bc-probe" data-en="Trial session">Probetraining</a></div></li>
+    </ol>
+  </div></section>
+
+  <section class="sec" id="bc-abt"><div class="w">
+    <header class="sh"><p class="kick"><b>03</b><span data-en="Departments">Abteilungen</span></p><h2><span data-en="Three ways">Drei Wege</span><span data-en="to the start">an den Start</span></h2></header>
+    <div class="abt">
+      <div class="pan-w"><article class="pan big">
+        <figure class="pan-img"><img src="img/img_1915.jpg" loading="lazy" alt="Gelbes Kart umrundet orangefarbene Pylonen auf dem Parkplatz"></figure><span class="pan-no" aria-hidden="true">01</span>
+        <div class="pan-c"><p class="kick"><b>P1–P5</b><span data-en="ages 8 to 18">8 bis 18 Jahre</span></p>
+          <h3 data-en="Youth kart slalom">Jugend-Kart-Slalom</h3>
+          <p data-en="Grassroots karting for ages 8 to 18: four-stroke karts on a pylon course laid out on car parks, driven against the clock. There is only ever one driver on the track.">Breitensport-Kartsport für 8 bis 18 Jahre: Viertakt-Karts auf einem Pylonenkurs auf Parkplätzen, gefahren gegen die Zeit. Es ist immer nur ein Fahrer auf der Strecke.</p>
+          <ul class="rules">
+            <li><b>3</b><span data-en="runs: one practice, two timed">Läufe: ein Training, zwei Wertung</span></li>
+            <li><b>+2 s</b><span data-en="per pylon error">Pylonenfehler</span></li>
+            <li><b>+10 s</b><span data-en="per missed task">ausgelassene Aufgabe</span></li>
+          </ul>
+          <ol class="cls">
+            <li><b>P1</b><span data-en="approx. 8–9 yrs">ca. 8–9 Jahre</span></li><li><b>P2</b><span data-en="approx. 10–11 yrs">ca. 10–11 Jahre</span></li><li><b>P3</b><span data-en="approx. 12–13 yrs">ca. 12–13 Jahre</span></li><li><b>P4</b><span data-en="approx. 14–15 yrs">ca. 14–15 Jahre</span></li><li><b>P5</b><span data-en="approx. 16–18 yrs">ca. 16–18 Jahre</span></li>
+          </ol></div>
+      </article></div>
+      <div class="pan-w"><article class="pan">
+        <figure class="pan-img"><img src="img/img_1845.jpg" loading="lazy" alt="Pylonengasse auf dem Parkplatz, Streckenübersicht"></figure><span class="pan-no" aria-hidden="true">02</span>
+        <div class="pan-c"><p class="kick"><b data-en="55th">55.</b><span data-en="edition in 2026">Auflage 2026</span></p>
+          <h3 data-en="Clubsport slalom">Clubsport-Slalom</h3>
+          <p data-en="Automobile slalom in your own car. In 2026 the club hosted the 55th ADAC Clubsport Slalom.">Automobil-Slalom mit dem eigenen Auto. 2026 hat der Club den 55. ADAC Clubsport-Slalom ausgerichtet.</p></div>
+      </article></div>
+      <div class="pan-w"><article class="pan">
+        <figure class="pan-img"><img src="img/mustang2013.jpg" loading="lazy" alt="Roter Ford Mustang Fastback von 1967 mit Rallyeschild"></figure><span class="pan-no" aria-hidden="true">03</span>
+        <div class="pan-c"><p class="kick"><b>1967</b><span>Ford Mustang Fastback</span></p>
+          <h3 data-en="Classic car rally">Oldtimer-Rallye</h3>
+          <p data-en="Team Jochen Gieselmann and Evelyn Erdmann compete in a 1967 Ford Mustang Fastback.">Team Jochen Gieselmann und Evelyn Erdmann, unterwegs im 1967er Ford Mustang Fastback.</p></div>
+      </article></div>
+    </div>
+    <div class="probe" id="bc-probe">
+      <div class="probe-c">
+        <p class="kick"><b data-en="Trial session">Probetraining</b><span data-en="for children and parents">für Kinder und Eltern</span></p>
+        <h3><span data-en="Just come along">Einfach mal mitfahren.</span><span data-en="from age 7.">Ab 7 Jahren.</span></h3>
+        <p data-en="We train every Saturday at 3 pm on the Goksch company grounds (except during school holidays). The karts are four-stroke, the course is made of pylons, and there is only ever one child on the track.">Wir trainieren jeden Samstag um 15 Uhr auf dem Gelände der Firma Goksch (außer in den Ferien). Gefahren wird im Viertakt-Kart um Pylonen, und es ist immer nur ein Kind auf der Strecke.</p>
+        <ul>
+          <li data-en="Full-face helmet (we can lend one)">Vollvisier-Helm (kann gestellt werden)</li>
+          <li data-en="Long clothing">Lange Kleidung</li>
+          <li data-en="Sturdy shoes">Festes Schuhwerk</li>
+        </ul>
+        <p class="who" data-en="Your contacts: youth leaders Detlef Kollmeier and Uwe Ritter.">Ansprechpartner: die Jugendleiter Detlef Kollmeier und Uwe Ritter.</p>
+        <a class="btn red" href="#bc-kontakt" data-en="Ask about a trial session">Probetraining anfragen</a>
+      </div>
+      <figure><img src="img/img_1910.jpg" loading="lazy" alt="Zwei gelbe Karts warten am Start"></figure>
+    </div>
+  </div></section>
+
+  <section class="sec alt" id="bc-galerie"><div class="gal">
+    <div class="gal-stage">
+      <div class="w"><header class="sh"><p class="kick"><b>04</b><span data-en="Gallery">Galerie</span></p><h2><span data-en="Track &amp;">Strecke &amp;</span><span data-en="paddock">Fahrerlager</span></h2></header></div>
+      <ul class="gal-track" tabindex="0" aria-label="Galerie, seitlich blättern">
+        <li><figure><img src="img/img_1913.jpg" loading="lazy" alt="Gelbes Kart in der Kurve zwischen Pylonen"><figcaption data-en="Cornering through the pylons">Kurvenfahrt durch die Pylonen</figcaption></figure></li>
+        <li><figure><img src="img/img_1958.jpg" loading="lazy" alt="Kart auf dem Slalomkurs mit Streckenposten"><figcaption data-en="On the slalom course, marshal in view">Auf dem Slalomkurs, Streckenposten im Blick</figcaption></figure></li>
+        <li><figure><img src="img/img_1921.jpg" loading="lazy" alt="Kart auf der Strecke, gelber Sonnenschirm und Pylonen"><figcaption data-en="On track by the timekeeper's parasol">Auf der Strecke am Sonnenschirm</figcaption></figure></li>
+        <li><figure><img src="img/img_1910.jpg" loading="lazy" alt="Zwei gelbe Karts warten am Start"><figcaption data-en="Two karts waiting at the start">Zwei Karts warten am Start</figcaption></figure></li>
+        <li><figure><img src="img/img_1959.jpg" loading="lazy" alt="Gelbes Kart auf dem Slalomkurs vor Bäumen"><figcaption data-en="Against the clock">Gegen die Zeit</figcaption></figure></li>
+        <li><figure><img src="img/img_1842.jpg" loading="lazy" alt="Gelbes Kart unter dem roten Pavillon im Fahrerlager"><figcaption data-en="Paddock under the red gazebo">Fahrerlager unter dem roten Pavillon</figcaption></figure></li>
+        <li><figure><img src="img/img_1859.jpg" loading="lazy" alt="Gelbes Kart an der Boxenbank, Frontansicht"><figcaption data-en="Kart at the pit bench">Kart an der Boxenbank</figcaption></figure></li>
+        <li><figure><img src="img/img_1874.jpg" loading="lazy" alt="Tisch voller goldener Pokale vor ADAC-Fahnen"><figcaption data-en="Trophies for the award ceremony">Pokale für die Siegerehrung</figcaption></figure></li>
+        <li><figure><img src="img/img_0687.jpg" loading="lazy" alt="Roter Ford Mustang Fastback von der Seite"><figcaption data-en="The 1967 Mustang Fastback">Der 1967er Mustang Fastback</figcaption></figure></li>
+      </ul>
+      <div class="w"><p class="gal-hud" aria-hidden="true"><b class="gal-n">01</b><span class="gal-bar"><i></i></span><span>09</span></p></div>
+    </div>
+  </div></section>
+
+  <section class="sec" id="bc-mitglied"><div class="w two">
+    <div><header class="sh"><p class="kick"><b>05</b><span data-en="Join">Mitglied werden</span></p><h2><span data-en="Your seat">Dein Platz</span><span data-en="in the team">im Team</span></h2></header>
+      <p class="lead" data-en="All documents for joining the club, ready to download. Questions? Just come to a club evening or write to us.">Alle Unterlagen für den Beitritt zum Herunterladen. Fragen? Kommt einfach zum Clubabend oder schreibt uns.</p></div>
+    <ul class="dl">
+      <li><a href="#"><i>PDF</i><span data-en="Membership application">Beitrittserklärung</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 4v13M6 12l6 6 6-6M5 21h14"/></svg></a></li>
+      <li><a href="#"><i>PDF</i><span data-en="Club statutes">Satzung</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 4v13M6 12l6 6 6-6M5 21h14"/></svg></a></li>
+      <li><a href="#"><i>PDF</i><span data-en="Liability waiver">Haftungsausschluss</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 4v13M6 12l6 6 6-6M5 21h14"/></svg></a></li>
+    </ul>
+  </div></section>
+
+  <section class="sec alt" id="bc-leben"><div class="w">
+    <header class="sh"><p class="kick"><b>06</b><span data-en="Club life">Vereinsleben</span></p><h2><span data-en="Thursdays">Donnerstags</span><span data-en="at Babi's">bei Babi</span></h2></header>
+    <div class="life">
+      <div class="slot"><b data-en="Meeting">Versammlung</b><span data-en="First Thursday of the month">Am ersten Donnerstag im Monat</span><em data-en="from 7 pm">ab 19 Uhr</em></div>
+      <div class="slot"><b data-en="Club evening">Clubabend</b><span data-en="Third Thursday of the month">Am dritten Donnerstag im Monat</span><em data-en="from 7 pm">ab 19 Uhr</em></div>
+      <div class="map"><svg viewBox="0 0 44 56" aria-hidden="true"><path d="M22 2C11 2 3 10 3 21c0 14 19 33 19 33s19-19 19-33C41 10 33 2 22 2z" fill="#d8121b"/><circle cx="22" cy="21" r="7" fill="#f4eeea"/></svg>
+        <p class="kick"><span data-en="Clubhouse">Clublokal</span></p><b>Zum Mittelpunkt bei Babi</b><span>Milchstraße 193, 32120 Hiddenhausen</span>
+        <a href="https://www.openstreetmap.org/search?query=Milchstra%C3%9Fe%20193%2C%2032120%20Hiddenhausen" target="_blank" rel="noopener" data-en="Open route in OpenStreetMap">Route in OpenStreetMap öffnen</a></div>
+    </div>
+  </div></section>
+
+  <section class="sec" id="bc-kontakt"><div class="w two">
+    <div><header class="sh"><p class="kick"><b>07</b><span data-en="Contact">Kontakt</span></p><h2><span data-en="Radio">Funk an</span><span data-en="the pits">die Box</span></h2></header>
+      <p class="lead" data-en="Trial session, membership or sponsoring: write to us, we will get back to you.">Probetraining, Mitgliedschaft oder Sponsoring: Schreibt uns, wir melden uns.</p>
+      <p class="mail">ac-herringhausen@gmx.de</p></div>
+    <form class="form" novalidate>
+      <label><span data-en="Name">Name</span><input type="text" name="name" autocomplete="name"></label>
+      <label><span data-en="E-mail">E-Mail</span><input type="email" name="email" autocomplete="email"></label>
+      <label><span data-en="Subject">Betreff</span><input type="text" name="betreff"></label>
+      <label><span data-en="Message">Nachricht</span><textarea name="nachricht"></textarea></label>
+      <div class="f-end"><button class="btn red" type="submit" data-en="Send message">Nachricht senden</button><p class="f-note" role="status" hidden data-en="Demo: nothing is sent.">Demo: es wird nichts gesendet.</p></div>
+    </form>
+  </div></section>
+
+  <section class="sec alt" id="bc-partner"><div class="w">
+    <header class="sh"><p class="kick"><b>08</b><span data-en="Partners">Partner</span></p><h2><span data-en="On our">An unserer</span><span data-en="side">Seite</span></h2></header>
+    <ul class="partner"><li>ADAC Ostwestfalen-Lippe</li><li>Herforder Pils</li><li>DKS</li><li>Fahrschule Kronsbein</li><li>Optik Gössel</li><li>Weinrich Schokolade</li><li>Wachtmann</li><li data-en="Become a sponsor? Talk to us.">Sponsor werden? Sprechen Sie uns an.</li></ul>
+  </div></section>
+
+  <footer class="ft"><div class="w ft-in">
+    <img src="img/logo.png" alt="" width="314" height="364">
+    <p><b>AC Herringhausen e.V. im ADAC</b><span data-en="Local club in the ADAC Ostwestfalen-Lippe · founded 1969">Ortsclub im ADAC Ostwestfalen-Lippe · gegründet 1969</span></p>
+    <a href="#" data-en="Legal notice">Impressum</a><a href="#" data-en="Privacy">Datenschutz</a><span>© 2026</span>
+  </div></footer>
+</section>
+<script>
+(function(){
+  var root=document.getElementById('dir-broadcast'); if(!root) return;
+  var $=function(s){return root.querySelector(s)}, $$=function(s){return [].slice.call(root.querySelectorAll(s))};
+  var mq=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var hd=$('.hd'), menu=$('.hbtn.menu'), hero=$('.hero'), lights=$$('.lights i'), gal=$('.gal'), stage=$('.gal-stage'), items=$$('.gal-track li'), galN=$('.gal-n'), galBar=$('.gal-bar i');
+  var cd={d:$('[data-cd="d"]'),h:$('[data-cd="h"]'),m:$('[data-cd="m"]'),s:$('[data-cd="s"]')}, nextEl=$('[data-next]');
+  var started=false, raf=0, timer=0, g3d=false, geo={step:0,top:0,sh:0}, ptr={x:0,y:0,tx:0,ty:0}, tilt=null;
+  function clamp(v,a,b){return v<a?a:v>b?b:v}
+  function pad(n){return (n<10?'0':'')+n}
+  function nextSat(){var n=new Date(), d=new Date(n.getFullYear(),n.getMonth(),n.getDate(),15,0,0,0); d.setDate(d.getDate()+((6-d.getDay()+7)%7)); if(d<=n) d.setDate(d.getDate()+7); return d}
+  function tick(){
+    var t=nextSat(), s=Math.max(0,Math.floor((t-new Date())/1000));
+    cd.d.textContent=pad(Math.floor(s/86400)); cd.h.textContent=pad(Math.floor(s%86400/3600)); cd.m.textContent=pad(Math.floor(s%3600/60)); cd.s.textContent=pad(s%60);
+    nextEl.textContent=pad(t.getDate())+'.'+pad(t.getMonth()+1)+'.'+t.getFullYear();
+  }
+  function measure(){
+    g3d=!mq.matches && window.innerWidth>=760 && window.innerHeight>=600;
+    gal.classList.toggle('is-3d',g3d);
+    if(!g3d) items.forEach(function(li){li.style.transform=li.style.opacity=li.style.zIndex=''});
+    else {geo.step=items[0].offsetWidth*.66; geo.top=parseFloat(getComputedStyle(stage).top)||0; geo.sh=stage.offsetHeight}
+  }
+  function schedule(){if(!raf) raf=requestAnimationFrame(frame)}
+  function frame(){
+    raf=0; if(root.hidden) return;
+    var vh=window.innerHeight, r=root.getBoundingClientRect(), p=clamp(-r.top/Math.max(1,r.height-vh),0,1), lit=Math.round(p*5);
+    lights.forEach(function(l,i){l.classList.toggle('on',i<lit)});
+    if(!mq.matches){
+      var hr=hero.getBoundingClientRect();
+      ptr.x+=(ptr.tx-ptr.x)*.12; ptr.y+=(ptr.ty-ptr.y)*.12;
+      if(hr.bottom>0){hero.style.setProperty('--sy',clamp(-hr.top,0,hr.height).toFixed(1)); hero.style.setProperty('--px',ptr.x.toFixed(3)); hero.style.setProperty('--py',ptr.y.toFixed(3))}
+      if(Math.abs(ptr.tx-ptr.x)+Math.abs(ptr.ty-ptr.y)>.002) schedule();
+      if(tilt){tilt.el.style.setProperty('--rx',tilt.rx); tilt.el.style.setProperty('--ry',tilt.ry); tilt=null}
+    }
+    if(g3d){
+      var gr=gal.getBoundingClientRect();
+      if(gr.bottom>0 && gr.top<vh){
+        var n=items.length, q=clamp((geo.top-gr.top)/Math.max(1,gr.height-geo.sh),0,1)*(n-1);
+        items.forEach(function(li,i){var d=i-q, a=Math.min(Math.abs(d),3);
+          li.style.transform='translate(-50%,-50%) translateX('+(d*geo.step).toFixed(1)+'px) translateZ('+(-a*230).toFixed(1)+'px) rotateY('+(clamp(d,-1,1)*-50).toFixed(2)+'deg)';
+          li.style.zIndex=100-Math.round(Math.abs(d)*10); li.style.opacity=(1-a*.2).toFixed(2)});
+        galN.textContent=pad(Math.round(q)+1); galBar.style.transform='scaleX('+(q/(n-1)).toFixed(4)+')';
+      }
+    }
+  }
+  function start(){
+    started=true;
+    window.addEventListener('scroll',schedule,{passive:true});
+    window.addEventListener('resize',function(){if(!root.hidden){measure();schedule()}});
+    if(mq.addEventListener) mq.addEventListener('change',function(){measure();schedule()});
+    hero.addEventListener('pointermove',function(e){if(e.pointerType!=='mouse') return; var b=hero.getBoundingClientRect(); ptr.tx=(e.clientX-b.left)/b.width-.5; ptr.ty=(e.clientY-b.top)/b.height-.5; schedule()});
+    hero.addEventListener('pointerleave',function(){ptr.tx=ptr.ty=0; schedule()});
+    $$('.pan').forEach(function(el){
+      el.addEventListener('pointermove',function(e){if(e.pointerType!=='mouse'||mq.matches) return; var b=el.getBoundingClientRect(); tilt={el:el,rx:(((e.clientY-b.top)/b.height-.5)*-7).toFixed(2),ry:(((e.clientX-b.left)/b.width-.5)*9).toFixed(2)}; schedule()});
+      el.addEventListener('pointerleave',function(){tilt={el:el,rx:0,ry:0}; schedule()});
+    });
+    menu.addEventListener('click',function(){menu.setAttribute('aria-expanded',String(hd.classList.toggle('open')))});
+    root.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a'); if(!a) return;
+      if(a.getAttribute('href')==='#') e.preventDefault();
+      if(a.parentNode.id==='bc-nav'){hd.classList.remove('open'); menu.setAttribute('aria-expanded','false')}
+    });
+    $('.form').addEventListener('submit',function(e){e.preventDefault(); $('.f-note').hidden=false});
+  }
+  function show(){
+    if(!started) start();
+    measure(); tick(); schedule();
+    clearInterval(timer);
+    timer=setInterval(function(){if(root.hidden){clearInterval(timer);timer=0;return} tick()},1000);
+  }
+  root.addEventListener('dir:show',show);
+  if(!root.hidden) show();
+})();
+</script>

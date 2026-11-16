@@ -1,0 +1,96 @@
+<title>ACH Designrichtungen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--FONTS-->
+<style>
+/* Layout: one sticky switcher bar on top, one full-width design direction below it at a time. */
+:root{
+  --host-h:48px;
+  --h-bg:#f3f3f1; --h-fg:#17181a; --h-mute:#5d6066; --h-line:#d5d6d3; --h-on:#17181a; --h-on-fg:#ffffff;
+  --h-font:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --h-bg:#16171a; --h-fg:#eeeeec; --h-mute:#a0a3a8; --h-line:#33353a; --h-on:#eeeeec; --h-on-fg:#16171a; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --h-bg:#16171a; --h-fg:#eeeeec; --h-mute:#a0a3a8; --h-line:#33353a; --h-on:#eeeeec; --h-on-fg:#16171a; color-scheme:dark }
+body{background:var(--h-bg);color:var(--h-fg);font-family:var(--h-font);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:1001;background:var(--h-bg)}
+.host-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:1000;height:var(--host-h);box-sizing:border-box;
+  display:flex;align-items:center;gap:12px;background:var(--h-bg);border-bottom:1px solid var(--h-line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.host-name{font-weight:700;font-size:13px;letter-spacing:.04em;white-space:nowrap}
+.host-tabs{display:flex;gap:4px;overflow-x:auto;min-width:0;flex:1;scrollbar-width:none}
+.host-tabs::-webkit-scrollbar{display:none}
+.host-tab{font:600 13px/1 var(--h-font);color:var(--h-mute);background:none;border:1px solid transparent;border-radius:999px;
+  padding:8px 12px;white-space:nowrap;cursor:pointer}
+.host-tab:hover{color:var(--h-fg)}
+.host-tab[aria-selected="true"]{background:var(--h-on);color:var(--h-on-fg)}
+.host-tab:focus-visible,.host-lang:focus-visible{outline:2px solid var(--h-fg);outline-offset:2px}
+.host-lang{font:600 12px/1 var(--h-font);color:var(--h-fg);background:none;border:1px solid var(--h-line);border-radius:6px;
+  padding:7px 9px;cursor:pointer;white-space:nowrap}
+.host-note{font-size:13px;line-height:1.5;color:var(--h-mute);border-bottom:1px solid var(--h-line);
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.host-note b{color:var(--h-fg)}
+[hidden]{display:none!important}
+.dir{overflow-x:clip;max-width:100%}
+@media (max-width:560px){ .host-name{display:none} }
+</style>
+
+<div class="host-bar">
+  <span class="host-name">ACH · 4 hướng</span>
+  <div class="host-tabs" role="tablist" aria-label="Hướng thiết kế">
+    <button class="host-tab" role="tab" data-dir="broadcast" id="tab-broadcast">A · Startaufstellung</button>
+    <button class="host-tab" role="tab" data-dir="heritage" id="tab-heritage">B · Seit 1969</button>
+    <button class="host-tab" role="tab" data-dir="pitboard" id="tab-pitboard">C · Boxentafel</button>
+    <button class="host-tab" role="tab" data-dir="technik" id="tab-technik">D · Streckenplan</button>
+  </div>
+  <button class="host-lang" id="host-lang" type="button" aria-label="Đổi ngôn ngữ Đức / Anh">DE</button>
+</div>
+<p class="host-note" id="host-note"></p>
+
+<!--FRAGMENTS-->
+
+<script>
+(function(){
+  var NOTES={
+    broadcast:'<b>A · Startaufstellung.</b> Nền tối kiểu truyền hình đua xe, đỏ CLB, vàng chỉ cho số liệu giờ. Chuyển động mạnh nhất: hero nhiều lớp, dải ảnh 3D.',
+    heritage:'<b>B · Seit 1969.</b> Nền sáng kiểu sổ chương trình giải thập niên 60–70, đỏ sẫm và xanh racing. Chuyển động nhẹ: dòng thời gian tự vẽ, chồng ảnh.',
+    pitboard:'<b>C · Boxentafel.</b> Trẻ và vui: vàng kart, đỏ, cam pylon, bảng số xe, sticker. Chuyển động vừa: xe kart chạy slalom theo cuộn.',
+    technik:'<b>D · Streckenplan.</b> Tối giản kỹ thuật: lưới chặt, chữ mono cho số liệu, một màu đỏ. Chuyển động nhẹ: sơ đồ đường chạy tự vẽ.'
+  };
+  var keys=['broadcast','heritage','pitboard','technik'];
+  var tabs=[].slice.call(document.querySelectorAll('.host-tab'));
+  var note=document.getElementById('host-note');
+  function show(key,scrollTop){
+    if(keys.indexOf(key)<0) key=keys[0];
+    keys.forEach(function(k){
+      var s=document.getElementById('dir-'+k); if(!s) return;
+      s.hidden=(k!==key);
+    });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.dataset.dir===key)); });
+    note.innerHTML=NOTES[key];
+    if(scrollTop) window.scrollTo(0,0);
+    var cur=document.getElementById('dir-'+key);
+    if(cur) requestAnimationFrame(function(){ cur.dispatchEvent(new CustomEvent('dir:show')); });
+  }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){
+    if(location.hash.slice(1)===t.dataset.dir) show(t.dataset.dir,true); else location.hash=t.dataset.dir; }); });
+  window.addEventListener('hashchange',function(){ var h=location.hash.slice(1); if(keys.indexOf(h)>=0) show(h,true); });
+
+  var lang='de', hostBtn=document.getElementById('host-lang');
+  function setLang(l){
+    lang=l;
+    document.querySelectorAll('.dir [data-en]').forEach(function(el){
+      if(el.children.length) return;
+      if(el.dataset.de===undefined) el.dataset.de=el.textContent;
+      el.textContent = l==='en' ? el.dataset.en : el.dataset.de;
+    });
+    hostBtn.textContent = l==='en' ? 'EN' : 'DE';
+    document.querySelectorAll('.dir').forEach(function(s){ s.setAttribute('lang',l); });
+  }
+  function toggle(){ setLang(lang==='de'?'en':'de'); }
+  hostBtn.addEventListener('click',toggle);
+  document.querySelectorAll('.dir [data-lang-toggle]').forEach(function(b){ b.addEventListener('click',toggle); });
+
+  show(location.hash.slice(1)||keys[0],false);
+})();
+</script>
