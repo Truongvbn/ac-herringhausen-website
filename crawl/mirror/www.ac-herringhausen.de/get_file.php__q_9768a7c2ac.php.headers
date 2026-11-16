@@ -1,0 +1,14 @@
+HTTP/2 200 
+server: openresty
+date: Sun, 15 Nov 2026 04:55:59 GMT
+content-type: application/pdf; charset=utf-8
+content-length: 76573
+last-modified: Sat, 27 Apr 2019 04:56:07 GMT
+content-disposition: attachment; filename="Haftungsausschluss-und-Freistellungserklärung-und-Datenschutz.pdf"
+etag: "5cc3e0e7-12b1d"
+strict-transport-security: max-age=63072000
+x-frame-options: SAMEORIGIN
+referrer-policy: strict-origin
+x-content-type-options: nosniff
+accept-ranges: bytes
+

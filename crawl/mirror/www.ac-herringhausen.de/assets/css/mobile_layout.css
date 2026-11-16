@@ -1,0 +1,395 @@
+/*
+ * The mobile layout of the template designs: one column on the screens narrower than the template.
+ *
+ * Loaded by the header of the templates with the media query of the template (TemplateMobileLayout::getMediaQuery():
+ * touch screens narrower than the template, every screen narrower than 1024 px), so everything here applies to those
+ * screens only (backend: TemplateMobileLayoutHelper, header.phtml). The templates call their elements differently; the
+ * server marks the parts of the page instead and this stylesheet finds the boxes around them:
+ *   .hpage_title          the title of the website (text or logo)
+ *   .hpage_menu_title     the head of the menu
+ *   .hpage_menu_item      every entry of the menu (generateOldMenu, generateOldMenu2)
+ *   .hpage_content_title  the title of the page
+ *   .hpage_content        the content of the page
+ * Every box around the title, the menu or the content becomes a full-width column; the menu opens from the template's
+ * own menu head (mobile_layout.js). What a single template needs on top of this (e.g. the colours of its columns
+ * instead of a background picture that draws all columns at once) is in its own style element, written by the
+ * generator in the backend (tools/mobile-layouts).
+ *
+ * Only for browsers with :has() (Safari 15.4, Chrome 105, Firefox 121); the others keep the desktop design, zoomed
+ * out (the header sets the viewport only for them, the script does nothing). CSS does not allow :has() inside :has().
+ * The boxes of the template keep their box-sizing: a template's heights count without the padding.
+ */
+
+@supports selector(:has(a)) {
+  html { -webkit-text-size-adjust: 100%; }
+  body { min-width: 0 !important; margin: 0 !important; overflow-x: hidden; }
+
+  /* Every box on the way to the title, the menu or the content: full width, no floats, in the flow, one column */
+  body :is(div, section, main, article, aside, nav, header, footer, center, table, tbody, tr, td, h1, h2, h3, p, span):has(.hpage_menu_item, .hpage_content, .hpage_title) {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    float: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  /* The boxes holding the title start at the top: a negative margin that hides the empty top of the header's picture
+     on the desktop would cut off the title, which is at the top of the header here */
+  body :is(div, section, main, article, aside, nav, header, footer, center, table, tbody, tr, td, h1, h2, h3, p, span):has(.hpage_title) {
+    margin-top: 0 !important;
+  }
+
+  /* The boxes holding the menu or the content grow with it */
+  body :is(div, section, main, article, aside, nav, center, table, tbody, tr, td):has(.hpage_menu_item, .hpage_content) {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* The order where they meet: the header, the menu, the content, the rest */
+  body :has(.hpage_title):has(.hpage_menu_item, .hpage_content) > :has(.hpage_title):not(:has(.hpage_content)) { order: -2; }
+  body :has(.hpage_menu_item):has(.hpage_content) > :has(.hpage_menu_item):not(:has(.hpage_content, .hpage_title)) { order: -1; }
+
+  /* Boxes after the content or the menu (e.g. a footer with position: absolute): in the flow below them. In one column,
+     "absolute" without a position would put them at the top, over the title. */
+  body :has(.hpage_menu_item, .hpage_content) > :has(.hpage_menu_item, .hpage_content) ~ :not(:has(.hpage_title, .hpage_menu_item, .hpage_content)) {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+  }
+
+  /* The header (the outermost box of the title, where it meets the menu or the content): its picture, at most a quarter
+     of the screen high. Per template (--hpage-header-size, --hpage-header-position): a picture big enough keeps its size
+     and is moved so that the part behind the title on the desktop is behind it here; otherwise its middle fills it. */
+  body :has(.hpage_title):has(.hpage_menu_item, .hpage_content) > :has(.hpage_title):not(:has(.hpage_menu_item, .hpage_content)) {
+    background-size: var(--hpage-header-size, cover) !important;
+    background-position: var(--hpage-header-position, center) !important;
+    /* at least as high as the title in it (a height of the desktop counted without the padding above the title) */
+    min-height: min-content !important;
+  }
+  body :has(.hpage_title):has(.hpage_menu_item, .hpage_content) > :has(.hpage_title):not(:has(.hpage_menu_item, .hpage_content)):not(:has(> .hpage_title)) {
+    max-height: max(25vh, 150px) !important;
+    overflow: hidden !important;
+  }
+  /* The boxes in the header around the title: without the offsets and fixed heights that place the title on the
+     desktop picture (they would put it below the cut) */
+  body :has(.hpage_title):not(:has(.hpage_menu_item, .hpage_content)):not(body :has(.hpage_title):has(.hpage_menu_item, .hpage_content) > *) {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    overflow: visible !important;
+    background-size: cover !important;
+  }
+  body :has(.hpage_title):not(:has(.hpage_menu_item, .hpage_content)) { padding-top: 0 !important; padding-bottom: 0 !important; }
+  body :has(> .hpage_title) {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    text-align: left !important;
+  }
+  /* The title as far down the header as on the desktop (measured per template: --hpage-title-top), within the cut */
+  .hpage_title { display: block; margin: var(--hpage-title-top, 10px) 0 10px !important; }
+  /* The title fits the screen; a size the owner gave it stays (it wraps if needed) */
+  .hpage_title { font-size: min(1em, 8vw) !important; line-height: 1.15; overflow-wrap: anywhere; white-space: normal !important; }
+  .hpage_title :not([style*="font-size"]) { font-size: inherit !important; }
+  /* A logo as title gets smaller instead of being cut */
+  .hpage_title img { max-width: 100% !important; height: auto !important; }
+
+  /* The heads of the menu and of the content, often made of pieces (left, middle, right): the middle stretches */
+  body :has(> * > :is(.hpage_menu_title, .hpage_content_title)):not(:has(.hpage_menu_item, .hpage_content, .hpage_title)) {
+    display: flex !important;
+    flex-direction: row !important;
+    width: auto !important;
+    max-width: 100% !important;
+    float: none !important;
+  }
+  body :has(> :is(.hpage_menu_title, .hpage_content_title)) {
+    flex: 1 1 auto;
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    float: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    background-size: 100% 100% !important;
+  }
+
+  /* The menu: the template's menu head opens and closes it (mobile_layout.js). Closed only where the script runs (the
+     header marks the page with hpage_mobile_js); without it, the menu stays open. */
+  body :has(> .hpage_menu_title), .hpage_menu_toggle {
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+  }
+  .hpage_menu_toggle {
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  /* Its text not smaller than the content's (its height and its distance from the edge: per template) */
+  .hpage_menu_title { font-size: max(1em, 15px) !important; }
+  .hpage_menu_icon {
+    display: inline-block;
+    width: 24px;
+    height: 16px;
+    margin: 0 12px 0 0;
+    flex: none;
+    background: linear-gradient(currentColor 0 0) top / 100% 2.5px no-repeat,
+                linear-gradient(currentColor 0 0) center / 100% 2.5px no-repeat,
+                linear-gradient(currentColor 0 0) bottom / 100% 2.5px no-repeat;
+  }
+  /* Closed, the menu's column is its head only: no room kept below for the entries, and the column's decoration
+     below the head (e.g. its rounded bottom) hidden with them */
+  html.hpage_mobile_js:not(.hpage_menu_open) body :has(.hpage_menu_item):has(.hpage_content) > :has(.hpage_menu_item):not(:has(.hpage_content, .hpage_title)) {
+    padding-bottom: 0 !important;
+  }
+  html.hpage_mobile_js:not(.hpage_menu_open) body :has(.hpage_menu_item):has(.hpage_content) > :has(.hpage_menu_item):not(:has(.hpage_content, .hpage_title)) :is(:has(.hpage_menu_title), .hpage_menu_toggle) ~ :not(:has(.hpage_menu_item, .hpage_menu_title)) {
+    display: none !important;
+  }
+  html.hpage_mobile_js:not(.hpage_menu_open) ul:has(> .hpage_menu_item),
+  html.hpage_mobile_js:not(.hpage_menu_open) :has(> ul > .hpage_menu_item):not(:has(.hpage_menu_title, .hpage_menu_toggle, .hpage_content, .hpage_title)) {
+    display: none !important;
+  }
+  ul:has(> .hpage_menu_item) {
+    width: auto !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 4px 16px 12px !important;
+    float: none !important;
+    position: static !important;
+    display: block !important;
+  }
+  /* The menu that scrolls sideways (jQuery hoverscroll, a few templates): a plain list here, without the sizes the
+     plugin gives its boxes and without its arrows */
+  .hoverscroll, .hoverscroll .listcontainer, .hoverscroll .fixed-listcontainer {
+    width: auto !important;
+    height: auto !important;
+    margin-left: 0 !important;
+    overflow: visible !important;
+    float: none !important;
+  }
+  .hoverscroll .arrow, .hoverscroll .fixed-arrow { display: none !important; }
+  .hoverscroll ul.list li.item { float: none !important; }
+  /* The entries of a submenu stay hidden until their submenu is opened (style="display: none;", main_functions.js) */
+  ul:has(> .hpage_menu_item) > li:not([style*="none"]) { display: block !important; }
+  ul:has(> .hpage_menu_item) li {
+    float: none !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+  ul:has(> .hpage_menu_item) li a {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    font-size: 16px !important;
+    line-height: 1.3 !important;
+    /* each entry is a row of its own here, a tap target: underlined (as many templates have their few links beside
+       the content on the desktop) the whole open menu was a column of lines, hard to read (mafei-taichi.de,
+       template 366, 2026-11-12) */
+    text-decoration: none !important;
+  }
+  /* Light letters on a background they hardly stand out from (white on light orange): a soft dark shadow, set by
+     mobile_layout.js where it measures a contrast below 3:1 (the entries, the menu head with its icon) */
+  .hpage_menu_shadow, .hpage_menu_shadow * {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 0 6px rgba(0, 0, 0, 0.3) !important;
+  }
+  .hpage_menu_shadow .hpage_menu_icon { filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45)); }
+  /* The languages of a multilingual website (the links of its language bar, mobile_layout.js): side by side */
+  ul:has(> .hpage_menu_item) li.hpage_menu_languages a,
+  ul:has(> .hpage_menu_item) li.hpage_menu_languages span {
+    display: inline-block !important;
+    margin-right: 16px !important;
+    font-size: 16px !important;
+    line-height: 1.3 !important;
+  }
+  ul:has(> .hpage_menu_item) li.hpage_menu_languages .hpage_language_current { font-weight: bold !important; }
+  /* Dropdown submenus (generateOldMenu2) become indented lists */
+  ul:has(> .hpage_menu_item) ul {
+    position: static !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 0 0 16px !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  /* The content: a readable size, nothing wider than the screen. Long words and addresses break where they would
+     leave the screen ("anywhere" would also let table columns shrink to one letter). */
+  .hpage_content {
+    padding: 0 16px;
+    font-size: max(1em, 15px);
+    line-height: 1.5;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+  }
+  body :has(> .hpage_content) { width: auto !important; max-width: 100% !important; }
+  .hpage_content :is(img, video, iframe, embed, object) { max-width: 100% !important; }
+  /* Pictures and videos keep their proportions when they get narrower (not spacers and lines: a picture of 1 x 1
+     pixel would become square); an iframe keeps the height it was given (height: auto would make it 150 px), one
+     without gets the proportions of a video. A picture sized by its height alone (<img height="30">, icons and logos)
+     keeps it, its width follows as on the desktop: height: auto showed it as wide as it is (250 px instead of 30),
+     berliner-linienchronik.de; wider than the screen it is shown whole in its box instead of squeezed.
+     A width or height in the style is the property itself, at the start or after a space, ";", a line break or a tab:
+     not max-width, min-width, line-height or -webkit-text-stroke-width. Pictures pasted into the text editor carry
+     "max-width: calc(100% - 10px); height: 20px": read as a width, their height became auto and the coins of 20 px
+     beside an address filled the phone (elongatedcoin.hpage.com, 2026-11-08). */
+  .hpage_content :is(img, video):not([height="0"], [height="1"], [height="2"], [height="3"], [height="4"], [height="5"], [width="1"], [width="2"], [width="3"], [width="4"], [width="5"], [height]:not([width], [style^="width" i], [style*=" width" i], [style*=";width" i], [style*="\a width" i], [style*="\9 width" i])) { height: auto; }
+  .hpage_content img:is([height], [style^="height" i], [style*=" height" i], [style*=";height" i], [style*="\a height" i], [style*="\9 height" i]):not([width], [style^="width" i], [style*=" width" i], [style*=";width" i], [style*="\a width" i], [style*="\9 width" i]) { object-fit: contain; }
+  /* also a height in its style, which the text editor writes when a picture is resized (only with a width the height
+     can follow; not the spacers sized in their style) */
+  .hpage_content img:is([width], [style^="width" i], [style*=" width" i], [style*=";width" i], [style*="\a width" i], [style*="\9 width" i]):is([style^="height" i], [style*=" height" i], [style*=";height" i], [style*="\a height" i], [style*="\9 height" i]):not([height="0"], [height="1"], [height="2"], [height="3"], [height="4"], [height="5"], [width="1"], [width="2"], [width="3"], [width="4"], [width="5"], [style*="height: 0px"], [style*="height:0px"], [style*="height: 1px"], [style*="height:1px"], [style*="height: 2px"], [style*="height:2px"], [style*="height: 3px"], [style*="height:3px"], [style*="height: 4px"], [style*="height:4px"], [style*="height: 5px"], [style*="height:5px"]) { height: auto !important; }
+  .hpage_content iframe:not([height], [style^="height" i], [style*=" height" i], [style*=";height" i], [style*="\a height" i], [style*="\9 height" i]) { aspect-ratio: 16 / 9; height: auto !important; }
+  /* Tables of a fixed width scroll sideways; those as wide as the content stay tables. As a block a table takes the
+     height of its style literally (a table never gets smaller than its rows): "height: 10px" left one stripe of the
+     dates of escbaernzell.de visible */
+  .hpage_content table:not([width="100%"], [style*="width: 100%"], [style*="width:100%"]) {
+    display: block;
+    max-width: 100%;
+    height: auto !important;
+    overflow-x: auto;
+  }
+  /* Its rows as wide as the table, as on the desktop: in the block they made a table of their own, only as wide as their
+     cells and at its left (the pictures of the years in a table of 55 %, elkehabeeb.hpage.com, off the middle). 4 px
+     less: collapsed borders reach half their width beyond the rows, which at 100 % cut off the right border and let
+     the table scroll by a pixel (elongatedcoin.hpage.com). */
+  .hpage_content table:not([width="100%"], [style*="width: 100%"], [style*="width:100%"]) > tbody:only-child {
+    display: table;
+    width: calc(100% - 4px);
+    margin: 0 auto;
+  }
+  .hpage_content table { max-width: 100%; }
+  /* A picture in a table with a size of its own (its width in the HTML or its style) keeps it, up to the width of the
+     screen: squeezed into its cell, the pictures of a shop beside their texts shrank to a few pixels
+     (modellbahn-klettke.de); such a table becomes wider than the screen and scrolls sideways (mobile_layout.js puts it
+     into a box), as the owner built it. A picture without a size fits its cell as on the desktop, where the column
+     gives its width (30 %): at its own size it pushed the text beside it into a narrow strip
+     (berliner-linienchronik.de). A height alone in the style is a size too, its width follows from it (the logos of
+     the lines, 40 px high, in a table that the owner's script writes): fitted to the cell they were squeezed sideways
+     at their full height (berliner-linienchronik.de, 2026-10-31). Not the spacers of a few pixels. */
+  body .hpage_content table img:is([width], [style^="width" i], [style*=" width" i], [style*=";width" i], [style*="\a width" i], [style*="\9 width" i]) { max-width: calc(100vw - 32px) !important; }
+  body .hpage_content table img:is([style^="height" i], [style*=" height" i], [style*=";height" i], [style*="\a height" i], [style*="\9 height" i]):not([style*="height: 0px"], [style*="height:0px"], [style*="height: 1px"], [style*="height:1px"], [style*="height: 2px"], [style*="height:2px"], [style*="height: 3px"], [style*="height:3px"], [style*="height: 4px"], [style*="height:4px"], [style*="height: 5px"], [style*="height:5px"]) {
+    max-width: calc(100vw - 32px) !important;
+  }
+  /* The text editor centres a table with margin-left: calc(50% - 375px) for its width on the desktop: narrower than
+     that the margin is negative and the table starts off the screen (-185 px on a phone, berliner-linienchronik.de).
+     Centred with auto margins instead: the same on a wide screen, at the edge where the table is as wide as the page */
+  .hpage_content table:is([style*="margin-left: calc"], [style*="margin-left:calc"]) {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  /* A table that is wider than the screen even so (fixed cells, an addon): it scrolls sideways in a box of its own
+     (mobile_layout.js puts it there) */
+  .hpage_table_scroll { overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; }
+  /* Such a table in a centred cell (a gallery of the addon: its table in <td align="center">) keeps its content in the
+     middle: as a box its rows sat on the left when narrower than the page (pictures without captions,
+     stefanschift.hpage.com). Not tables with a head or foot, whose columns must stay together. */
+  .hpage_content :is([align="center"], center) > table:not([width="100%"], [style*="width: 100%"], [style*="width:100%"], :has(> thead, > tfoot)) > tbody {
+    display: table;
+    margin-inline: auto;
+  }
+  .hpage_table_scroll > table { display: table; max-width: none; }
+  /* The side of such a table that can be swiped further gets a soft shadow (mobile_layout.js sets the classes while
+     it is swiped), over the cells: a cut-off column looked squeezed, not like more to swipe to */
+  .hpage_swipe { position: relative; }
+  .hpage_swipe::before,
+  .hpage_swipe::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 22px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .hpage_swipe::before { left: 0; background: linear-gradient(to right, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0)); }
+  .hpage_swipe::after { right: 0; background: linear-gradient(to left, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0)); }
+  .hpage_swipe.hpage_swipe_left::before,
+  .hpage_swipe.hpage_swipe_right::after { opacity: 1; }
+  /* Pictures floated beside the text: at most half the width, so the text next to them stays readable */
+  .hpage_content :is(img, video, table, div):is([style*="float: left"], [style*="float:left"], [style*="float: right"], [style*="float:right"]):not([style*="absolute"]),
+  .hpage_content :is(img, table)[align="left"],
+  .hpage_content :is(img, table)[align="right"] {
+    max-width: 45% !important;
+  }
+  .hpage_content :is(img, video):is([style*="float: left"], [style*="float:left"], [style*="float: right"], [style*="float:right"], [align="left"], [align="right"]) {
+    height: auto !important;
+  }
+  .hpage_content pre { white-space: pre-wrap; }
+  /* Forms (the addons and the content's own): fields as wide as the screen at most */
+  .hpage_content :is(input, textarea, select) { max-width: 100%; box-sizing: border-box; }
+  /* On phones: the label above its field, the text fields as wide as the form (a field of a fixed width, e.g.
+     400 px, would keep its table wider than the screen); rows of many cells (e.g. the smileys of the guestbook) wrap */
+  @media (max-width: 600px) {
+    .hpage_content form :is(table, tbody, tr, td, th) {
+      display: block !important;
+      width: auto !important;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .hpage_content form tr:has(> :nth-child(3)) {
+      display: flex !important;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .hpage_content form :is(textarea, select, input:not([type="checkbox"], [type="radio"], [type="submit"], [type="button"], [type="reset"], [type="image"], [type="hidden"], [type="file"])) {
+      width: 100% !important;
+    }
+    /* The grid of hPage's gallery (gallery_listing.phtml): on phones its pictures go one below the other, each as
+       wide as the page. The tables of the owners stay as they built them (wider than the screen they scroll
+       sideways): no rule tells a table of data from a table that only places pictures beside their texts, and cell
+       by cell the rows of a table of data went to pieces (elongatedcoin.hpage.com: a catalogue of 1612 pages,
+       2026-10-27 to 10-28) */
+    .hpage_content table.hpage_gallery_grid,
+    .hpage_content table.hpage_gallery_grid > tbody,
+    .hpage_content table.hpage_gallery_grid > tbody > tr,
+    .hpage_content table.hpage_gallery_grid > tbody > tr > td {
+      display: block !important;
+      width: auto !important;
+      height: auto !important;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  /* The banner of the free websites: the picture instead of the animation (ads_top.phtml) */
+  .hpage_banner_wide { display: none !important; }
+  .hpage_banner_narrow { display: block !important; }
+
+  /* The footer, decoration and the template's own pictures: never wider than the screen, padding included. (Not the
+     boxes around the title, the menu and the content: their heights, without the padding, place the title.) */
+  body :is(div, img, table, iframe, object, embed):not(:has(.hpage_menu_item, .hpage_content, .hpage_title, .hpage_menu_title, .hpage_content_title)) {
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  /* The picture of the lightbox (galleries): the lightbox sizes it to the screen itself and its frame after the width
+     the picture shows. Held to the width of the frame (250 px when it opens), it stayed that small on phones. */
+  #lightbox .lb-image { max-width: none !important; }
+  body img:not([height="0"], [height="1"], [height="2"], [height="3"], [height="4"], [height="5"], [width="1"], [width="2"], [width="3"], [width="4"], [width="5"], [height]:not([width], [style^="width" i], [style*=" width" i], [style*=";width" i], [style*="\a width" i], [style*="\9 width" i])) { height: auto; }
+  body img:is([height], [style^="height" i], [style*=" height" i], [style*=";height" i], [style*="\a height" i], [style*="\9 height" i]):not([width], [style^="width" i], [style*=" width" i], [style*=";width" i], [style*="\a width" i], [style*="\9 width" i]) { object-fit: contain; }
+  body img:is([width], [style^="width" i], [style*=" width" i], [style*=";width" i], [style*="\a width" i], [style*="\9 width" i]):is([style^="height" i], [style*=" height" i], [style*=";height" i], [style*="\a height" i], [style*="\9 height" i]):not([height="0"], [height="1"], [height="2"], [height="3"], [height="4"], [height="5"], [width="1"], [width="2"], [width="3"], [width="4"], [width="5"], [style*="height: 0px"], [style*="height:0px"], [style*="height: 1px"], [style*="height:1px"], [style*="height: 2px"], [style*="height:2px"], [style*="height: 3px"], [style*="height:3px"], [style*="height: 4px"], [style*="height:4px"], [style*="height: 5px"], [style*="height:5px"]) { height: auto !important; }
+}

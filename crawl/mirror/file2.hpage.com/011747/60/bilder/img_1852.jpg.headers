@@ -1,0 +1,13 @@
+HTTP/2 200 
+server: nginx
+date: Sun, 15 Nov 2026 04:59:16 GMT
+content-type: image/jpeg
+content-length: 193106
+last-modified: Sat, 04 Jun 2016 10:03:59 GMT
+etag: "5752a78f-2f252"
+expires: Tue, 17 Nov 2026 04:59:16 GMT
+cache-control: max-age=172800
+pragma: public
+cache-control: public
+accept-ranges: bytes
+

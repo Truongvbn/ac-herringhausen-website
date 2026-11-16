@@ -1,0 +1,24 @@
+HTTP/1.1 301 Moved Permanently
+Server: openresty
+Date: Sun, 15 Nov 2026 05:01:23 GMT
+Content-Type: text/html
+Content-Length: 166
+Connection: keep-alive
+Location: https://www.ac-herringhausen.de/assets/images/jquery-ui/ui-bg_highlight-hard_100_f9f9f9_1x100.png
+
+HTTP/2 200 
+server: openresty
+date: Sun, 15 Nov 2026 05:01:24 GMT
+content-type: image/png
+content-length: 252
+last-modified: Thu, 12 Nov 2026 18:04:09 GMT
+vary: Accept-Encoding
+etag: "6af5ff99-fc"
+expires: Sun, 15 Nov 2026 05:01:23 GMT
+cache-control: no-cache
+strict-transport-security: max-age=63072000
+x-frame-options: SAMEORIGIN
+referrer-policy: strict-origin
+x-content-type-options: nosniff
+accept-ranges: bytes
+

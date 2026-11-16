@@ -22,4 +22,4 @@ npm run dev
 Build: `npm run build` → `site/dist/` (statisch, für Cloudflare Pages).
 Entwurfsmarkierungen ausblenden: `PUBLIC_SHOW_DRAFTS=0 npm run build`.
 
-Nicht im Repo (lokal neu erzeugbar mit `tools/`): Spiegel der alten Seite (`crawl/mirror/`), Screenshots.
+Nicht im Repo: `node_modules`, Build-Ausgaben (neu erzeugen mit `npm install` / `npm run build`). Projektstand und offene Punkte: `CLAUDE.md`.

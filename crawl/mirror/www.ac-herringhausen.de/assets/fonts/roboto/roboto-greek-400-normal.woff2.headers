@@ -1,0 +1,16 @@
+HTTP/2 200 
+server: openresty
+date: Sun, 15 Nov 2026 05:05:38 GMT
+content-type: font/woff2
+content-length: 9556
+last-modified: Thu, 12 Nov 2026 18:04:09 GMT
+vary: Accept-Encoding
+etag: "6af5ff99-2554"
+expires: Sun, 15 Nov 2026 05:05:37 GMT
+cache-control: no-cache
+strict-transport-security: max-age=63072000
+x-frame-options: SAMEORIGIN
+referrer-policy: strict-origin
+x-content-type-options: nosniff
+accept-ranges: bytes
+

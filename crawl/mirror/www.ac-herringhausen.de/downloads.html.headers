@@ -1,0 +1,21 @@
+HTTP/1.1 301 Moved Permanently
+Server: openresty
+Date: Sun, 15 Nov 2026 04:56:27 GMT
+Content-Type: text/html
+Content-Length: 166
+Connection: keep-alive
+Location: https://www.ac-herringhausen.de/downloads.html
+
+HTTP/2 200 
+server: openresty
+date: Sun, 15 Nov 2026 04:56:28 GMT
+content-type: text/html; charset=UTF-8
+vary: Accept-Encoding
+p3p: CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+access-control-allow-origin: *
+set-cookie: hpage_v=1.6af93b7c.b1b5b4b4.460d9730.5DbiBBUCLEKfOJQ7Iw7Lll; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly; Secure
+strict-transport-security: max-age=63072000
+x-frame-options: SAMEORIGIN
+referrer-policy: strict-origin
+x-content-type-options: nosniff
+

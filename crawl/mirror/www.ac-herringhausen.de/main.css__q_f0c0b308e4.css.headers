@@ -1,0 +1,18 @@
+HTTP/1.1 301 Moved Permanently
+Server: openresty
+Date: Sun, 15 Nov 2026 05:00:45 GMT
+Content-Type: text/html
+Content-Length: 166
+Connection: keep-alive
+Location: https://www.ac-herringhausen.de/main.css?p=-kOnTyHP7M4hZfBi0hvqXhtHCcbSKReEmY68MtjJg26ysFBT7rpN_TsRZOKf
+
+HTTP/2 200 
+server: openresty
+date: Sun, 15 Nov 2026 05:00:46 GMT
+content-type: text/css; charset=utf-8
+vary: Accept-Encoding
+strict-transport-security: max-age=63072000
+x-frame-options: SAMEORIGIN
+referrer-policy: strict-origin
+x-content-type-options: nosniff
+

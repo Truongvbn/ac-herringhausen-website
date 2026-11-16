@@ -1,0 +1,14 @@
+HTTP/2 200 
+server: openresty
+date: Sun, 15 Nov 2026 04:56:00 GMT
+content-type: application/pdf; charset=utf-8
+content-length: 111220
+last-modified: Wed, 24 Oct 2018 10:04:20 GMT
+content-disposition: attachment; filename="Beitrittserklärung Beschreibbar-3.pdf"
+etag: "5bd043a4-1b274"
+strict-transport-security: max-age=63072000
+x-frame-options: SAMEORIGIN
+referrer-policy: strict-origin
+x-content-type-options: nosniff
+accept-ranges: bytes
+

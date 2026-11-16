@@ -1,0 +1,161 @@
+.clearfix {
+      clear: both;
+}
+
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+a {
+	color: #000000;
+    text-decoration: underline;
+}
+
+a:hover {
+	color: #642726;
+	text-decoration: none;
+}
+
+body {
+	background-color: #571d1d;
+	color: #000000;
+    font-family: verdana;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: left;
+}
+
+.wrapper {
+	margin: auto;
+	width: 1076px;
+	margin-top: 0;
+}
+
+.header {
+	background-image: url("../img/header.jpg");
+	width: 1076px;
+	height: 200px;
+}
+
+#logo {
+	color: #FFFFFF;
+    font-size: 16pt;
+    font-weight: bold;
+   	width: 451px;
+    padding-top: 106px;
+    text-align: center;
+    padding-left: 457px;
+}
+
+.page {
+	background-image: url("../img/page.jpg");
+	width: 1076px;
+	min-height: 370px;
+}
+
+.navigation {
+	width: 247px;
+	min-height: 300px;
+	float: left;
+	color: #fff;
+	padding-bottom: 20px;
+}
+
+.navi_head {
+	width: 180px;
+	background-image: url("../img/navi_head.jpg");
+	background-repeat: no-repeat;
+	padding: 5px 20px 10px 46px;
+	color: #fff;
+    font-size: 13pt;
+    font-weight: bold;
+}
+
+.content {
+	float:left;
+	width: 829px;
+	min-height: 300px;
+}
+
+.cont_head {
+	width: 775px;
+	background-image: url("../img/cont_head.jpg");
+	background-repeat: no-repeat;
+	padding: 15px 20px 10px 28px;
+	color: #000000;
+    font-size: 13pt;
+    font-weight: bold;
+}
+
+.cont {
+	margin-left: 10px;
+	width: 809px;
+	min-height: 300px;
+}
+
+.cont_text {
+	padding-left: 18px;
+	padding-right: 18px;
+}
+
+.footer {
+	background-image: url("../img/footer.jpg");
+	width: 1076px;
+	height: 75px;
+}
+
+.navi_cont > ul > li > a {
+	color: #000;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.navi_cont > ul > li > a:hover {
+	color: #642726;
+    text-decoration: none;
+}
+
+.navi_cont > ul > li.active, .navi_cont > ul > li.active > a {
+      color: #C02626;
+}
+
+.navi_cont {
+	width: 222px;
+}
+
+.navi_cont > ul > li {
+	color: #000;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.navi_cont > ul {
+	padding-left: 45px;
+}
+
+.submenu_item {
+	margin-left: 18px;
+}
+
+.menu_heading {
+	display: inline-block;
+	list-style-type: none;
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+	color: #000 !important;
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+.submenu_item + .menu_heading {
+	font-size: 11pt;
+	margin-top: 7px !important;
+	margin-bottom: 7px !important;
+}
+
+.menu_separator {
+	list-style-type: none;
+	margin-top: 12px !important;
+	margin-bottom: 12px !important;
+}

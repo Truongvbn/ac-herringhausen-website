@@ -1,0 +1,24 @@
+HTTP/1.1 301 Moved Permanently
+Server: openresty
+Date: Sun, 15 Nov 2026 05:00:11 GMT
+Content-Type: text/html
+Content-Length: 166
+Connection: keep-alive
+Location: https://www.ac-herringhausen.de/js/owner_check.js
+
+HTTP/2 200 
+server: openresty
+date: Sun, 15 Nov 2026 05:00:11 GMT
+content-type: application/javascript
+content-length: 1042
+last-modified: Thu, 12 Nov 2026 18:04:09 GMT
+vary: Accept-Encoding
+etag: "6af5ff99-412"
+expires: Sun, 15 Nov 2026 05:00:10 GMT
+cache-control: no-cache
+strict-transport-security: max-age=63072000
+x-frame-options: SAMEORIGIN
+referrer-policy: strict-origin
+x-content-type-options: nosniff
+accept-ranges: bytes
+

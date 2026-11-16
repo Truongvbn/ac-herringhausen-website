@@ -1,19 +1,9 @@
-# dependencies and build output
+# dependencies and build output (rebuild with npm install / npm run build)
 node_modules/
 site/dist/
 site/.astro/
 artifact-build/
-artifact-files.json
 
 # local logs
 *.log
 .DS_Store
-
-# large local-only material (old-site mirror and screenshots; regenerate with tools/)
-crawl/mirror/
-crawl/shots/
-site-check/
-proto/check/
-
-# local editor/launcher config
-.claude/

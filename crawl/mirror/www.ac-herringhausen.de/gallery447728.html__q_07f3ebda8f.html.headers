@@ -1,0 +1,14 @@
+HTTP/2 200 
+server: openresty
+date: Sun, 15 Nov 2026 05:07:29 GMT
+content-type: text/html; charset=UTF-8
+vary: Accept-Encoding
+p3p: CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+x-ua-compatible: IE=edge
+access-control-allow-origin: *
+set-cookie: hpage_v=1.6af93e11.b1b5b4b4.460d9730.8dEghaAz0oARx9VCngrsL3; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly; Secure
+strict-transport-security: max-age=63072000
+x-frame-options: SAMEORIGIN
+referrer-policy: strict-origin
+x-content-type-options: nosniff
+
