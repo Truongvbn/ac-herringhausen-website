@@ -121,7 +121,7 @@ const old: Old[] = [
     </ul>
   </div></section>
 
-  <section class="sec paper" aria-labelledby="alt-h"><div class="w">
+  <section class="sec paper"><div class="w">
     <h2 class="h3" id="alt-h">{de ? 'Alte Adresse → neue Seite' : 'Old address → new page'}</h2>
     <p class="lead" style="margin-top:12px">{de
       ? 'Jede Adresse der alten Website führt automatisch zur passenden neuen Seite. Die alte Sitemap zeigte zu jeder Seite die „Letzte Aktualisierung“; diese Angaben stehen in der rechten Spalte.'
@@ -146,7 +146,7 @@ const old: Old[] = [
         </tbody>
       </table>
     </div>
-    <p class="mute" style="margin-top:14px;max-width:60ch;font-size:.95rem">{de
+    <p class="mute" style="margin-top:14px;max-width:60ch;font-size:var(--t-sm)">{de
       ? '– : Diese Seiten waren in der alten Sitemap nicht aufgeführt. Den Mitglieder-Login der alten Seite gibt es hier nicht mehr; seine Adressen führen zur Startseite.'
       : '– : these pages were not listed in the old sitemap. The old site’s member login no longer exists here; its addresses lead to the home page.'}</p>
     <div class="cta">
@@ -160,18 +160,18 @@ const old: Old[] = [
   .sm { display: grid; gap: 36px 40px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
   .sm-g > h2 { padding-bottom: 12px; border-bottom: 2px solid var(--red); }
   .sm-g > ul > li { padding: 14px 0; border-bottom: 1px solid var(--line); }
-  .sm-g .tlink { font-size: 1.12rem; }
-  .sm-g p { margin-top: 4px; color: var(--mute); font-size: .95rem; }
+  .sm-g .tlink { font-size: var(--t-lg); }
+  .sm-g p { margin-top: 4px; color: var(--mute); font-size: var(--t-sm); }
   .subs { display: grid; gap: 4px; margin-top: 8px; }
-  .subs li { padding-left: 16px; position: relative; font-size: .95rem; }
+  .subs li { padding-left: 16px; position: relative; font-size: var(--t-sm); }
   .subs li::before { content: "#"; position: absolute; left: 0; font-family: var(--f-m); color: var(--red-t); }
   .subs a { text-underline-offset: 3px; }
   .tbl { margin-top: 22px; overflow-x: auto; background: #fff; border: 1px solid var(--cream-mute); }
-  table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: .95rem; }
+  table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: var(--t-sm); }
   th, td { padding: 10px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--cream2); }
-  thead th { font: 500 .75rem/1.3 var(--f-m); letter-spacing: .06em; text-transform: uppercase; color: var(--cream-mute); background: var(--cream2); white-space: nowrap; }
+  thead th { font: 500 var(--t-xs)/1.3 var(--f-m); letter-spacing: .06em; text-transform: uppercase; color: var(--cream-mute); background: var(--cream2); white-space: nowrap; }
   tbody th { font-weight: 600; }
   tbody tr:last-child > * { border-bottom: 0; }
-  td.num { font-size: .84rem; overflow-wrap: anywhere; }
+  td.num { font-size: var(--t-xs); overflow-wrap: anywhere; }
   td:last-child { white-space: nowrap; }
 </style>

@@ -54,7 +54,7 @@ const photos = [
     </ul>
   </div></section>
 
-  <section class="sec"><div class="w two">
+  <section class="sec next art even art-oldtimer"><div class="w two">
     <div>
       <SectionHead kick={de ? 'Mitmachen' : 'Join in'} h={[de ? 'Du fährst' : 'You drive', de ? 'einen Oldtimer?' : 'a classic?']} />
     </div>
@@ -76,9 +76,8 @@ const photos = [
 
 <style>
   .ot { display: grid; gap: 20px 12px; }
-  .ot li { max-width: 640px; }
   .ot img { width: 100%; aspect-ratio: 3/2; object-fit: cover; }
-  .ot figcaption { padding-top: 9px; font-size: .92rem; color: var(--mute); border-top: 2px solid var(--red); }
+  .ot figcaption { padding-top: 9px; font-size: var(--t-sm); color: var(--mute); border-top: 2px solid var(--red); }
   @media (min-width: 620px) { .ot { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 900px) { .ot { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 900px) { .ot { grid-template-columns: 2fr 1fr; } .ot li:first-child { grid-row: span 2; } .ot li:first-child figure { height: 100%; display: flex; flex-direction: column; } .ot li:first-child img { flex: 1; min-height: 0; aspect-ratio: auto; } }
 </style>

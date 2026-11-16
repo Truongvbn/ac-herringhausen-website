@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import SubNav from '../components/SubNav.astro';
 import type { Lang } from '../data/club';
 import { href } from '../i18n/routes';
 import galerie from '../data/galerie.json';
@@ -55,15 +56,14 @@ const albums = keys.map((k) => {
       : `Both albums from the old site, complete: ${total} photos from 2016. Click a photo to see it large.`}
     ghost={de ? 'Galerie' : 'Gallery'} />
 
+  <SubNav label={de ? 'Alben' : 'Albums'} items={albums.map((a) => ({ href: `#${a.key}`, label: `${a.title} · ${a.count}` }))} />
+
   <section class="sec tight"><div class="w">
     <p class="note-box consent-note">{de
       ? 'Du bist auf einem Bild zu sehen und möchtest das nicht? '
       : 'You appear in a photo and would rather not? '}
       <a class="tlink" href={href('kontakt', lang)}>{de ? 'Schreib uns' : 'Write to us'}</a>{de ? ', wir nehmen es heraus.' : ' and we will take it down.'}</p>
 
-    <nav class="albums" aria-label={de ? 'Alben' : 'Albums'}>
-      {albums.map((a) => <a class="btn sm" href={`#${a.key}`}>{a.title} <span class="num cnt">{a.count}</span><span class="vh"> {de ? 'Bilder' : 'photos'}</span></a>)}
-    </nav>
 
     {albums.map((a) => (
       <section class="album" id={a.key} aria-labelledby={`${a.key}-h`}>
@@ -89,9 +89,9 @@ const albums = keys.map((k) => {
     ))}
   </div></section>
 
-  <section class="sec alt"><div class="w">
-    <h2 class="h3">{de ? 'Selbst auf die Strecke?' : 'Fancy a go yourself?'}</h2>
-    <p class="lead" style="margin-top:12px">{de
+  <section class="sec next art art-flag"><div class="w">
+    <header class="sh"><p class="kick"><span>{de ? 'Selbst auf die Strecke?' : 'Fancy a go yourself?'}</span></p><h2><span>{de ? 'Der nächste' : 'The next'}</span><span>{de ? 'Schritt' : 'step'}</span></h2></header>
+    <p class="lead">{de
       ? 'Wir trainieren jeden Samstag um 15 Uhr auf dem Gelände der Firma Goksch, außer in den Ferien.'
       : 'We train every Saturday at 3 pm on the Goksch company grounds, except during school holidays.'}</p>
     <div class="cta">
@@ -115,12 +115,12 @@ const albums = keys.map((k) => {
 
 <style>
   .consent-note { max-width: 62ch; margin-bottom: 24px; }
-  .albums .cnt { padding: 2px 6px; background: rgba(0, 0, 0, .35); font-style: normal; font-size: .8rem; }
+  .albums .cnt { padding: 2px 6px; background: rgba(0, 0, 0, .35); font-style: normal; font-size: var(--t-xs); }
   .album { padding-top: clamp(20px, 3vw, 36px); }
   .album + .album { margin-top: clamp(28px, 4vw, 56px); border-top: 1px solid var(--line); }
   .album-h { display: grid; gap: 10px; margin-bottom: 18px; }
   .grp + .grp { margin-top: 28px; }
   .grp-h { margin-bottom: 10px; padding-left: 12px; border-left: 4px solid var(--red); hyphens: auto; overflow-wrap: anywhere; }
-  .grp-h .num { font-size: .8rem; font-weight: 500; white-space: nowrap; }
-  .top { margin-top: 18px; font-size: .92rem; }
+  .grp-h .num { font-size: var(--t-xs); font-weight: 500; white-space: nowrap; }
+  .top { margin-top: 18px; font-size: var(--t-sm); }
 </style>

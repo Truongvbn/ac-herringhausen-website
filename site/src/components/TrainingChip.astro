@@ -6,7 +6,7 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = ui[lang];
 ---
-<div class="chip">
+<aside class="chip" aria-label={t.nextTraining}>
   <div class="w chip-in">
     <span class="lbl">{t.nextTraining}</span>
     <span><b data-next-date>{t.saturday}</b> · <b>{t.clock}</b></span>
@@ -14,4 +14,4 @@ const t = ui[lang];
     <span class="mute">{t.trainingNote}</span>
     <a href={href('kart', lang, '#probetraining')}>{t.trial} →</a>
   </div>
-</div>
+</aside>

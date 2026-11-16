@@ -92,11 +92,11 @@ export const downloads: { file: string; title: L; info: L }[] = [
 ];
 
 export const partners: { name: string; href: string; logo: string; w: number; h: number }[] = [
-  { name: 'ADAC Ostwestfalen-Lippe e.V.', href: 'http://www.adac-owl.de/', logo: '/img/partner/adac.jpg', w: 0, h: 0 },
-  { name: 'Herforder Pils', href: 'https://www.herforder.de/cms/index.php', logo: '/img/partner/logo_herforder_pils.jpg', w: 0, h: 0 },
-  { name: 'DKS', href: 'http://www.dks-hf.de/', logo: '/img/partner/logo-dks-m-strich.gif', w: 0, h: 0 },
-  { name: 'Fahrschule Kronsbein', href: 'http://www.fahrschule-kronsbein.de/', logo: '/img/partner/fahrschule_kronsbein.jpg', w: 0, h: 0 },
-  { name: 'Optik Gössel', href: 'http://www.optik-goessel.de/', logo: '/img/partner/optik_goessel.jpg', w: 0, h: 0 },
-  { name: 'Weinrich Schokolade', href: 'http://www.weinrich-schokolade.de/de/startseite.html', logo: '/img/partner/weinrich.jpg', w: 0, h: 0 },
-  { name: 'Wachtmann', href: 'http://wachtmann.eu/', logo: '/img/partner/wachtmann.jpg', w: 0, h: 0 },
+  { name: 'ADAC Ostwestfalen-Lippe e.V.', href: 'http://www.adac-owl.de/', logo: '/img/partner/adac.jpg', w: 296, h: 392 },
+  { name: 'Herforder Pils', href: 'https://www.herforder.de/cms/index.php', logo: '/img/partner/logo_herforder_pils.jpg', w: 378, h: 149 },
+  { name: 'DKS', href: 'http://www.dks-hf.de/', logo: '/img/partner/logo-dks-m-strich.gif', w: 510, h: 168 },
+  { name: 'Fahrschule Kronsbein', href: 'http://www.fahrschule-kronsbein.de/', logo: '/img/partner/fahrschule_kronsbein.jpg', w: 1280, h: 926 },
+  { name: 'Optik Gössel', href: 'http://www.optik-goessel.de/', logo: '/img/partner/optik_goessel.jpg', w: 1220, h: 960 },
+  { name: 'Weinrich Schokolade', href: 'http://www.weinrich-schokolade.de/de/startseite.html', logo: '/img/partner/weinrich.jpg', w: 668, h: 960 },
+  { name: 'Wachtmann', href: 'http://wachtmann.eu/', logo: '/img/partner/wachtmann.jpg', w: 1280, h: 864 },
 ];

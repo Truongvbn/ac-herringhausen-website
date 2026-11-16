@@ -1,0 +1,28 @@
+---
+// Schematic slalom course: one vehicle, pylons, the two kinds of penalty, and how the result is added up.
+// A drawing of the principle, not of a real course. All wording comes from the page that uses it.
+import type { Lang } from '../data/club';
+interface Props { lang: Lang; pylon: [string, string]; task: [string, string]; }
+const { lang, pylon, task } = Astro.props;
+const de = lang === 'de';
+const cones = [[150, 150], [230, 90], [310, 150], [390, 90], [470, 150], [545, 62], [545, 118]];
+---
+<figure class="course">
+  <svg viewBox="0 0 640 220" role="img" aria-label={de ? 'Schema eines Slalomkurses: Start, Pylonen, Ziel' : 'Diagram of a slalom course: start, pylons, finish'}>
+    <path class="c-line" d="M40 150 C100 150 110 200 150 190 S200 50 230 50 S280 190 310 190 S360 50 390 50 S440 190 470 190 S520 90 545 90 L610 90" />
+    <path class="c-start" d="M40 120v60" />
+    <g class="c-fin"><rect x="604" y="60" width="12" height="60" /></g>
+    {cones.map(([x, y], i) => <path class:list={['c-cone', { hit: i === 2 }]} d={`M${x - 9} ${y + 9}h18l-6-20h-6z`} />)}
+    <circle class="c-mark" cx="310" cy="150" r="22" /><text class="c-n" x="310" y="118" text-anchor="middle">1</text>
+    <rect class="c-mark" x="522" y="36" width="46" height="100" rx="2" /><text class="c-n" x="545" y="28" text-anchor="middle">2</text>
+    <g class="c-kart" transform="translate(96 168) rotate(18)"><rect x="-14" y="-8" width="28" height="16" rx="3" /><circle cx="-9" cy="-10" r="3.5" /><circle cx="9" cy="-10" r="3.5" /><circle cx="-9" cy="10" r="3.5" /><circle cx="9" cy="10" r="3.5" /></g>
+  </svg>
+  <figcaption>
+    <ol class="c-leg">
+      <li><i>1</i><b>{pylon[0]}</b><span>{pylon[1]}</span></li>
+      <li><i>2</i><b>{task[0]}</b><span>{task[1]}</span></li>
+    </ol>
+    <p class="c-sum"><span>{de ? 'Fahrzeit' : 'Driving time'}</span><em>+</em><span>{de ? 'Strafsekunden' : 'Penalty seconds'}</span><em>=</em><span class="tot">{de ? 'Gesamtzeit' : 'Total time'}</span></p>
+    <p class="c-note">{de ? 'Schematische Darstellung, kein echter Streckenplan.' : 'Schematic drawing, not a real course plan.'}</p>
+  </figcaption>
+</figure>

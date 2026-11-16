@@ -2,8 +2,10 @@
 // Verein: merges the old pages "Über uns", "Vorstand", "Aktuelles" and the facts of the old start page.
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import SubNav from '../components/SubNav.astro';
 import SectionHead from '../components/SectionHead.astro';
 import MapBlock from '../components/MapBlock.astro';
+import Icon from '../components/Icon.astro';
 import { club, board, meetings, archiveDocs, type Lang } from '../data/club';
 import { href } from '../i18n/routes';
 interface Props { lang: Lang; }
@@ -11,9 +13,9 @@ const { lang } = Astro.props;
 const de = lang === 'de';
 const results = archiveDocs[0]; // 54. ADAC Clubsport Slalom, "Ergebnisse" (the link on the old "Aktuelles" page)
 const abt = [
-  { key: 'kart' as const, k: 'P1–P5', b: 'Jugend-Kart-Slalom', p: de ? 'Unsere Jugendgruppe: Training jeden Samstag um 15 Uhr.' : 'Our youth group: training every Saturday at 3 pm.', go: de ? 'Zum Kart-Slalom' : 'To kart slalom' },
-  { key: 'clubsport' as const, k: de ? 'Mit dem eigenen Auto' : 'In your own car', b: 'Clubsport-Slalom', p: de ? '2026 lief der 55. ADAC Automobil-Clubsport-Slalom des ACH.' : 'In 2026 the ACH ran its 55th ADAC Automobile Clubsport Slalom.', go: de ? 'Zum Clubsport' : 'To clubsport' },
-  { key: 'oldtimer' as const, k: de ? 'Oldie-Team' : 'Classics team', b: de ? 'Oldtimer-Rallye' : 'Classic car rally', p: de ? 'Unterwegs im 1967er Ford Mustang Fastback.' : 'On the road in a 1967 Ford Mustang Fastback.', go: de ? 'Zum Oldie-Team' : 'To the classics team' },
+  { key: 'kart' as const, ic: 'helmet' as const, k: 'P1–P5', b: 'Jugend-Kart-Slalom', p: de ? 'Unsere Jugendgruppe: Training jeden Samstag um 15 Uhr.' : 'Our youth group: training every Saturday at 3 pm.', go: de ? 'Zum Kart-Slalom' : 'To kart slalom' },
+  { key: 'clubsport' as const, ic: 'cone' as const, k: de ? 'Mit dem eigenen Auto' : 'In your own car', b: 'Clubsport-Slalom', p: de ? '2026 lief der 55. ADAC Automobil-Clubsport-Slalom des ACH.' : 'In 2026 the ACH ran its 55th ADAC Automobile Clubsport Slalom.', go: de ? 'Zum Clubsport' : 'To clubsport' },
+  { key: 'oldtimer' as const, ic: 'car' as const, k: de ? 'Oldie-Team' : 'Classics team', b: de ? 'Oldtimer-Rallye' : 'Classic car rally', p: de ? 'Unterwegs im 1967er Ford Mustang Fastback.' : 'On the road in a 1967 Ford Mustang Fastback.', go: de ? 'Zum Oldie-Team' : 'To the classics team' },
 ];
 ---
 <Base lang={lang} page="verein"
@@ -30,6 +32,13 @@ const abt = [
     alt={de ? 'Gelbes Kart unter dem roten Pavillon im Fahrerlager' : 'Yellow kart under the red gazebo in the paddock'}
     caption={de ? 'Fahrerlager unter dem roten Pavillon' : 'Paddock under the red gazebo'} />
 
+  <SubNav label={de ? 'Auf dieser Seite' : 'On this page'} items={[
+    { href: '#ueber-uns', label: de ? 'Über uns' : 'About us' },
+    { href: '#abteilungen', label: de ? 'Abteilungen' : 'Departments' },
+    { href: '#vorstand', label: de ? 'Vorstand' : 'Board' },
+    { href: '#aktuelles', label: de ? 'Aktuelles & Clublokal' : 'News & clubhouse' },
+  ]} />
+
   <section class="sec tight"><div class="w">
     <ul class="stats">
       <li><b>1969</b><span>{de ? 'gegründet am 1. August' : 'founded on 1 August'}</span></li>
@@ -39,7 +48,13 @@ const abt = [
     </ul>
   </div></section>
 
-  <section class="sec paper" id="ueber-uns"><div class="w two">
+  <section class="sec paper" id="ueber-uns"><div class="w" style="margin-bottom:clamp(32px,5vw,56px)">
+    <ol class="tl">
+      <li><b>1969</b><span>{de ? 'gegründet am 1. August' : 'founded on 1 August'}</span></li>
+      <li><b>2019</b><span>{de ? '50 Jahre AC Herringhausen' : '50 years of AC Herringhausen'}</span></li>
+      <li><b>2026</b><span>{de ? '55. ADAC Automobil-Clubsport-Slalom' : '55th ADAC Automobile Clubsport Slalom'}</span></li>
+    </ol>
+  </div><div class="w two">
     <div class="prose">
       <p class="kick"><span>{de ? 'Über uns' : 'About us'}</span></p>
       <h2 style="margin-top:.5em">{de ? '50 Jahre AC Herringhausen 1969–2019' : '50 years of AC Herringhausen 1969–2019'}</h2>
@@ -61,34 +76,34 @@ const abt = [
         </Fragment>
       )}
     </div>
-    <aside class="owl">
+    <div class="owl">
       <p class="kick"><span>{de ? 'Im ADAC' : 'Within the ADAC'}</span></p>
       <p class="h4" style="margin:10px 0 14px">{de ? 'Ortsclub im ADAC Ostwestfalen-Lippe e.V.' : 'Local club (Ortsclub) in the ADAC Ostwestfalen-Lippe e.V.'}</p>
       <a class="owl-tile" href={club.adacOwl} rel="noopener" aria-label={de ? 'ADAC Ostwestfalen-Lippe e.V.: Website öffnen (externer Link)' : 'ADAC Ostwestfalen-Lippe e.V.: open website (external link, German)'}>
         <img src="/img/site/5.jpg" width="348" height="132" loading="lazy" alt={de ? 'Banner: Ortsclub im ADAC Ostwestfalen-Lippe e.V.' : 'Banner: local club in the ADAC Ostwestfalen-Lippe e.V.'} />
       </a>
       <p style="margin-top:12px"><a class="tlink ext" href={club.adacOwl} rel="noopener">adac-owl.de</a>{!de && <span class="mute"> (German)</span>}</p>
-    </aside>
+    </div>
   </div></section>
 
   <section class="sec" id="abteilungen"><div class="w">
     <SectionHead kick={de ? 'Motorsport im ACH' : 'Motorsport at the ACH'} h={[de ? 'Drei' : 'Three', de ? 'Abteilungen' : 'departments']} />
     <ul class="aud abt3">
       {abt.map((a) => (
-        <li><a href={href(a.key, lang)}><span class="k">{a.k}</span><b>{a.b}</b><p>{a.p}</p><span class="go">{a.go} →</span></a></li>
+        <li><a href={href(a.key, lang)}><img class="aud-img" src={`/img/art/o-${a.key}.webp`} width="800" height="800" loading="lazy" alt="" /><Icon name={a.ic} /><span class="k">{a.k}</span><b>{a.b}</b><p>{a.p}</p><span class="go">{a.go} →</span></a></li>
       ))}
     </ul>
   </div></section>
 
-  <section class="sec alt" id="vorstand"><div class="w two">
-    <div>
+  <section class="sec alt" id="vorstand"><div class="w">
+    <div class="vs-head">
       <SectionHead kick={de ? 'Ehrenamt' : 'Volunteers'} h={[de ? 'Unser' : 'Our', de ? 'Vorstand' : 'board']} />
       <p class="lead">{de
         ? 'Diese Mitglieder führen den Verein und seine Abteilungen.'
         : 'These members run the club and its departments. Role titles are translated; the German titles are the official ones.'}</p>
       <div class="cta"><a class="btn" href={href('kontakt', lang)}>{de ? 'Vorstand erreichen' : 'Contact the board'}</a></div>
     </div>
-    <dl class="people">
+    <dl class="people cards">
       {board.map((r) => (
         <div><dt>{r.role[lang]}{!de && <span class="de-role" lang="de"> · {r.role.de}</span>}</dt><dd>{r.people.join(', ')}</dd></div>
       ))}
@@ -122,8 +137,8 @@ const abt = [
     </div>
   </div></section>
 
-  <section class="sec alt"><div class="w">
-    <h2 class="h3">{de ? 'Wie geht es weiter?' : 'Where next?'}</h2>
+  <section class="sec next art art-trophies"><div class="w">
+    <header class="sh"><p class="kick"><span>{de ? 'Wie geht es weiter?' : 'Where next?'}</span></p><h2><span>{de ? 'Der nächste' : 'The next'}</span><span>{de ? 'Schritt' : 'step'}</span></h2></header>
     <div class="cta">
       <a class="btn red" href={href('mitglied', lang)}>{de ? 'Mitglied werden' : 'Join the club'}</a>
       <a class="btn" href={href('termine', lang)}>{de ? 'Termine 2026' : 'Events 2026'}</a>
@@ -134,8 +149,10 @@ const abt = [
 </Base>
 
 <style>
+  .vs-head { margin-bottom: 26px; }
+  .vs-head .sh { margin-bottom: 14px; }
   .owl { max-width: 420px; }
-  .owl-tile { display: inline-block; padding: 14px; background: #fff; border: 1px solid var(--cream-mute); transition: transform .18s; }
+  .owl-tile { display: inline-block; padding: 14px; background: #fff; border: 1px solid var(--cream-mute); transition: transform var(--d1); }
   .owl-tile:hover { transform: translateY(-3px); }
   .owl-tile img { width: 174px; }
   .de-role { color: var(--mute); text-transform: none; letter-spacing: 0; }

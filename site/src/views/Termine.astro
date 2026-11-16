@@ -4,6 +4,8 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
 import EventRows from '../components/EventRows.astro';
+import SubNav from '../components/SubNav.astro';
+import Next from '../components/Next.astro';
 import { events2026, archiveDocs, meetings, type Lang } from '../data/club';
 import { href } from '../i18n/routes';
 import { ui } from '../i18n/ui';
@@ -15,6 +17,10 @@ const today = new Date().toISOString().slice(0, 10);
 const total = events2026.length;
 const done = events2026.filter((e) => e.date < today).length;
 const over = done === total;
+const next = events2026.find((e) => e.date >= today);
+const pos = (d: string) => (((Date.parse(d) - Date.parse('2026-01-01')) / 864e5 / 365) * 100).toFixed(1);
+const months = (de ? ['Jan', 'Apr', 'Jul', 'Okt'] : ['Jan', 'Apr', 'Jul', 'Oct']).map((m, i) => ({ m, x: pos(`2026-${['01', '04', '07', '10'][i]}-01`) }));
+const dm = (d: string) => `${d.slice(8, 10)}.${d.slice(5, 7)}.`;
 const status = de
   ? `Saison 2026: ${done} von ${total} Veranstaltungen gefahren`
   : `Season 2026: ${done} of ${total} events completed`;
@@ -41,16 +47,53 @@ const open = de ? 'Auf adac-sport.com öffnen' : 'Open on adac-sport.com';
     img="/img/galerie/jugend-kart/img-1958.jpg"
     alt={de ? 'Kart auf dem Slalomkurs mit Streckenposten' : 'Kart on the slalom course with a marshal'}
     caption={de ? 'Auf dem Slalomkurs, Streckenposten im Blick' : 'On the slalom course, marshal in view'}>
-    <p class="num tm-status">{status}</p>
   </PageHero>
 
-  <section class="sec" id="saison"><div class="w">
+  <SubNav label={de ? 'Auf dieser Seite' : 'On this page'} items={[
+    { href: '#naechstes', label: de ? 'Als Nächstes' : 'Up next' },
+    { href: '#saison', label: de ? 'Saison 2026' : 'Season 2026' },
+    { href: '#unterlagen', label: de ? 'Ausschreibungen & Ergebnisse' : 'Regulations & results' },
+    { href: '#regelmaessig', label: de ? 'Feste Termine' : 'Regular dates' },
+  ]} />
+
+  <section class="sec tight" id="naechstes" aria-labelledby="nx-h"><div class="w">
+    <div class="feat">
+      <div class="feat-c">
+        <p class="kick"><b>{next ? (de ? 'Nächste Veranstaltung' : 'Next event') : t.nextTraining}</b><span>{next ? next.date.slice(0, 4) : t.weekly}</span></p>
+        {next
+          ? <><h2 id="nx-h">{next.title[lang]}</h2>{next.place && <p>{next.place[lang]}</p>}{next.note && <p class="yel">{next.note[lang]}</p>}</>
+          : <><h2 id="nx-h">{de ? 'Kart-Training, jeden Samstag' : 'Kart training, every Saturday'}</h2>
+              <p><span data-next-date>{t.saturday}</span> · {t.clock} · {t.trainingPlace} · {t.trainingNote}</p></>}
+        <div class="cta">
+          {next
+            ? <a class="btn red" href="#unterlagen">{t.ausschreibung} &amp; {t.ergebnisse}</a>
+            : <a class="btn red" href={href('kart', lang, '#probetraining')}>{t.trial}</a>}
+          <a class="btn" href="#saison">{de ? 'Saison 2026' : 'Season 2026'}</a>
+        </div>
+      </div>
+      <div class="feat-t">
+        {next
+          ? <p class="feat-day"><b>{dm(next.date)}</b><span>{next.date.slice(0, 4)}</span></p>
+          : <div class="tw-clock" role="timer" aria-label={t.nextTraining}>
+              <div><b data-cd="d">00</b><span>{t.days}</span></div><div><b data-cd="h">00</b><span>{t.hrs}</span></div><div><b data-cd="m">00</b><span>{t.min}</span></div><div><b data-cd="s">00</b><span>{t.sec}</span></div>
+            </div>}
+      </div>
+    </div>
+  </div></section>
+
+  <section class="sec alt" id="saison"><div class="w">
     <SectionHead kick={de ? 'Veranstaltungen' : 'Events'} h={[de ? 'Saison' : 'Season', '2026']} />
+    <p class="track-cap">{status}</p>
+    <div class="track" aria-hidden="true">
+      <b style={`width:${today.slice(0, 4) > '2026' ? 100 : pos(today)}%`}></b>
+      {events2026.map((e) => <i class:list={{ done: e.date < today }} style={`left:${pos(e.date)}%`}><span>{dm(e.date)}</span></i>)}
+      <p class="mon">{months.map((m) => <span style={`left:${m.x}%`}>{m.m}</span>)}</p>
+    </div>
     {over && <p class="flag">{de ? 'Saison 2026 beendet · Termine 2027 folgen' : 'Season 2026 finished · 2027 dates to follow'}</p>}
     <EventRows lang={lang} />
   </div></section>
 
-  <section class="sec alt" id="unterlagen"><div class="w">
+  <section class="sec" id="unterlagen"><div class="w">
     <SectionHead kick={de ? 'Unterlagen' : 'Documents'} h={[de ? 'Ausschreibungen' : 'Regulations', de ? '& Ergebnisse' : '& results']} />
     <p class="lead">{de
       ? 'Ausschreibungen und Ergebnisse unserer Veranstaltungen werden auf adac-sport.com veröffentlicht. Die Links öffnen die jeweilige Seite dort.'
@@ -71,7 +114,7 @@ const open = de ? 'Auf adac-sport.com öffnen' : 'Open on adac-sport.com';
     </ol>
   </div></section>
 
-  <section class="sec" id="regelmaessig"><div class="w">
+  <section class="sec alt" id="regelmaessig"><div class="w">
     <SectionHead kick={de ? 'Jeden Monat, jede Woche' : 'Every month, every week'} h={[de ? 'Feste' : 'Regular', de ? 'Termine' : 'dates']} />
     <div class="life tm-life">
       {meetings.map((m) => <div class="slot"><b>{m.title[lang]}</b><span>{m.when[lang]}</span><em>{m.time[lang]}</em></div>)}
@@ -83,25 +126,21 @@ const open = de ? 'Auf adac-sport.com öffnen' : 'Open on adac-sport.com';
       {' '}<a class="tlink" href={href('verein', lang, '#aktuelles')}>{de ? 'Anfahrt und Karte' : 'Directions and map'}</a></p>
   </div></section>
 
-  <section class="sec alt"><div class="w">
-    <h2 class="h3">{de ? 'Wie geht es weiter?' : 'Where next?'}</h2>
-    <div class="cta">
-      <a class="btn red" href={href('kart', lang)}>{de ? 'Zum Jugend-Kart-Slalom' : 'Youth kart slalom'}</a>
-      <a class="btn" href={href('clubsport', lang)}>{de ? 'Zum Clubsport-Slalom' : 'Clubsport slalom'}</a>
-      <a class="btn" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
-    </div>
-  </div></section>
+  <Next art="stopwatch" kick={de ? 'Wie geht es weiter?' : 'Where next?'} h={[de ? 'Der nächste' : 'The next', de ? 'Schritt' : 'step']}>
+    <a class="btn red" href={href('kart', lang)}>{de ? 'Zum Jugend-Kart-Slalom' : 'Youth kart slalom'}</a>
+    <a class="btn" href={href('clubsport', lang)}>{de ? 'Zum Clubsport-Slalom' : 'Clubsport slalom'}</a>
+    <a class="btn" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
+  </Next>
 </Base>
 
 <style>
-  .tm-status { display: inline-block; margin-top: 18px; padding: 8px 12px; border: 1px solid var(--edge); font-size: .82rem; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--yel); }
   /* document board: one line per document, like a notice board at the track */
   .board { margin-top: 26px; border-top: 2px solid var(--ink); }
   .board li { display: grid; grid-template-columns: 1fr; gap: 6px 20px; padding: 16px 0; border-bottom: 1px solid var(--line); }
   .b-year { font-weight: 700; font-size: 1rem; color: var(--yel); }
   .b-main { min-width: 0; }
-  .b-main b { display: block; font: 600 1.12rem/1.3 var(--f-b); hyphens: auto; overflow-wrap: anywhere; }
-  .b-main span { display: block; font: 500 .8rem/1.4 var(--f-m); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  .b-main b { display: block; font: 600 var(--t-lg)/1.3 var(--f-b); hyphens: auto; overflow-wrap: anywhere; }
+  .b-main span { display: block; font: 500 var(--t-xs)/1.4 var(--f-m); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
   .board a { justify-self: start; padding-block: 6px; }
   @media (min-width: 760px) {
     .board li { grid-template-columns: 72px 1fr auto; align-items: center; padding-inline: 4px; }

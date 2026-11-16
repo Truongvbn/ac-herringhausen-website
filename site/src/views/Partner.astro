@@ -8,16 +8,6 @@ import { href } from '../i18n/routes';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const de = lang === 'de';
-// Real pixel sizes of the logo files in public/img/partner (club.ts carries 0/0).
-const size: Record<string, [number, number]> = {
-  '/img/partner/adac.jpg': [296, 392],
-  '/img/partner/logo_herforder_pils.jpg': [378, 149],
-  '/img/partner/logo-dks-m-strich.gif': [510, 168],
-  '/img/partner/fahrschule_kronsbein.jpg': [1280, 926],
-  '/img/partner/optik_goessel.jpg': [1220, 960],
-  '/img/partner/weinrich.jpg': [668, 960],
-  '/img/partner/wachtmann.jpg': [1280, 864],
-};
 ---
 <Base lang={lang} page="partner"
   description={de
@@ -32,7 +22,7 @@ const size: Record<string, [number, number]> = {
     <SectionHead kick={de ? 'Partner, Sponsoren und Freunde' : 'Partners, sponsors and friends'} h={[de ? 'An unserer' : 'On our', de ? 'Seite' : 'side']} />
     <ul class="pwall">
       {partners.map((p) => {
-        const [w, h] = size[p.logo] ?? [p.w || 400, p.h || 250];
+        const [w, h] = [p.w, p.h];
         return (
           <li><a href={p.href} rel="noopener" aria-label={de ? `${p.name}: Website öffnen (externer Link)` : `${p.name}: open website (external link, German)`}>
             <span class="logo"><img src={p.logo} width={w} height={h} loading="lazy" alt={de ? `Logo ${p.name}` : `${p.name} logo`} /></span>
@@ -44,7 +34,7 @@ const size: Record<string, [number, number]> = {
     {!de && <p class="mute" style="margin-top:14px">All partner websites are external and in German.</p>}
   </div></section>
 
-  <section class="sec alt" id="sponsor-werden"><div class="w narrow">
+  <section class="sec art even art-banner" id="sponsor-werden"><div class="w narrow">
     <div class="paper-card">
       <p class="kick"><b>{de ? 'Sponsor werden' : 'Become a sponsor'}</b></p>
       <h2 class="h3" style="margin:14px 0 10px">{de ? 'Sie möchten auch Sponsor werden?' : 'Would you like to become a sponsor too?'}</h2>

@@ -74,8 +74,8 @@ const tel = (m: string) => 'tel:+49' + m.replace(/\s/g, '').replace(/^0/, '');
     </div>
   </div></section>
 
-  <section class="sec alt"><div class="w">
-    <h2 class="h3">{de ? 'Persönlich: donnerstags im Clublokal' : 'In person: Thursdays at the clubhouse'}</h2>
+  <section class="sec next"><div class="w">
+    <header class="sh"><p class="kick"><span>{de ? 'Persönlich: donnerstags im Clublokal' : 'In person: Thursdays at the clubhouse'}</span></p><h2><span>{de ? 'Der nächste' : 'The next'}</span><span>{de ? 'Schritt' : 'step'}</span></h2></header>
     <div class="life" style="margin-top:18px">
       {meetings.map((m) => <div class="slot"><b>{m.title[lang]}</b><span>{m.when[lang]}</span><em>{m.time[lang]}</em></div>)}
       <MapBlock lang={lang} />
@@ -95,6 +95,6 @@ const tel = (m: string) => 'tel:+49' + m.replace(/\s/g, '').replace(/^0/, '');
   .contact-list span { padding-block: 3px; }
   .addr { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
   .addr address { font-style: normal; padding: 14px 16px; background: var(--panel); }
-  .addr .k { display: block; margin-bottom: 6px; font: 500 .75rem/1.2 var(--f-m); letter-spacing: .08em; text-transform: uppercase; color: var(--red-t); }
-  .hint { margin: 12px 0 20px; max-width: 52ch; font-size: .95rem; }
+  .addr .k { display: block; margin-bottom: 6px; font: 500 var(--t-xs)/1.2 var(--f-m); letter-spacing: .08em; text-transform: uppercase; color: var(--red-t); }
+  .hint { margin: 12px 0 20px; max-width: 52ch; font-size: var(--t-sm); }
 </style>

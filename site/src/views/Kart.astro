@@ -2,6 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
+import SubNav from '../components/SubNav.astro';
+import Next from '../components/Next.astro';
+import Icon from '../components/Icon.astro';
+import Course from '../components/Course.astro';
 import { kartClasses, kartContacts, type Lang } from '../data/club';
 import { href } from '../i18n/routes';
 interface Props { lang: Lang; }
@@ -26,12 +30,17 @@ const parents = de ? [
   { h: 'When and where?', p: 'Training every Saturday at 3 pm on the Goksch company grounds (Gelände der Firma Goksch), except during school holidays. Trial sessions from age 7.' },
 ];
 
+const pIcons = ['flag', 'cone', 'heart', 'helmet', 'shirt', 'clock'] as const;
 const jahrgang = de ? 'Für die genaue Klasseneinteilung ist allerdings nicht das Alter, sondern der Jahrgang ausschlaggebend.' : 'For the exact class, however, it is the year of birth that counts, not the age.';
 const clsText = (c: { code: string; age: Record<Lang, string> }) =>
   (de ? `Klasse ${c.code}: ${c.age.de}. ` : `Class ${c.code}: ${c.age.en}. `) +
   (c.code === 'P1' ? (de ? 'Ein Probetraining ist schon ab 7 Jahren möglich. ' : 'A trial session is possible from age 7. ') : '') +
   (de ? 'Maßgeblich ist der Jahrgang, nicht das genaue Alter.' : 'The year of birth decides, not the exact age.');
 
+const side = [
+  { f: 'img-1921', a: de ? 'Kart auf der Strecke, gelber Sonnenschirm und Pylonen' : 'Kart on track, yellow parasol and pylons', c: de ? 'Auf der Strecke' : 'On track' },
+  { f: 'img-1959', a: de ? 'Gelbes Kart auf dem Slalomkurs vor Bäumen' : 'Yellow kart on the slalom course', c: de ? 'Gegen die Zeit' : 'Against the clock' },
+];
 const photos = [
   { f: 'img-1913', a: de ? 'Gelbes Kart in der Kurve zwischen Pylonen' : 'Yellow kart cornering between pylons' },
   { f: 'img-1915', a: de ? 'Gelbes Kart umrundet orangefarbene Pylonen auf dem Parkplatz' : 'Yellow kart rounding orange pylons on the car park' },
@@ -58,6 +67,14 @@ const photos = [
     </div>
   </PageHero>
 
+  <SubNav label={de ? 'Auf dieser Seite' : 'On this page'} items={[
+    { href: '#eltern', label: de ? 'Für Eltern' : 'For parents' },
+    { href: '#probetraining', label: de ? 'Probetraining' : 'Trial session' },
+    { href: '#klassen', label: de ? 'Klassen P1–P5' : 'Classes P1–P5' },
+    { href: '#regeln', label: de ? 'Regeln & Wertung' : 'Rules & scoring' },
+    { href: '#bilder', label: de ? 'Bilder' : 'Photos' },
+  ]} />
+
   <section class="sec tight" aria-labelledby="kurz-h"><div class="w">
     <h2 class="kick" id="kurz-h" style="margin-bottom:14px"><span>{de ? 'In 30 Sekunden' : 'In 30 seconds'}</span></h2>
     <ul class="stats">
@@ -66,13 +83,19 @@ const photos = [
       <li><b class="yel">+2 s</b><span>{de ? 'je Pylonenfehler' : 'per pylon error'}</span></li>
       <li><b class="yel">+10 s</b><span>{de ? 'je ausgelassener oder falsch befahrener Aufgabe' : 'per missed or wrongly driven task'}</span></li>
     </ul>
+    <div style="margin-top:clamp(24px,4vw,44px)">
+      <Course lang={lang}
+        pylon={['+2 s', de ? 'Strafsekunden für einen Pylonenfehler' : 'penalty seconds for a pylon error']}
+        task={['+10 s', de ? 'Strafsekunden für das Auslassen oder falsche Befahren einer Aufgabe' : 'penalty seconds for missing a task or driving it the wrong way']} />
+    </div>
   </div></section>
 
   <section class="sec paper" id="eltern"><div class="w">
     <SectionHead kick={de ? 'Gut zu wissen' : 'Good to know'} h={[de ? 'Für' : 'For', de ? 'Eltern' : 'parents']} />
     <ul class="kp">
-      {parents.map((x) => <li><h3 class="h4">{x.h}</h3><p>{x.p}</p></li>)}
+      {parents.map((x, i) => <li><span class="ic-b"><Icon name={pIcons[i]} /></span><h3 class="h4">{x.h}</h3><p>{x.p}</p></li>)}
       <li class="who">
+        <span class="ic-b"><Icon name="users" /></span>
         <h3 class="h4">{de ? 'Mit wem spreche ich?' : 'Who do I talk to?'}</h3>
         <p>{de ? 'Ansprechpartner sind Detlef Kollmeier und Uwe Ritter.' : 'Your contacts are Detlef Kollmeier and Uwe Ritter.'}</p>
         <a class="tlink" href="#probetraining">{de ? 'Telefon und E-Mail' : 'Phone and e-mail'} →</a>
@@ -80,7 +103,7 @@ const photos = [
     </ul>
   </div></section>
 
-  <section class="sec paper kp-next" id="probetraining"><div class="w two">
+  <section class="sec" id="probetraining"><div class="w two">
     <div>
       <SectionHead kick={de ? 'Probetraining' : 'Trial session'} h={[de ? 'In drei Schritten' : 'Three steps', de ? 'ins Kart' : 'into the kart']} />
       <p class="lead" style="margin-bottom:24px">{de
@@ -105,8 +128,8 @@ const photos = [
         {kartContacts.map((c) => (
           <li>
             <b>{c.name}</b>
-            <span>{de ? 'Mobil' : 'Mobile'}: <a href={tel(c.mobile)}>{c.mobile}</a></span>
-            <span>{de ? 'E-Mail' : 'E-mail'}: <a href={`mailto:${c.email}`}>{c.email}</a></span>
+            <span><Icon name="phone" />{de ? 'Mobil' : 'Mobile'}: <a href={tel(c.mobile)}>{c.mobile}</a></span>
+            <span><Icon name="mail" />{de ? 'E-Mail' : 'E-mail'}: <a href={`mailto:${c.email}`}>{c.email}</a></span>
           </li>
         ))}
       </ul>
@@ -152,9 +175,18 @@ const photos = [
     </div>
   </div></section>
 
-  <section class="sec paper" id="regeln"><div class="w">
-    <div class="prose">
-      <h2 style="margin-top:0">{de ? 'Was ist Kartslalom?' : 'What is kart slalom?'}</h2>
+  <section class="sec paper" id="regeln"><div class="w kr has-side">
+    <nav class="kr-toc" aria-label={de ? 'Regeln und Wertung' : 'Rules and scoring'}>
+      <p class="kick"><b>{de ? 'Regeln' : 'Rules'}</b><span>{de ? 'in vier Abschnitten' : 'in four parts'}</span></p>
+      <ol>
+        <li><a href="#r-was">{de ? 'Was ist Kartslalom?' : 'What is kart slalom?'}</a></li>
+        <li><a href="#r-laeufe">{de ? 'Läufe und Wertung' : 'Runs and scoring'}</a></li>
+        <li><a href="#r-wettbewerbe">{de ? 'Wettbewerbe und Meisterschaften' : 'Competitions and championships'}</a></li>
+        <li><a href="#r-klassen">{de ? 'Klassen' : 'Classes'}</a></li>
+      </ol>
+    </nav>
+    <div class="prose wide">
+      <h2 id="r-was" style="margin-top:0">{de ? 'Was ist Kartslalom?' : 'What is kart slalom?'}</h2>
       <p>{de
         ? 'Kartslalom ist die Breitensportvariante des Kartsports. Hierbei wird mit Karts mit Viertaktmotoren auf Parkplätzen oder ähnlichen befestigten Plätzen auf einem mit Pylonen abgesteckten Kurs gegen die Zeit gefahren. Dabei ist immer nur ein Fahrer auf der Strecke.'
         : 'Kart slalom is the grassroots form of karting. Karts with four-stroke engines are driven against the clock on car parks or similar paved areas, on a course marked out with pylons. There is only ever one driver on the track.'}</p>
@@ -162,7 +194,7 @@ const photos = [
         ? 'Kartslalom wird hauptsächlich von Kindern und Jugendlichen von 8 bis 18 Jahren ausgeübt. Der ursprüngliche Jugendkartslalom wurde in den 1980er Jahren erfunden. Es gibt jedoch mittlerweile auch Sparten, bei denen die Altersgrenzen nach oben offen sind.'
         : 'Kart slalom is mainly practised by children and young people aged 8 to 18. The original youth kart slalom was invented in the 1980s. By now, however, there are also branches of the sport with no upper age limit.'}</p>
 
-      <h2>{de ? 'Läufe und Wertung' : 'Runs and scoring'}</h2>
+      <h2 id="r-laeufe">{de ? 'Läufe und Wertung' : 'Runs and scoring'}</h2>
       <p>{de
         ? 'Ein Jugendkartslalom wird in drei separaten Läufen auf einem Parcours durchgeführt, von denen der erste ein Trainingslauf ist und die beiden weiteren Läufe in die Wertung einfließen. Dabei werden sowohl die Zeit als auch die erzielten Fehler gewertet. Die in Sekunden umgerechneten Fehler werden auf die erreichte Fahrzeit addiert, und der Fahrer mit der geringsten Gesamtzeit gewinnt.'
         : 'A youth kart slalom consists of three separate runs on one course: the first is a practice run, the other two count towards the result. Both the time and the errors made are scored. The errors are converted into seconds and added to the driving time, and the driver with the lowest total time wins.'}</p>
@@ -174,7 +206,7 @@ const photos = [
         ? 'Beim Jugend-Kart-Slalom geht es also neben der Geschwindigkeit hauptsächlich um Geschick, Koordination und Konzentration. Sehr wichtig ist uns außerdem Hilfsbereitschaft und, aufgrund der unterschiedlichen Altersgruppen, der soziale Umgang miteinander.'
         : 'So besides speed, youth kart slalom is mainly about skill, coordination and concentration. Helpfulness also matters a great deal to us and, because of the different age groups, so does the way everyone treats one another.'}</p>
 
-      <h2>{de ? 'Wettbewerbe und Meisterschaften' : 'Competitions and championships'}</h2>
+      <h2 id="r-wettbewerbe">{de ? 'Wettbewerbe und Meisterschaften' : 'Competitions and championships'}</h2>
       <p>{de
         ? 'An den Sonntagen nach dem Training messen sich die Kinder und Jugendlichen dann mit denen der anderen Vereine in OWL. Sämtliche Wettbewerbe sind in einer Meisterschaft zusammengefasst.'
         : 'On the Sundays after training, the children and young people then compete against those of the other clubs in OWL (Ostwestfalen-Lippe). All competitions are combined into one championship.'}</p>
@@ -182,15 +214,18 @@ const photos = [
         ? 'Die Meisterschaften finden auf regionaler Ebene statt. Die besten Fahrer aus den Regionen können sich schließlich für überregionale Meisterschaften qualifizieren, wie beispielsweise zum Bundesendlauf des ADAC, aber auch zum ACV Endlauf oder zum Endlauf zur Deutschen Meisterschaft des DMSB. Neben ADAC, ACV und DMSB sind auch der AvD und der DMV in weiten Teilen Deutschlands aktiv.'
         : 'The championships are held at regional level. The best drivers from the regions can finally qualify for national championships, for example the ADAC Bundesendlauf (national final), but also the ACV Endlauf or the final of the DMSB Deutsche Meisterschaft (German championship). Besides ADAC, ACV and DMSB, the AvD and the DMV are also active in large parts of Germany.'}</p>
 
-      <h2>{de ? 'Klassen' : 'Classes'}</h2>
+      <h2 id="r-klassen">{de ? 'Klassen' : 'Classes'}</h2>
       <p>{de
         ? 'Beim Kartslalom wird in der Regel klassenweise gestartet. Diese Klassen sind nach Altersstufen (bei der Sparte Clubsport-Kartslalom/Kart 2000 dazu noch nach Hubraum der Karts) eingeteilt. Die Einteilung beim Jugendkartslalom im ADAC OWL reicht von P1 (ca. 8–9 Jahre) bis P5 (ca. 16–18 Jahre).'
         : 'In kart slalom, drivers normally start class by class. The classes are divided by age group (and, in the Clubsport-Kartslalom/Kart 2000 branch, also by the engine displacement of the karts). In youth kart slalom in the ADAC OWL they range from P1 (approx. 8–9 years) to P5 (approx. 16–18 years).'} {jahrgang}</p>
       <p><a href="#klassen">{de ? 'Zur Klassenübersicht P1 bis P5' : 'To the class overview P1 to P5'}</a></p>
     </div>
+    <aside class="kr-side" aria-label={de ? 'Bilder vom Slalomkurs' : 'Photos from the slalom course'}>
+      {side.map((p) => <figure><img src={`${G}${p.f}.jpg`} loading="lazy" width="1280" height="853" alt={p.a} /><figcaption>{p.c}</figcaption></figure>)}
+    </aside>
   </div></section>
 
-  <section class="sec"><div class="w">
+  <section class="sec" id="bilder"><div class="w">
     <SectionHead kick={de ? 'Galerie' : 'Gallery'} h={[de ? 'So sieht' : 'What it', de ? 'das aus' : 'looks like']} />
     <ul class="kph">
       {photos.map((p) => (
@@ -200,18 +235,13 @@ const photos = [
     <div class="cta"><a class="btn sm" href={href('galerie', lang, '#jugend-kart')}>{de ? 'Alle Bilder im Album Jugend-Kart' : 'All photos in the youth kart album'}</a></div>
   </div></section>
 
-  <section class="sec alt"><div class="w">
-    <SectionHead kick={de ? 'Wie geht es weiter?' : 'What next?'} h={[de ? 'Der nächste' : 'The next', de ? 'Schritt' : 'step']} />
-    <p class="lead">{de
-      ? 'Meldet euch zum Probetraining, schaut in die Termine oder lernt den Verein kennen.'
-      : 'Get in touch for a trial session, look at the events or get to know the club.'}</p>
-    <div class="cta">
-      <a class="btn red" href="#probetraining">{de ? 'Zum Probetraining melden' : 'Ask for a trial session'}</a>
-      <a class="btn" href={href('termine', lang)}>{de ? 'Termine' : 'Events'}</a>
-      <a class="btn" href={href('mitglied', lang)}>{de ? 'Mitglied werden' : 'Join the club'}</a>
-      <a class="btn" href={href('verein', lang, '#vorstand')}>{de ? 'Jugendleiter und Vorstand' : 'Youth leaders and board'}</a>
-    </div>
-  </div></section>
+  <Next art="kart" kick={de ? 'Wie geht es weiter?' : 'What next?'} h={[de ? 'Der nächste' : 'The next', de ? 'Schritt' : 'step']}
+    lead={de ? 'Meldet euch zum Probetraining, schaut in die Termine oder lernt den Verein kennen.' : 'Get in touch for a trial session, look at the events or get to know the club.'}>
+    <a class="btn red" href="#probetraining">{de ? 'Zum Probetraining melden' : 'Ask for a trial session'}</a>
+    <a class="btn" href={href('termine', lang)}>{de ? 'Termine' : 'Events'}</a>
+    <a class="btn" href={href('mitglied', lang)}>{de ? 'Mitglied werden' : 'Join the club'}</a>
+    <a class="btn" href={href('verein', lang, '#vorstand')}>{de ? 'Jugendleiter und Vorstand' : 'Youth leaders and board'}</a>
+  </Next>
 </Base>
 
 <style>
@@ -221,18 +251,19 @@ const photos = [
   .kp h3 { margin-bottom: 6px; hyphens: auto; }
   .kp p { color: var(--cream-mute); }
   .kp .tlink { display: inline-block; margin-top: 10px; }
-  .kp-next { padding-top: 0; }
-  .kp-next > .w { padding-top: clamp(40px, 6vw, 80px); background: linear-gradient(var(--cream-ink), var(--cream-ink)) top center / calc(100% - 2 * var(--gut)) 2px no-repeat; }
+  .kp .ic-b { margin-bottom: 14px; }
+  .kp li.who { display: grid; grid-template-columns: 48px 1fr; gap: 0 16px; align-items: start; }
+  .kp li.who .ic-b { grid-row: span 3; margin: 0; }
   .contact-list a { text-underline-offset: 3px; }
   .ktab-w { overflow-x: auto; }
   .ktab { width: 100%; border-collapse: collapse; border-top: 2px solid var(--ink); }
-  .ktab caption { text-align: left; padding-bottom: 10px; font: 500 .78rem/1.3 var(--f-m); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  .ktab caption { text-align: left; padding-bottom: 10px; font: 500 var(--t-xs)/1.3 var(--f-m); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
   .ktab th, .ktab td { padding: 11px 12px 11px 0; text-align: left; border-bottom: 1px solid var(--line); }
-  .ktab thead th { font: 500 .75rem/1.2 var(--f-m); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+  .ktab thead th { font: 500 var(--t-xs)/1.2 var(--f-m); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
   .ktab tbody th { width: 5.5em; font: italic 800 1.6rem/1 var(--f-d); }
   .kph { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .kph a { display: block; overflow: hidden; background: var(--panel); }
-  .kph img { width: 100%; aspect-ratio: 3/2; object-fit: cover; transition: scale .4s; }
+  .kph img { width: 100%; aspect-ratio: 3/2; object-fit: cover; transition: scale var(--d3); }
   .kph a:hover img { scale: 1.05; }
   @media (min-width: 560px) { .kp { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 900px) { .kp { grid-template-columns: repeat(3, 1fr); } .kp li.who { grid-column: 1 / -1; } .kph { grid-template-columns: repeat(4, 1fr); } }

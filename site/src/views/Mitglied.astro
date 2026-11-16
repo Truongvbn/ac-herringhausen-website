@@ -3,6 +3,7 @@
 // (Beitrittserklaerung.pdf, Satzung.pdf, Haftungsausschluss.pdf).
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import SubNav from '../components/SubNav.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Downloads from '../components/Downloads.astro';
 import { club, meetings, downloads, type Lang } from '../data/club';
@@ -40,6 +41,14 @@ const satzung: { p: string; h: string; t: string }[] = de ? [
     img="/img/galerie/jugend-kart/img-1910.jpg"
     alt={de ? 'Zwei gelbe Karts warten am Start' : 'Two yellow karts waiting at the start'}
     caption={de ? 'Zwei Karts warten am Start' : 'Two karts waiting at the start'} />
+
+  <SubNav label={de ? 'Auf dieser Seite' : 'On this page'} items={[
+    { href: '#beitritt', label: de ? 'Beitritt' : 'Joining' },
+    { href: '#unterlagen', label: de ? 'Dokumente' : 'Documents' },
+    { href: '#satzung', label: de ? 'Satzung' : 'Statutes' },
+    { href: '#haftungsausschluss', label: de ? 'Haftungsausschluss' : 'Liability waiver' },
+    { href: '#kennenlernen', label: de ? 'Clublokal' : 'Clubhouse' },
+  ]} />
 
   <section class="sec paper" id="beitritt"><div class="w two">
     <div>
@@ -99,7 +108,7 @@ const satzung: { p: string; h: string; t: string }[] = de ? [
     </div>
   </div></section>
 
-  <section class="sec paper mg-line" id="unterlagen"><div class="w two">
+  <section class="sec" id="unterlagen"><div class="w two">
     <div>
       <SectionHead kick="Downloads" h={[de ? 'Drei' : 'Three', de ? 'Dokumente' : 'documents']} />
       <p class="lead">{de
@@ -109,7 +118,7 @@ const satzung: { p: string; h: string; t: string }[] = de ? [
     <Downloads lang={lang} />
   </div></section>
 
-  <section class="sec paper mg-line" id="satzung"><div class="w">
+  <section class="sec paper" id="satzung"><div class="w">
     <SectionHead kick={de ? 'Stand: Herford, Februar 2019' : 'Version: Herford, February 2019'} h={[de ? 'Die Satzung' : 'The statutes', de ? 'in Kürze' : 'in brief']} />
     <p class="lead">{de
       ? 'Sechs Punkte aus der Satzung des Automobil-Club Herringhausen e.V. im ADAC, die für neue Mitglieder wichtig sind. Verbindlich ist allein der vollständige Text im PDF.'
@@ -122,7 +131,7 @@ const satzung: { p: string; h: string; t: string }[] = de ? [
     <p style="margin-top:20px"><a class="tlink" href={downloads[1].file}>{de ? 'Vollständige Satzung lesen (PDF, 5 Seiten)' : 'Read the full statutes (PDF, 5 pages, German)'}</a></p>
   </div></section>
 
-  <section class="sec paper mg-line" id="haftungsausschluss"><div class="w">
+  <section class="sec alt" id="haftungsausschluss"><div class="w">
     <div class="prose">
       <p class="kick"><span>{de ? 'Für Veranstaltungen, nicht für den Beitritt' : 'For events, not for joining'}</span></p>
       <h2 style="margin-top:.5em">{de ? 'Wozu der Haftungsausschluss?' : 'What is the liability waiver for?'}</h2>
@@ -136,12 +145,12 @@ const satzung: { p: string; h: string; t: string }[] = de ? [
     </div>
   </div></section>
 
-  <section class="sec paper mg-line" id="kennenlernen"><div class="w">
+  <section class="sec next" id="kennenlernen"><div class="w">
     <SectionHead kick={de ? 'Erst mal kennenlernen' : 'Get to know us first'} h={[de ? 'Donnerstags' : 'Thursdays', de ? 'im Clublokal' : 'at the clubhouse']} />
-    <ul class="mg-meet">
-      {meetings.map((m) => <li><b>{m.title[lang]}</b><span>{m.when[lang]}</span><span class="num">{m.time[lang]}</span></li>)}
-      <li><b>{de ? 'Clublokal' : 'Clubhouse'}</b><span>{club.clublokal.name}</span><span>{club.clublokal.street}, {club.clublokal.city}</span></li>
-    </ul>
+    <div class="life mg-meet">
+      {meetings.map((m) => <div class="slot"><b>{m.title[lang]}</b><span>{m.when[lang]}</span><em>{m.time[lang]}</em></div>)}
+      <div class="slot"><b>{de ? 'Clublokal' : 'Clubhouse'}</b><span>{club.clublokal.name}</span><span>{club.clublokal.street}, {club.clublokal.city}</span></div>
+    </div>
     <div class="cta">
       <a class="btn red" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
       <a class="btn" href={href('verein', lang)}>{de ? 'Verein und Vorstand' : 'Club and board'}</a>
@@ -151,23 +160,17 @@ const satzung: { p: string; h: string; t: string }[] = de ? [
 </Base>
 
 <style>
-  .mg-line { border-top: 1px solid rgba(29, 19, 19, .18); }
+  @media (min-width: 900px) { .mg-meet { grid-template-columns: repeat(3, 1fr); } }
   .steps p { margin-top: 4px; max-width: 34em; }
   .adr { margin: 8px 0 10px; padding: 12px 14px; background: #fff; border-left: 4px solid var(--red-d); font-style: normal; font-weight: 600; max-width: 26em; }
   .mg-par { margin-top: 26px; border-top: 2px solid var(--cream-ink); }
   .mg-par > div { display: grid; gap: 6px 28px; padding: 16px 0; border-bottom: 1px solid rgba(29, 19, 19, .18); }
   .mg-par dt { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
   .mg-par dt .num { font-weight: 700; color: var(--red-d); white-space: nowrap; }
-  .mg-par dt b { font: 600 1.12rem/1.3 var(--f-b); hyphens: auto; }
+  .mg-par dt b { font: 600 var(--t-lg)/1.3 var(--f-b); hyphens: auto; }
   .mg-par dd { max-width: 34em; }
-  .mg-meet { display: grid; gap: 12px; }
-  .mg-meet li { padding: 16px 18px; background: #fff; border-top: 2px solid var(--cream-ink); }
-  .mg-meet b { display: block; font: 600 1.15rem/1.25 var(--f-b); }
-  .mg-meet span { display: block; color: var(--cream-mute); }
-  .mg-meet .num { margin-top: 6px; font-weight: 700; color: var(--red-d); }
   @media (min-width: 760px) {
     .mg-par > div { grid-template-columns: minmax(220px, 30%) 1fr; }
     .mg-par dt { flex-direction: column; gap: 2px; }
-    .mg-meet { grid-template-columns: repeat(3, 1fr); }
   }
 </style>

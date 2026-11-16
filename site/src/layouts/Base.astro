@@ -38,6 +38,10 @@ const abs = (p: string) => new URL(p, Astro.site).href;
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={abs('/img/art/og.jpg')} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_GB'} />
   </head>
   <body data-page={page} data-lang={lang} class:list={{ 'show-drafts': import.meta.env.PUBLIC_SHOW_DRAFTS !== '0' }}>

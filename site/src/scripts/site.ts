@@ -77,6 +77,25 @@ $$<HTMLElement>('[data-cls]').forEach((box) => {
   }));
 });
 
+// --- section nav: mark the section in view
+$$<HTMLElement>('[data-subnav]').forEach((nav) => {
+  const links = $$<HTMLAnchorElement>('a[href^="#"]', nav);
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    links.forEach((a) => { const on = a.hash === '#' + e.target.id; a.setAttribute('aria-current', String(on));
+      if (on) a.closest('ol')!.scrollLeft = a.offsetLeft - 16; }); // never scrollIntoView here: it cancels the visitor's own scroll
+  }), { rootMargin: '-30% 0px -60% 0px' });
+  links.forEach((a) => { const t = document.getElementById(a.hash.slice(1)); if (t) io.observe(t); });
+});
+
+// --- entrance: blocks below the fold fade up once, then stay solid. Not tied to scroll position.
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  $$<HTMLElement>('.sh, .row, .aud li, .slot, .kp li, .pan-w, .probe, .feat, .dl li, .board li, .stats, .contact-list li, .steps li, .kph li, .plogos li, .kr-toc, .kr-side, .prose > h2')
+    .forEach((el, i) => { if (el.getBoundingClientRect().top < innerHeight) return;
+      el.classList.add('rv'); el.style.transitionDelay = `${(i % 4) * 60}ms`; io.observe(el); });
+}
+
 // --- header start lights double as a reading-progress meter (desktop home only)
 const lights = $$('.lights.on-home i');
 if (lights.length) {

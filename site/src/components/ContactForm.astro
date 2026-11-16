@@ -38,7 +38,7 @@ const L = {
     <span class="err" id={`${id}-betreff-e`} hidden>{L.eSubj}</span></label>
   <label><span class="lbl">{L.msg} <span aria-hidden="true">*</span></span>
     <textarea name="nachricht" id={`${id}-nachricht`} required maxlength={guestbook ? 3000 : undefined} aria-describedby={`${id}-nachricht-e`}></textarea>
-    {guestbook && <span class="mute" style="font-size:.88rem">{L.max}</span>}
+    {guestbook && <span class="mute" style="font-size:var(--t-sm)">{L.max}</span>}
     <span class="err" id={`${id}-nachricht-e`} hidden>{L.eMsg}</span></label>
   <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
   <div class="fld">
@@ -48,7 +48,7 @@ const L = {
   </div>
   <div class="f-end">
     <button class="btn red" type="submit">{L.send}</button>
-    <p class="mute" style="font-size:.88rem">* {L.req}</p>
+    <p class="mute" style="font-size:var(--t-sm)">* {L.req}</p>
   </div>
   <p class="f-note note-box" role="status" hidden>{L.pending}</p>
 </form>

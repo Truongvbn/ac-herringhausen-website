@@ -1,0 +1,8 @@
+---
+// Section nav for long pages: sticks under the header, marks the section in view (scripts/site.ts).
+interface Props { label: string; items: { href: string; label: string }[]; }
+const { label, items } = Astro.props;
+---
+<nav class="subnav" aria-label={label} data-subnav><ol class="w">
+  {items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+</ol></nav>

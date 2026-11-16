@@ -1,6 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import SubNav from '../components/SubNav.astro';
+import Next from '../components/Next.astro';
+import Course from '../components/Course.astro';
 import SectionHead from '../components/SectionHead.astro';
 import EventRows from '../components/EventRows.astro';
 import { events2026, archiveDocs, type Lang } from '../data/club';
@@ -26,10 +29,16 @@ const draftWhy = de ? 'neu geschrieben nach DMSB-/ADAC-OWL-Ausschreibung, nicht 
     alt={de ? 'Gasse aus orangefarbenen Pylonen auf einem Parkplatz, rechts ein ADAC-Transporter' : 'Lane of orange pylons on a car park, an ADAC van on the right'}
     caption={de ? 'Pylonengasse, aufgenommen beim Jugend-Kart-Slalom. Ein Foto vom Automobil-Slalom fehlt noch.' : 'Pylon lane, photographed at the youth kart slalom. A photo of the car slalom is still missing.'} />
 
+  <SubNav label={de ? 'Auf dieser Seite' : 'On this page'} items={[
+    { href: '#saison', label: de ? 'Saison 2026' : 'Season 2026' },
+    { href: '#archiv', label: de ? 'Saison 2025' : 'Season 2025' },
+    { href: '#ablauf', label: de ? 'So läuft es ab' : 'How it works' },
+  ]} />
+
   <section class="sec" id="saison"><div class="w">
     <SectionHead kick={de ? 'Termine' : 'Events'} h={[de ? 'Saison' : 'Season', '2026']} />
     <EventRows lang={lang} events={slaloms} training={false} />
-    <h3 class="h3" style="margin:clamp(32px,5vw,56px) 0 16px">{de ? 'Aus der Saison 2025' : 'From the 2025 season'}</h3>
+    <h3 class="h3" id="archiv" style="margin:clamp(32px,5vw,56px) 0 16px">{de ? 'Aus der Saison 2025' : 'From the 2025 season'}</h3>
     <ul class="cs-arch">
       {archive.map((d) => (
         <li><b>{d.event[lang]}</b>
@@ -39,20 +48,29 @@ const draftWhy = de ? 'neu geschrieben nach DMSB-/ADAC-OWL-Ausschreibung, nicht 
     <div class="cta"><a class="btn" href={href('termine', lang, '#unterlagen')}>{de ? 'Ausschreibungen und Ergebnisse' : 'Regulations and results'}</a></div>
   </div></section>
 
-  <section class="sec paper" id="ablauf"><div class="w">
+  <section class="sec paper" id="ablauf"><div class="w kr">
+    <nav class="kr-toc" aria-label={de ? 'So läuft ein Clubsport-Slalom' : 'How a clubsport slalom works'}>
+      <p class="kick"><b>{de ? 'Ablauf' : 'Format'}</b><span>{de ? 'in vier Abschnitten' : 'in four parts'}</span></p>
+      <ol>
+        <li><a href="#c-auto">{de ? 'Das Fahrzeug' : 'The car'}</a></li>
+        <li><a href="#c-wer">{de ? 'Wer fahren darf' : 'Who may drive'}</a></li>
+        <li><a href="#c-laeufe">{de ? 'Läufe und Wertung' : 'Runs and scoring'}</a></li>
+        <li><a href="#c-gruppen">{de ? 'Gruppen im ADAC OWL' : 'Groups in the ADAC OWL'}</a></li>
+      </ol>
+    </nav>
     <div data-draft={draftWhy}>
-      <div class="prose">
+      <div class="prose wide">
         <h2 style="margin-top:0">{de ? 'So läuft ein Clubsport-Slalom' : 'How a clubsport slalom works'}</h2>
         <p>{de
           ? 'Gefahren wird auf einer befestigten, ebenen Strecke, die mit Pylonen markiert ist. Ein Lauf ist 400 bis 1000 Meter lang und hat mindestens zehn Richtungswechsel. Es ist immer nur ein Fahrzeug auf der Strecke. Gestartet wird stehend, die Zeit nimmt eine Lichtschranke.'
           : 'The course is paved and level and is marked out with pylons. One run is 400 to 1000 metres long and has at least ten changes of direction. There is only ever one car on the course. The start is a standing start, and a light beam takes the time.'}</p>
 
-        <h3>{de ? 'Das Fahrzeug' : 'The car'}</h3>
+        <h3 id="c-auto">{de ? 'Das Fahrzeug' : 'The car'}</h3>
         <p>{de
           ? 'Zugelassen sind serienmäßige Personenkraftwagen. Sie müssen der StVZO entsprechen, also straßenzugelassen sein; ausgenommen davon ist die verbesserte Gruppe.'
           : 'Series-production passenger cars are eligible. They must comply with the StVZO (German road traffic licensing regulations), i.e. be road legal; the improved group is the exception.'}</p>
 
-        <h3>{de ? 'Wer fahren darf' : 'Who may drive'}</h3>
+        <h3 id="c-wer">{de ? 'Wer fahren darf' : 'Who may drive'}</h3>
         <ul>
           <li>{de ? 'Gültige DMSB-Lizenz (mindestens Nationale Lizenz Stufe C) oder eine Race Card' : 'A valid DMSB licence (at least national licence level C) or a Race Card'}</li>
           <li>{de ? 'Mindestalter 14 Jahre; unter 18 Jahren gelten zusätzliche Voraussetzungen' : 'Minimum age 14; additional requirements apply to under-18s'}</li>
@@ -60,16 +78,19 @@ const draftWhy = de ? 'neu geschrieben nach DMSB-/ADAC-OWL-Ausschreibung, nicht 
           <li>{de ? 'Oberteil, das die Schultern bedeckt, lange Hose und geschlossene Schuhe' : 'A top that covers the shoulders, long trousers and closed shoes'}</li>
         </ul>
 
-        <h3>{de ? 'Läufe und Wertung' : 'Runs and scoring'}</h3>
+        <h3 id="c-laeufe">{de ? 'Läufe und Wertung' : 'Runs and scoring'}</h3>
         <p>{de
           ? 'Ein Trainingslauf mit Zeitnahme ist Pflicht. Danach folgen die Wertungsläufe; ihre Fahrzeiten und Strafsekunden werden addiert.'
           : 'One timed training run is mandatory. The scored runs follow; their times and penalty seconds are added together.'}</p>
+        <Course lang={lang}
+          pylon={['+3 s', de ? 'je umgeworfener oder verschobener Pylone' : 'per pylon knocked over or displaced']}
+          task={['+15 s', de ? 'je ausgelassener Aufgabe' : 'per omitted task']} />
         <ol class="rules">
           <li><b>+3 s</b><span>{de ? 'je umgeworfener oder verschobener Pylone' : 'per pylon knocked over or displaced'}</span></li>
           <li><b>+15 s</b><span>{de ? 'je ausgelassener Aufgabe' : 'per omitted task'}</span></li>
         </ol>
 
-        <h3>{de ? 'Gruppen im ADAC OWL (Stand 2025)' : 'Groups in the ADAC OWL (as of 2025)'}</h3>
+        <h3 id="c-gruppen">{de ? 'Gruppen im ADAC OWL (Stand 2025)' : 'Groups in the ADAC OWL (as of 2025)'}</h3>
         <ul>
           <li>Gruppe 1: Einsteiger{!de && ' (beginners)'}</li>
           <li>Gruppe 2: Jedermann{!de && ' (everyone)'}</li>
@@ -85,17 +106,12 @@ const draftWhy = de ? 'neu geschrieben nach DMSB-/ADAC-OWL-Ausschreibung, nicht 
     </div>
   </div></section>
 
-  <section class="sec alt"><div class="w">
-    <SectionHead kick={de ? 'Wie geht es weiter?' : 'What next?'} h={[de ? 'An den' : 'To the', 'Start']} />
-    <p class="lead">{de
-      ? 'Ausschreibungen und Ergebnisse stehen bei den Terminen. Fragen zum Clubsport-Slalom beantwortet der Verein gern.'
-      : 'Regulations and results are listed with the events. The club is happy to answer questions about clubsport slalom.'}</p>
-    <div class="cta">
-      <a class="btn red" href={href('termine', lang, '#unterlagen')}>{de ? 'Termine und Unterlagen' : 'Events and documents'}</a>
-      <a class="btn" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
-      <a class="btn" href={href('kart', lang)}>{de ? 'Zum Jugend-Kart-Slalom' : 'To youth kart slalom'}</a>
-    </div>
-  </div></section>
+  <Next art="clubsport" kick={de ? 'Wie geht es weiter?' : 'What next?'} h={[de ? 'Der nächste' : 'The next', de ? 'Schritt' : 'step']}
+    lead={de ? 'Ausschreibungen und Ergebnisse stehen bei den Terminen. Fragen zum Clubsport-Slalom beantwortet der Verein gern.' : 'Regulations and results are listed with the events. The club is happy to answer questions about clubsport slalom.'}>
+    <a class="btn red" href={href('termine', lang, '#unterlagen')}>{de ? 'Termine und Unterlagen' : 'Events and documents'}</a>
+    <a class="btn" href={href('kontakt', lang)}>{de ? 'Kontakt aufnehmen' : 'Get in touch'}</a>
+    <a class="btn" href={href('kart', lang)}>{de ? 'Zum Jugend-Kart-Slalom' : 'To youth kart slalom'}</a>
+  </Next>
 </Base>
 
 <style>

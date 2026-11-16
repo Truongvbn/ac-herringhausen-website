@@ -34,6 +34,6 @@ const cols: { h: string; keys: PageKey[] }[] = [
   <div class="w ft-end">
     <span>© {new Date().getFullYear()} {club.name}</span>
     <a href={club.adacOwl} rel="noopener" class="ext">ADAC Ostwestfalen-Lippe</a>
-    <span class="counter" title={t.visitorsPending}>{t.visitors} <b data-counter>– – – – –</b></span>
+    {import.meta.env.PUBLIC_COUNTER === '1' && <span class="counter" title={t.visitorsPending}>{t.visitors} <b data-counter>– – – – –</b></span>}
   </div>
 </footer>

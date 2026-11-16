@@ -64,8 +64,8 @@ const n = entries.length;
     <ContactForm lang={lang} guestbook id="gaestebuch-form" />
   </div></section>
 
-  <section class="sec tight"><div class="w narrow">
-    <h2 class="h3">{de ? 'Lieber direkt?' : 'Prefer a direct line?'}</h2>
+  <section class="sec next art art-guestbook"><div class="w narrow">
+    <header class="sh"><p class="kick"><span>{de ? 'Lieber direkt?' : 'Prefer a direct line?'}</span></p><h2><span>{de ? 'Der nächste' : 'The next'}</span><span>{de ? 'Schritt' : 'step'}</span></h2></header>
     <div class="cta">
       <a class="btn red" href={href('kontakt', lang)}>{de ? 'Kontakt' : 'Contact'}</a>
       <a class="btn" href={href('galerie', lang)}>{de ? 'Galerie' : 'Gallery'}</a>
@@ -80,8 +80,8 @@ const n = entries.length;
   .entry { display: grid; gap: 10px; padding: clamp(18px, 3vw, 28px); background: var(--panel); border-left: 4px solid var(--red); }
   .entry header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
   .entry header b { font: 600 1rem/1.3 var(--f-b); }
-  .entry time { font-size: .82rem; font-weight: 500; color: var(--yel); }
+  .entry time { font-size: var(--t-xs); font-weight: 500; color: var(--yel); }
   .entry p { max-width: 60ch; }
-  .entry .tr { color: var(--mute); font-size: .95rem; }
+  .entry .tr { color: var(--mute); font-size: var(--t-sm); }
   .gb-note { display: grid; gap: 14px; margin: 18px 0 14px; }
-  .hint { margin-bottom: 22px; max-width: 60ch; font-size: .95rem; }</style>
+  .hint { margin-bottom: 22px; max-width: 60ch; font-size: var(--t-sm); }</style>

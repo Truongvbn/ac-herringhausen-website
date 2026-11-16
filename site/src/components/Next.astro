@@ -1,0 +1,11 @@
+---
+// Closing block, identical on every page: where to go from here. Buttons come in through the slot.
+import SectionHead from './SectionHead.astro';
+interface Props { kick: string; h: [string, string?]; lead?: string; art?: string; }
+const { kick, h, lead, art = 'cones' } = Astro.props;
+---
+<section class={`sec next art art-${art}`}><div class="w">
+  <SectionHead kick={kick} h={h} />
+  {lead && <p class="lead">{lead}</p>}
+  <div class="cta"><slot /></div>
+</div></section>

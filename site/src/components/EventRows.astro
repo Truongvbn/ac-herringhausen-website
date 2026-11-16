@@ -7,11 +7,12 @@ interface Props { lang: Lang; events?: Event[]; training?: boolean; }
 const { lang, events = events2026, training = true } = Astro.props;
 const t = ui[lang];
 const today = new Date().toISOString().slice(0, 10);
+const nextDate = events.find((e) => e.date >= today)?.date;
 const dm = (d: string) => `${d.slice(8, 10)}.${d.slice(5, 7)}.`;
 ---
 <ol class="rows">
   {events.map((e) => (
-    <li class="row">
+    <li class:list={['row', { past: e.date < today, next: e.date === nextDate }]}>
       <time class="r-date" datetime={e.date}><b>{dm(e.date)}</b><span>{e.date.slice(0, 4)}</span></time>
       <div class="r-main">
         <h3>{e.title[lang]}</h3>
