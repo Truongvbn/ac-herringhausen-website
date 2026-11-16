@@ -134,7 +134,7 @@ const aud = [
     <div style="margin-top:22px"><Probe lang={lang} /></div>
   </div></section>
 
-  <section class="sec alt" id="verein"><div class="w">
+  <section class="sec paper" id="verein"><div class="w">
     <ul class="stats">
       <li><b>1969</b><span>{de ? 'gegründet am 1. August' : 'founded on 1 August'}</span></li>
       <li><b>{de ? '55.' : '55th'}</b><span>{de ? 'Clubsport-Slalom (2026)' : 'Clubsport slalom (2026)'}</span></li>
@@ -181,7 +181,7 @@ const aud = [
     <Downloads lang={lang} />
   </div></section>
 
-  <section class="sec" id="partner"><div class="w">
+  <section class="sec paper" id="partner"><div class="w">
     <SectionHead kick="Partner" h={[de ? 'An unserer' : 'On our', de ? 'Seite' : 'side']} />
     <ul class="plogos">{partners.map((p) => <li><a href={p.href} rel="noopener" aria-label={de ? `${p.name}: Website öffnen (externer Link)` : `${p.name}: open website (external link, German)`}><img src={p.logo} width={p.w} height={p.h} loading="lazy" alt={de ? `Logo ${p.name}` : `${p.name} logo`} /></a></li>)}</ul>
     <div class="cta">
@@ -197,7 +197,7 @@ const aud = [
 
 <style is:global>
 /* Home only: layered hero, timing tower, scroll-driven photo strip */
-.hero { position: relative; isolation: isolate; overflow: hidden; display: flex; min-height: clamp(470px, calc(82svh - var(--hh)), 700px); background: linear-gradient(180deg, #1d1314, var(--bg)); }
+.hero { position: relative; isolation: isolate; overflow: hidden; display: flex; min-height: clamp(470px, calc(82svh - var(--hh)), 700px); background: linear-gradient(180deg, #2a1f20, var(--bg)); }
 .ly { transform: translate3d(calc(var(--px, 0) * var(--m, 0) * 1px), calc(var(--sy, 0) * var(--k, 0) * 1px + var(--py, 0) * var(--m, 0) * 1px), 0); }
 .hero-lines { --k: .5; --m: 10; position: absolute; inset: 0; z-index: -2; opacity: .8; background: repeating-linear-gradient(0deg, rgba(255, 236, 228, .07) 0 1px, transparent 1px 34px); -webkit-mask-image: linear-gradient(115deg, transparent 30%, #000 60%); mask-image: linear-gradient(115deg, transparent 30%, #000 60%); }
 .hero-ghost { --k: .34; --m: 24; position: absolute; left: var(--gut); top: 3%; z-index: -1; display: flex; flex-direction: column; font: italic 800 clamp(5rem, 15vw, 14.5rem)/.82 var(--f-d); text-transform: uppercase; white-space: nowrap; color: transparent; -webkit-text-stroke: 1.5px rgba(255, 236, 228, .15); user-select: none; }

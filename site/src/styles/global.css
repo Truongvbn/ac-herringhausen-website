@@ -1,15 +1,15 @@
 /* AC Herringhausen: "Startaufstellung" design system.
    Dark broadcast frame, club red for fills, yellow only for timing data, cream paper for reading. */
 :root {
-  --bg: #130e0e; --bg2: #1b1414; --panel: #241a1a; --panel2: #2c2020;
-  --ink: #f4eeea; --mute: #bcaea8;
+  --bg: #1c1617; --bg2: #251d1e; --panel: #2f2526; --panel2: #392d2e;
+  --ink: #f6f1ed; --mute: #d0c5bf;
   --red: #d8121b;      /* fills and large shapes only (3.7:1 on bg) */
   --red-t: #ff6b62;    /* red that is allowed as text on dark (6.9:1) */
   --red-d: #a50c13;    /* red text on cream */
   --yel: #ffd200;      /* timing data only */
   --cream: #f4eadc; --cream2: #eadfce; --cream-ink: #1d1313; --cream-mute: #55443e;
   --edge: #9a8585;     /* borders that carry meaning (inputs, badges, ghost buttons) */
-  --line: rgba(255, 236, 228, .14); /* decorative hairlines only */
+  --line: rgba(255, 236, 228, .19); /* decorative hairlines only */
   --f-d: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
   --f-b: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-m: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
@@ -44,7 +44,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .w { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: max(var(--gut), env(safe-area-inset-left, 0px)) max(var(--gut), env(safe-area-inset-right, 0px)); }
 .w.narrow { max-width: 920px; }
 .sec { padding-block: clamp(48px, 6.5vw, 88px); }
-.sec.alt { background: linear-gradient(rgb(27 20 20 / .9), rgb(27 20 20 / .9)), url(/img/art/asphalt.webp) center / cover var(--bg2); }
+.sec.alt { background: linear-gradient(rgb(37 29 30 / .9), rgb(37 29 30 / .9)), url(/img/art/asphalt.webp) center / cover var(--bg2); }
 .sec.tight { padding-block: clamp(36px, 5vw, 64px); }
 .two { display: grid; gap: 32px; }
 .stack > * + * { margin-top: 1em; }
@@ -161,10 +161,10 @@ html:has(.subnav) { --sub: 46px; }
 .next .sh { margin-bottom: 14px; }
 /* art: one generated still per closing block, subject on the right, text on the dark left. Decorative only. */
 .art { display: grid; align-content: center; min-height: clamp(300px, 36vw, 500px);
-  background: linear-gradient(rgb(27 20 20 / .84), rgb(27 20 20 / .84)), var(--art) 70% center / cover no-repeat var(--bg2); }
+  background: linear-gradient(rgb(37 29 30 / .84), rgb(37 29 30 / .84)), var(--art) 70% center / cover no-repeat var(--bg2); }
 @media (min-width: 760px) {
-  .art { background: linear-gradient(90deg, var(--bg2) 0 30%, rgb(27 20 20 / .78) 52%, rgb(27 20 20 / .12) 88%), var(--art) var(--pos, right center) / cover no-repeat var(--bg2); }
-  .art.even { background: linear-gradient(rgb(27 20 20 / .72), rgb(27 20 20 / .72)), var(--art) center / cover no-repeat var(--bg2); }
+  .art { background: linear-gradient(90deg, var(--bg2) 0 30%, rgb(37 29 30 / .78) 52%, rgb(37 29 30 / .12) 88%), var(--art) var(--pos, right center) / cover no-repeat var(--bg2); }
+  .art.even { background: linear-gradient(rgb(37 29 30 / .72), rgb(37 29 30 / .72)), var(--art) center / cover no-repeat var(--bg2); }
 }
 .art-cones { --art: url(/img/art/cones.webp); }
 .art-kart { --art: url(/img/art/kart.webp); }
@@ -183,7 +183,7 @@ html:has(.subnav) { --sub: 46px; }
 @media (max-width: 559px) { .aud-img { aspect-ratio: 5/2; } }
 
 /* subpage hero */
-.ph { position: relative; isolation: isolate; overflow: hidden; background: linear-gradient(180deg, #1d1314, var(--bg)); border-bottom: 1px solid var(--line); }
+.ph { position: relative; isolation: isolate; overflow: hidden; background: linear-gradient(180deg, #2a1f20, var(--bg)); border-bottom: 1px solid var(--line); }
 .ph-in { position: relative; display: grid; gap: 24px; align-items: end; padding-block: clamp(34px, 6vw, 72px) clamp(28px, 4vw, 48px); }
 .ph-ghost { position: absolute; left: -1vw; top: 2%; z-index: -1; font: italic 800 clamp(5rem, 15vw, 13rem)/.82 var(--f-d); text-transform: uppercase; white-space: nowrap; color: transparent; -webkit-text-stroke: 1.5px rgba(255, 236, 228, .13); user-select: none; pointer-events: none; }
 .ph h1 { margin-top: 14px; font: italic 800 clamp(2.6rem, 8vw, 5.6rem)/.88 var(--f-d); text-transform: uppercase; hyphens: auto; overflow-wrap: anywhere; text-wrap: balance; }
@@ -318,7 +318,7 @@ a:hover > .go, a:hover .pan-c .go { translate: 6px 0; }
 .pan-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(19, 14, 14, .96) 0, rgba(19, 14, 14, .9) 38%, rgba(19, 14, 14, .45) 62%, transparent 82%); }
 .pan-c { position: relative; isolation: isolate; }
 /* text plate: keeps the copy readable when it grows taller than the photo's own gradient (phones) */
-.pan-c::before { content: ""; position: absolute; inset: -56px -22px -22px; z-index: -1; background: linear-gradient(0deg, rgb(19 14 14 / .93) 0, rgb(19 14 14 / .93) calc(100% - 56px), transparent); }
+.pan-c::before { content: ""; position: absolute; inset: -56px -22px -22px; z-index: -1; background: linear-gradient(0deg, rgb(28 22 23 / .93) 0, rgb(28 22 23 / .93) calc(100% - 56px), transparent); }
 .pan h3 { margin: 10px 0 8px; font: italic 800 clamp(1.9rem, 3.6vw, 2.7rem)/.92 var(--f-d); text-transform: uppercase; hyphens: auto; }
 .pan p { max-width: 54ch; }
 .pan .go { display: inline-block; margin-top: 14px; font: italic 800 1.05rem/1 var(--f-d); letter-spacing: .05em; text-transform: uppercase; color: var(--red-t); }
@@ -500,7 +500,7 @@ a:hover > .go, a:hover .pan-c .go { translate: 6px 0; }
 
 /* draft marker: blocks whose text is NOT from the old site. Visible while body.show-drafts is set. */
 .show-drafts [data-draft] { position: relative; margin-top: 56px !important; outline: 2px dashed var(--yel); outline-offset: 6px; }
-.show-drafts [data-draft]::before { content: "Entwurf · " attr(data-draft); position: absolute; right: 0; top: -6px; translate: 0 -100%; z-index: 2; max-width: 100%; padding: 3px 8px; background: var(--yel); color: #1d1313; font: 700 var(--t-xs)/1.3 var(--f-m); }
+.show-drafts [data-draft]::before { content: "Entwurf · " attr(data-draft); position: absolute; right: 0; top: -6px; translate: 0 -100%; z-index: 2; max-width: 100%; padding: 3px 8px; background: #ffd200; color: #1d1313; font: 700 var(--t-xs)/1.3 var(--f-m); }
 
 /* footer */
 .ft { border-top: 2px solid var(--red); background: #0c0808; font-size: var(--t-sm); color: var(--mute); }
@@ -582,9 +582,9 @@ a:hover > .go, a:hover .pan-c .go { translate: 6px 0; }
 }
 /* round 3: sponsor card sits left so the banner stays visible; oldtimer text gets a calmer backdrop */
 @media (min-width: 760px) {
-  .art-banner.even { background: linear-gradient(90deg, rgb(27 20 20 / .86) 0 45%, rgb(27 20 20 / .25)), var(--art) right center / cover no-repeat var(--bg2); }
+  .art-banner.even { background: linear-gradient(90deg, rgb(37 29 30 / .86) 0 45%, rgb(37 29 30 / .25)), var(--art) right center / cover no-repeat var(--bg2); }
   .art-banner .paper-card { max-width: 560px; }
-  .art-oldtimer.even { background: linear-gradient(90deg, var(--bg2) 0 28%, rgb(27 20 20 / .82) 60%, rgb(27 20 20 / .55)), var(--art) center / cover no-repeat var(--bg2); }
+  .art-oldtimer.even { background: linear-gradient(90deg, var(--bg2) 0 28%, rgb(37 29 30 / .82) 60%, rgb(37 29 30 / .55)), var(--art) center / cover no-repeat var(--bg2); }
 }
 .people.cards { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
 .people.cards dd { overflow-wrap: anywhere; hyphens: auto; }
@@ -598,6 +598,9 @@ td .num { white-space: nowrap; }
 .slot em { margin-top: auto; padding-top: 10px; }
 .art-signup { --art: url(/img/art/signup.webp); }
 @media (max-width: 759px) {
-  .art { background: linear-gradient(180deg, rgb(27 20 20 / .93) 0 40%, rgb(27 20 20 / .66)), var(--art) 70% center / cover no-repeat var(--bg2); }
+  .art { background: linear-gradient(180deg, rgb(37 29 30 / .93) 0 40%, rgb(37 29 30 / .66)), var(--art) 70% center / cover no-repeat var(--bg2); }
 }
-@media (max-width: 759px) { .art-signup { background: linear-gradient(rgb(27 20 20 / .88), rgb(27 20 20 / .88)), var(--art) 70% center / cover no-repeat var(--bg2); } }
+@media (max-width: 759px) { .art-signup { background: linear-gradient(rgb(37 29 30 / .88), rgb(37 29 30 / .88)), var(--art) 70% center / cover no-repeat var(--bg2); } }
+/* cream sections re-map the dark tokens, so every component reads correctly on paper without per-component overrides */
+.paper { --ink: var(--cream-ink); --mute: var(--cream-mute); --panel: #fff; --panel2: #fff; --bg2: var(--cream2);
+  --line: rgba(29, 19, 19, .16); --red-t: var(--red-d); --yel: #7a4a00; --edge: #8a7670; color-scheme: light; }
