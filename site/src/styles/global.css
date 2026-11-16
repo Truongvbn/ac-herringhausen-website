@@ -604,3 +604,27 @@ td .num { white-space: nowrap; }
 /* cream sections re-map the dark tokens, so every component reads correctly on paper without per-component overrides */
 .paper { --ink: var(--cream-ink); --mute: var(--cream-mute); --panel: #fff; --panel2: #fff; --bg2: var(--cream2);
   --line: rgba(29, 19, 19, .16); --red-t: var(--red-d); --yel: #7a4a00; --edge: #8a7670; color-scheme: light; }
+/* home pass: footer rule follows the content width; link groups pair up on phones; paddock photo a touch more present */
+.ft-end { position: relative; border-top: 0; }
+.ft-end::before { content: ""; position: absolute; inset: 0 var(--gut) auto; border-top: 1px solid var(--line); }
+@media (max-width: 759px) { .ft-in { grid-template-columns: 1fr 1fr; gap: 26px 20px; } .ft-in > :first-child { grid-column: 1 / -1; } }
+@media (min-width: 760px) { .art-paddock.even { background: linear-gradient(90deg, rgb(37 29 30 / .78), rgb(37 29 30 / .58)), var(--art) center / cover no-repeat var(--bg2); } }
+
+/* kart pass */
+.c-eq { display: inline-flex; align-items: center; gap: 8px; font: inherit; }
+/* the course diagram is always a dark panel, also inside cream sections */
+.paper .course { --ink: #f6f1ed; --mute: #d0c5bf; --line: rgba(255, 236, 228, .19); --red-t: #ff6b62; --yel: #ffd200; --edge: #9a8585; color-scheme: dark; }
+/* verein pass */
+@media (max-width: 559px) { .people.cards > div { min-height: 0; gap: 4px; padding: 13px 16px; } }
+@media (min-width: 900px) {
+  .life:has(.map) { grid-template-columns: 1fr 1.5fr; }
+  .life:has(.map) .map { grid-column: 2; grid-row: 1 / span 2; }
+}
+/* partner + guestbook pass */
+@media (max-width: 559px) {
+  .pwall { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pwall .logo { height: 112px; padding: 12px; }
+  .pwall .logo img { max-height: 88px; }
+  .pwall b { padding: 10px 12px; font-size: var(--t-sm); }
+}
+a[href^="mailto:"] { white-space: nowrap; }

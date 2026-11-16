@@ -21,7 +21,7 @@ const cols: { h: string; keys: PageKey[] }[] = [
       <p style="margin-top:16px">
         <b style="color:var(--ink)">{t.clublokal}:</b> {club.clublokal.name}<br />
         {club.clublokal.street}, {club.clublokal.city}<br />
-        <span class="num">{club.email}</span>
+        <a class="num" href={`mailto:${club.email}`}>{club.email}</a>
       </p>
     </div>
     {cols.map((c) => (
