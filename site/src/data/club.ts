@@ -69,11 +69,11 @@ export const board: { role: L; people: string[] }[] = [
 ];
 
 export const kartClasses: { code: string; age: L }[] = [
-  { code: 'P1', age: { de: 'ca. 8–9 Jahre', en: 'approx. 8–9 years' } },
-  { code: 'P2', age: { de: 'ca. 10–11 Jahre', en: 'approx. 10–11 years' } },
-  { code: 'P3', age: { de: 'ca. 12–13 Jahre', en: 'approx. 12–13 years' } },
-  { code: 'P4', age: { de: 'ca. 14–15 Jahre', en: 'approx. 14–15 years' } },
-  { code: 'P5', age: { de: 'ca. 16–18 Jahre', en: 'approx. 16–18 years' } },
+  { code: 'P1', age: { de: 'ca. 8–9 Jahre', en: 'ages 8–9' } },
+  { code: 'P2', age: { de: 'ca. 10–11 Jahre', en: 'ages 10–11' } },
+  { code: 'P3', age: { de: 'ca. 12–13 Jahre', en: 'ages 12–13' } },
+  { code: 'P4', age: { de: 'ca. 14–15 Jahre', en: 'ages 14–15' } },
+  { code: 'P5', age: { de: 'ca. 16–18 Jahre', en: 'ages 16–18' } },
 ];
 
 // The old kart page publishes these contacts (name, mobile, e-mail) itself.

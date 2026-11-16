@@ -74,7 +74,7 @@ const albums = keys.map((k) => {
         </header>
         {a.groups.map((g) => (
           <div class="grp">
-            {g.caption && <h3 class="h4 grp-h" lang="de">{g.caption} <span class="num mute">· {photos(g.items.length)}</span></h3>}
+            {g.caption && <h3 class="h4 grp-h" lang="de">{g.caption} <span class="num mute grp-n">{photos(g.items.length)}</span></h3>}
             <div class="gal-grid">
               {g.items.map((it) => (
                 <a href={`/img/galerie/${a.key}/${it.file}`} data-lb data-album={a.key} data-caption={it.caption} data-w={it.w} data-h={it.h}>

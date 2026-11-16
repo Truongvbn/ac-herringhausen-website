@@ -590,3 +590,14 @@ a:hover > .go, a:hover .pan-c .go { translate: 6px 0; }
 .people.cards dd { overflow-wrap: anywhere; hyphens: auto; }
 .steps { gap: 20px; }
 @media (max-width: 759px) { .ft ul { gap: 0; } .ft ul a { display: inline-block; padding-block: 9px; } }
+.grp-n { display: inline-block; margin-left: .4em; white-space: nowrap; }
+.prose a { hyphens: none; }
+td .num { white-space: nowrap; }
+.stats span { text-wrap: balance; }
+.slot { display: flex; flex-direction: column; }
+.slot em { margin-top: auto; padding-top: 10px; }
+.art-signup { --art: url(/img/art/signup.webp); }
+@media (max-width: 759px) {
+  .art { background: linear-gradient(180deg, rgb(27 20 20 / .93) 0 40%, rgb(27 20 20 / .66)), var(--art) 70% center / cover no-repeat var(--bg2); }
+}
+@media (max-width: 759px) { .art-signup { background: linear-gradient(rgb(27 20 20 / .88), rgb(27 20 20 / .88)), var(--art) 70% center / cover no-repeat var(--bg2); } }
