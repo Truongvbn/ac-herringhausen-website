@@ -28,7 +28,7 @@ const abt = [
       ? 'Herzlich willkommen auf den Seiten des AC Herringhausen e.V. im ADAC.'
       : 'Welcome to the website of AC Herringhausen e.V. im ADAC.'}
     ghost="1969"
-    img="/img/galerie/jugend-kart/img-1842.jpg"
+    img="/img/hero/img-1842.webp"
     alt={de ? 'Gelbes Kart unter dem roten Pavillon im Fahrerlager' : 'Yellow kart under the red gazebo in the paddock'}
     caption={de ? 'Fahrerlager unter dem roten Pavillon' : 'Paddock under the red gazebo'} />
 
@@ -105,7 +105,7 @@ const abt = [
     </div>
     <dl class="people cards">
       {board.map((r) => (
-        <div><dt>{r.role[lang]}{!de && <span class="de-role" lang="de"> · {r.role.de}</span>}</dt><dd>{r.people.join(', ')}</dd></div>
+        <div><dt>{r.role[lang]}{!de && <span class="de-role" lang="de">{r.role.de}</span>}</dt><dd>{r.people.join(', ')}</dd></div>
       ))}
     </dl>
   </div></section>
@@ -155,6 +155,6 @@ const abt = [
   .owl-tile { display: inline-block; padding: 14px; background: #fff; border: 1px solid var(--cream-mute); transition: transform var(--d1); }
   .owl-tile:hover { transform: translateY(-3px); }
   .owl-tile img { width: 174px; }
-  .de-role { color: var(--mute); text-transform: none; letter-spacing: 0; }
+  .de-role { display: block; color: var(--mute); text-transform: none; letter-spacing: 0; }
   @media (min-width: 900px) { .abt3 { grid-template-columns: repeat(3, 1fr); } }
 </style>

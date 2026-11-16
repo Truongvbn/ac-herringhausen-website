@@ -8,7 +8,7 @@ import Probe from '../components/Probe.astro';
 import Icon from '../components/Icon.astro';
 import { club, meetings, partners, events2026, type Lang } from '../data/club';
 import { href } from '../i18n/routes';
-import { ui } from '../i18n/ui';
+import { ui, titles } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const de = lang === 'de';
@@ -34,7 +34,7 @@ const strip = [
 const aud = [
   { key: 'kart' as const, ic: 'helmet' as const, k: 'Jugend-Kart-Slalom', b: de ? 'Ich bin 8–18 und will Kart fahren' : 'I am 8–18 and want to drive a kart', p: de ? 'Klassen P1 bis P5, Training jeden Samstag um 15 Uhr.' : 'Classes P1 to P5, training every Saturday at 3 pm.', go: de ? 'Zum Kart-Slalom' : 'To kart slalom', hash: '' },
   { key: 'clubsport' as const, ic: 'cone' as const, k: 'Clubsport-Slalom', b: de ? 'Ich fahre Slalom mit meinem Auto' : 'I drive slalom in my own car', p: de ? '2026 lief der 55. ADAC Clubsport-Slalom des ACH.' : 'In 2026 the ACH ran its 55th ADAC Clubsport Slalom.', go: de ? 'Zum Clubsport' : 'To clubsport', hash: '' },
-  { key: 'oldtimer' as const, ic: 'car' as const, k: 'Oldtimer-Rallye', b: de ? 'Ich habe einen Oldtimer' : 'I own a classic car', p: de ? 'Unser Oldie-Team startet im 1967er Ford Mustang Fastback.' : 'Our classics team runs a 1967 Ford Mustang Fastback.', go: de ? 'Zum Oldie-Team' : 'To the classics team', hash: '' },
+  { key: 'oldtimer' as const, ic: 'car' as const, k: titles.oldtimer[lang], b: de ? 'Ich habe einen Oldtimer' : 'I own a classic car', p: de ? 'Unser Oldie-Team startet im 1967er Ford Mustang Fastback.' : 'Our classics team runs a 1967 Ford Mustang Fastback.', go: de ? 'Zum Oldie-Team' : 'To the classics team', hash: '' },
 ];
 ---
 <Base lang={lang} page="home" chip={false}
@@ -46,7 +46,7 @@ const aud = [
     <div class="hero-lines ly" aria-hidden="true"></div>
     <div class="hero-ghost ly" aria-hidden="true"><span>ACH</span><span>1969</span></div>
     <div class="w hero-in">
-      <figure class="hero-ph"><img src={`${G}img-1953.jpg`} width="1280" height="853" fetchpriority="high"
+      <figure class="hero-ph"><img src="/img/hero/img-1953.webp" width="1280" height="853" fetchpriority="high"
         alt={de ? 'Gelbes Slalom-Kart mit Fahrer im schwarzen Helm zwischen orangefarbenen Pylonen' : 'Yellow slalom kart with a driver in a black helmet between orange pylons'} /></figure>
       <div class="hero-cheq" aria-hidden="true"></div>
       <div class="hero-copy ly">
@@ -103,7 +103,7 @@ const aud = [
     <SectionHead kick={de ? 'Abteilungen' : 'Departments'} h={[de ? 'Drei Wege' : 'Three ways', de ? 'an den Start' : 'to the start']} />
     <div class="abt">
       <div class="pan-w"><a class="pan" href={href('kart', lang)}>
-        <figure class="pan-img"><img src={`${G}img-1915.jpg`} loading="lazy" width="1280" height="853" alt={de ? 'Gelbes Kart umrundet orangefarbene Pylonen auf dem Parkplatz' : 'Yellow kart rounding orange pylons on the car park'} /></figure>
+        <figure class="pan-img"><img src="/img/hero/img-1915.webp" loading="lazy" width="1280" height="853" alt={de ? 'Gelbes Kart umrundet orangefarbene Pylonen auf dem Parkplatz' : 'Yellow kart rounding orange pylons on the car park'} /></figure>
         <div class="pan-c"><p class="kick"><b>P1–P5</b><span>{de ? '8 bis 18 Jahre' : 'ages 8 to 18'}</span></p>
           <h3>Jugend-Kart-Slalom</h3>
           <p>{de
@@ -117,16 +117,16 @@ const aud = [
           <span class="go">{de ? 'Alles zum Kart-Slalom' : 'All about kart slalom'} →</span></div>
       </a></div>
       <div class="pan-w"><a class="pan" href={href('clubsport', lang)}>
-        <figure class="pan-img"><img src={`${G}img-1845.jpg`} loading="lazy" width="1280" height="853" alt={de ? 'Pylonengasse auf dem Parkplatz, Streckenübersicht' : 'Pylon lane on the car park, course overview'} /></figure>
+        <figure class="pan-img"><img src="/img/hero/img-1845.webp" loading="lazy" width="1280" height="853" alt={de ? 'Pylonengasse auf dem Parkplatz, Streckenübersicht' : 'Pylon lane on the car park, course overview'} /></figure>
         <div class="pan-c"><p class="kick"><b>55.</b><span>{de ? 'Auflage 2026' : 'edition in 2026'}</span></p>
           <h3>Clubsport-Slalom</h3>
           <p>{de ? 'Automobil-Slalom mit dem eigenen Auto. 2026 hat der Club den 55. ADAC Automobil-Clubsport-Slalom ausgerichtet.' : 'Automobile slalom in your own car. In 2026 the club hosted the 55th ADAC Automobile Clubsport Slalom.'}</p>
           <span class="go">{de ? 'Zum Clubsport-Slalom' : 'To clubsport slalom'} →</span></div>
       </a></div>
       <div class="pan-w"><a class="pan" href={href('oldtimer', lang)}>
-        <figure class="pan-img"><img src="/img/site/mustang2013.jpg" loading="lazy" width="800" height="532" alt={de ? 'Roter Ford Mustang Fastback von 1967 mit Rallyeschild' : 'Red 1967 Ford Mustang Fastback with rally plate'} /></figure>
+        <figure class="pan-img"><img src="/img/hero/mustang2013.webp" loading="lazy" width="1280" height="851" alt={de ? 'Roter Ford Mustang Fastback von 1967 mit Rallyeschild' : 'Red 1967 Ford Mustang Fastback with rally plate'} /></figure>
         <div class="pan-c"><p class="kick"><b>1967</b><span>Ford Mustang Fastback</span></p>
-          <h3>Oldtimer-Rallye</h3>
+          <h3>{titles.oldtimer[lang]}</h3>
           <p>{de ? 'Unser Oldie-Team: Jochen Gieselmann und Evelyn Erdmann im 1967er Ford Mustang Fastback.' : 'Our classics team: Jochen Gieselmann and Evelyn Erdmann in a 1967 Ford Mustang Fastback.'}</p>
           <span class="go">{de ? 'Zum Oldie-Team' : 'To the classics team'} →</span></div>
       </a></div>

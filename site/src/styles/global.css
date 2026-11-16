@@ -580,3 +580,13 @@ a:hover > .go, a:hover .pan-c .go { translate: 6px 0; }
   .hd, .chip, .subnav, .sheet, .ft, .cta, .lb { display: none !important; }
   body { background: #fff; color: #000; }
 }
+/* round 3: sponsor card sits left so the banner stays visible; oldtimer text gets a calmer backdrop */
+@media (min-width: 760px) {
+  .art-banner.even { background: linear-gradient(90deg, rgb(27 20 20 / .86) 0 45%, rgb(27 20 20 / .25)), var(--art) right center / cover no-repeat var(--bg2); }
+  .art-banner .paper-card { max-width: 560px; }
+  .art-oldtimer.even { background: linear-gradient(90deg, var(--bg2) 0 28%, rgb(27 20 20 / .82) 60%, rgb(27 20 20 / .55)), var(--art) center / cover no-repeat var(--bg2); }
+}
+.people.cards { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+.people.cards dd { overflow-wrap: anywhere; hyphens: auto; }
+.steps { gap: 20px; }
+@media (max-width: 759px) { .ft ul { gap: 0; } .ft ul a { display: inline-block; padding-block: 9px; } }
